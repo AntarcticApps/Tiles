@@ -1,0 +1,17 @@
+{
+  "name": "Paero",
+  "version": "1.0",
+  "manifest_version": 2,
+  "description": "A minimalistic new tab page.",
+
+  "permissions": [
+    "history",
+    "tabs",
+    "unlimitedStorage",
+    "<all_urls>"
+  ],
+
+  "chrome_url_overrides": {
+    "newtab": "paero.html"
+  }
+}
