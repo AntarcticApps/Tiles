@@ -1,4 +1,48 @@
 * {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+
+	background: #ccc;
+
+	position: relative;
+}
+
+#sites {
+	width: 100%;
+	height: 100px;
+
+	position: absolute;
+	top: 50%;
+	margin-top: -50px;
+}
+
+#sites ul {
+	list-style: none;
+	text-align: center;
+
+	margin: 0 auto;
+}
+
+#sites li {
+	display: inline-block;
+
+	padding: 0 10px;
+
+	font-size: 100px;
+	font-family: "Futura", sans-serif;
+
+	line-height: 100px;
+}
+
+#sites li:first-child {
+	padding-left: 0;
+}
+
+#sites li:last-child {
+	padding-right: 0;
 }
