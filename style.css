@@ -37,6 +37,10 @@ html, body {
 	font-family: "Futura", sans-serif;
 
 	line-height: 100px;
+
+	text-shadow: 2px 10px 10px rgba(0, 0, 0, 0.2);
+
+	-webkit-transition: text-shadow 0.1s linear;
 }
 
 #sites li:first-child {
@@ -45,4 +49,8 @@ html, body {
 
 #sites li:last-child {
 	padding-right: 0;
+}
+
+#sites li:hover {
+	text-shadow: 2px 20px 10px rgba(0, 0, 0, 0.2);
 }
