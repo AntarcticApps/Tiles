@@ -12,6 +12,6 @@
   ],
 
   "chrome_url_overrides": {
-    "newtab": "paero.html"
+    "newtab": "tab_page/paero.html"
   }
 }
