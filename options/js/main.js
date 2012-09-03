@@ -5,6 +5,13 @@ $(document).ready(function() {
 	var trashButton = '<a type="button" class="btn btn-danger remove"><i class="icon-trash icon-white"></i></a>';
 	var addButton = '<a type="button" class="btn btn-success add"><i class="icon-plus icon-white"></i></a>';
 
+	var controlGroup = '<div class="control-group"> \
+	<div class="controls"> \
+		<input type="text" class="url" placeholder="www.google.com"> \
+		<input type="text" class="input-mini abbreviation" placeholder="Gl"> \
+	</div> \
+</div>';
+
 	function getButtons(up, down) {
 		var result = '<div class="btn-toolbar"><div class="btn-group">';
 
@@ -53,7 +60,12 @@ $(document).ready(function() {
 	}
 
 	function addControlGroup() {
+		parent = $(this).parents('.control-group');
 
+		parent.after(controlGroup);
+
+		updateControlGroupAddRemoveButtons();
+		updateControlGroupSortingButtons();
 	}
 
 	function updateControlGroupSortingButtons() {
@@ -98,7 +110,7 @@ $(document).ready(function() {
 
 		parent.remove();
 		next.after(parent);
-		
+
 		updateControlGroupAddRemoveButtons();
 		updateControlGroupSortingButtons();
 	}
