@@ -130,8 +130,13 @@ $(document).ready(function() {
 					$(this).parents('.control-group').remove();
 
 					updateAllButtons();
+					return;
 				}
 			}
+		});
+
+		$('input:text.url').each(function(index, element) {
+			var value = $(this).val();
 
 			fields[index] = {};
 			fields[index].url = value;
