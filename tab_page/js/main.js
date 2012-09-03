@@ -19,6 +19,15 @@ function init() {
 
 			var li = createSite(site.abbreviation, site.url);
 
+			li.onclick = function() {
+				var options = {
+					url: site.url,
+					active: true
+				}
+
+				chrome.tabs.update(options);
+			}
+
 			siteList.appendChild(li);
 		}
 	});
