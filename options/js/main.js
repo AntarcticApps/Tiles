@@ -149,10 +149,10 @@ $(document).ready(function() {
 		});
 
 		chrome.storage.sync.set({"sites": fields}, function() {
-			$("span.label.label-success").addClass("show");
+			$("#success").addClass("show");
 
 			window.setTimeout(function() {
-				$("span.label.label-success").removeClass("show");
+				$("#success").removeClass("show");
 			}, 2000);
 		});
 

@@ -13,7 +13,7 @@
 	margin-right: 4px;
 }
 
-.label.hide {
+#success.hide {
 	display: inline-block;
 
 	opacity: 0;
@@ -21,7 +21,7 @@
 	-webkit-transition: opacity 1s linear;
 }
 
-.label.show {
+#success.show {
 	display: inline-block;
 
 	opacity: 1;
