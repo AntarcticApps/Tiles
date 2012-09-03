@@ -33,6 +33,8 @@ $(document).ready(function() {
 		}
 
 		updateAllButtons();
+
+		$(".container").removeClass("hidden");
 	});
 
 	function getButtons(up, down) {
