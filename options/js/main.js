@@ -18,23 +18,28 @@ $(document).ready(function() {
 		return result;
 	}
 
-	var controlsCount = $('.controls').size();
-
-	$('.controls').each(function(index) {
-		if (index == controlsCount - 1) {
-			return;
-		}
-
-		if (index == 0) {
-			$(this).append(getButtons(false, true));
-		} else if (index == controlsCount - 2) {
-			$(this).append(getButtons(true, false));
-		} else {
-			$(this).append(getButtons(true, true));
-		}
-	});
-
+	updateControlGroupSortingButtons();
 	bindSortingButtons();
+
+	function updateControlGroupSortingButtons() {
+		var controlsCount = $('.controls').size();
+
+		$('.controls').each(function(index) {
+			$(this).children('.btn-toolbar').remove();
+
+			if (index == controlsCount - 1) {
+				return;
+			}
+
+			if (index == 0) {
+				$(this).append(getButtons(false, true));
+			} else if (index == controlsCount - 2) {
+				$(this).append(getButtons(true, false));
+			} else {
+				$(this).append(getButtons(true, true));
+			}
+		});
+	}
 
 	function bindSortingButtons() {
 		$('.btn.up').off().on('click', moveControlGroupUp);		
@@ -49,6 +54,7 @@ $(document).ready(function() {
 		parent.remove();
 		previous.before(parent);
 
+		updateControlGroupSortingButtons();
 		bindSortingButtons();
 	}
 
@@ -59,7 +65,8 @@ $(document).ready(function() {
 
 		parent.remove();
 		next.after(parent);
-
+		
+		updateControlGroupSortingButtons();
 		bindSortingButtons();
 	}
 
