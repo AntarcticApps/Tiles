@@ -11,10 +11,6 @@ $(document).ready(function() {
 			fields[index].abbreviation = value;
 		});
 
-		$('input:checkbox.enabled').val(function(index, value) {
-			fields[index].enabled = $(this).is(':checked');
-		});
-
 		console.log(fields);
 
 		return false;
