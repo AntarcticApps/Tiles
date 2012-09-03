@@ -1,0 +1,11 @@
+.form-horizontal .control-label {
+	width: 40px;
+}
+
+.form-horizontal .controls {
+	margin-left: 60px;
+}
+
+.checkbox.inline {
+	padding-top: 0;
+}
