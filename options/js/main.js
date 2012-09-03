@@ -12,6 +12,29 @@ $(document).ready(function() {
 	</div> \
 </div>';
 
+	chrome.storage.sync.get('sites', function(items) {
+		sites = items['sites'];
+
+		if (sites.length == 0) {
+			$("#sites").prepend(controlGroup);
+		}
+
+		sites = sites.reverse();
+
+		for (var i = 0; i < sites.length; i++) {
+			var newControlGroup = controlGroup;
+			var site = sites[i];
+
+			newControlGroup = $(newControlGroup);
+			newControlGroup.find('input.url').val(site.url);
+			newControlGroup.find('input.abbreviation').val(site.abbreviation);
+
+			$("#sites").prepend(newControlGroup);
+		}
+
+		updateAllButtons();
+	});
+
 	function getButtons(up, down) {
 		var result = '<div class="btn-toolbar"><div class="btn-group">';
 
