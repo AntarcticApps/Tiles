@@ -28,8 +28,12 @@ $(document).ready(function() {
 		return result;
 	}
 
-	updateControlGroupAddRemoveButtons();
-	updateControlGroupSortingButtons();
+	updateAllButtons();
+
+	function updateAllButtons() {
+		updateControlGroupAddRemoveButtons();
+		updateControlGroupSortingButtons();
+	}
 
 	function updateControlGroupAddRemoveButtons() {
 		var controlsCount = $('.controls').size();
@@ -55,8 +59,7 @@ $(document).ready(function() {
 		parent = $(this).parents('.control-group');
 		parent.remove();
 
-		updateControlGroupAddRemoveButtons();
-		updateControlGroupSortingButtons();
+		updateAllButtons();
 	}
 
 	function addControlGroup() {
@@ -64,8 +67,7 @@ $(document).ready(function() {
 
 		parent.after(controlGroup);
 
-		updateControlGroupAddRemoveButtons();
-		updateControlGroupSortingButtons();
+		updateAllButtons();
 	}
 
 	function updateControlGroupSortingButtons() {
@@ -99,8 +101,7 @@ $(document).ready(function() {
 		parent.remove();
 		previous.before(parent);
 
-		updateControlGroupAddRemoveButtons();
-		updateControlGroupSortingButtons();
+		updateAllButtons();
 	}
 
 	function moveControlGroupDown() {
@@ -111,8 +112,7 @@ $(document).ready(function() {
 		parent.remove();
 		next.after(parent);
 
-		updateControlGroupAddRemoveButtons();
-		updateControlGroupSortingButtons();
+		updateAllButtons();
 	}
 
 	$('#sites').submit(function() {
