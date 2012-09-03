@@ -38,6 +38,7 @@ $(document).ready(function() {
 
 	function bindSortingButtons() {
 		$('.btn.up').off().on('click', moveControlGroupUp);		
+		$('.btn.down').off().on('click', moveControlGroupDown);
 	}
 
 	function moveControlGroupUp() {
@@ -47,6 +48,17 @@ $(document).ready(function() {
 
 		parent.remove();
 		previous.before(parent);
+
+		bindSortingButtons();
+	}
+
+	function moveControlGroupDown() {
+		parent = $(this).parents('.control-group');
+
+		var next = parent.next();
+
+		parent.remove();
+		next.after(parent);
 
 		bindSortingButtons();
 	}
