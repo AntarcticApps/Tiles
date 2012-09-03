@@ -22,10 +22,7 @@ $(document).ready(function() {
 	}
 
 	updateControlGroupAddRemoveButtons();
-	bindAddRemoveButtons();
-
 	updateControlGroupSortingButtons();
-	bindSortingButtons();
 
 	function updateControlGroupAddRemoveButtons() {
 		var controlsCount = $('.controls').size();
@@ -42,9 +39,7 @@ $(document).ready(function() {
 				$(this).append(addButton);
 			}
 		});
-	}
 
-	function bindAddRemoveButtons() {
 		$('.btn.remove').off().on('click', removeControlGroup);
 		$('.btn.add').off().on('click', addControlGroup);
 	}
@@ -54,10 +49,7 @@ $(document).ready(function() {
 		parent.remove();
 
 		updateControlGroupAddRemoveButtons();
-		bindAddRemoveButtons();
-
 		updateControlGroupSortingButtons();
-		bindSortingButtons();
 	}
 
 	function addControlGroup() {
@@ -82,9 +74,7 @@ $(document).ready(function() {
 				$(this).append(getButtons(true, true));
 			}
 		});
-	}
 
-	function bindSortingButtons() {
 		$('.btn.up').off().on('click', moveControlGroupUp);		
 		$('.btn.down').off().on('click', moveControlGroupDown);
 	}
@@ -97,8 +87,8 @@ $(document).ready(function() {
 		parent.remove();
 		previous.before(parent);
 
+		updateControlGroupAddRemoveButtons();
 		updateControlGroupSortingButtons();
-		bindSortingButtons();
 	}
 
 	function moveControlGroupDown() {
@@ -108,9 +98,9 @@ $(document).ready(function() {
 
 		parent.remove();
 		next.after(parent);
-
+		
+		updateControlGroupAddRemoveButtons();
 		updateControlGroupSortingButtons();
-		bindSortingButtons();
 	}
 
 	$('#sites').submit(function() {
