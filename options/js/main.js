@@ -42,7 +42,7 @@ $(document).ready(function() {
 			$(this).children('.btn.add').remove();
 			$(this).children('.btn.remove').remove();
 
-			if (index != controlsCount - 1) {
+			if (index != controlsCount - 1 && controlsCount != 2) {
 				$(this).append(trashButton);
 			}
 
