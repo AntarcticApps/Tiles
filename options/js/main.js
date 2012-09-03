@@ -76,7 +76,7 @@ $(document).ready(function() {
 		$('.controls').each(function(index) {
 			$(this).children('.btn-toolbar').remove();
 
-			if (index == controlsCount - 1) {
+			if (index == controlsCount - 1 || controlsCount == 2) {
 				return;
 			}
 
