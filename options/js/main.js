@@ -1,6 +1,6 @@
 $(document).ready(function() {
-	var upButton = '<a type="button" class="btn"><i class="icon-arrow-up"></i></a>';
-	var downButton = '<a type="button" class="btn"><i class="icon-arrow-down"></i></a>';
+	var upButton = '<a type="button" class="btn up"><i class="icon-arrow-up"></i></a>';
+	var downButton = '<a type="button" class="btn down"><i class="icon-arrow-down"></i></a>';
 
 	function getButtons(up, down) {
 		var result = '<div class="btn-toolbar"><div class="btn-group">';
@@ -32,6 +32,13 @@ $(document).ready(function() {
 		} else {
 			$(this).append(getButtons(true, true));
 		}
+	});
+
+	$('.btn.up').on('click', function() {
+		parent = $(this).parents('.control-group');
+
+		parent.remove();
+		parent.prev().before(parent);
 	});
 
 	$('#sites').submit(function() {
