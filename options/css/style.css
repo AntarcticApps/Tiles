@@ -1,9 +1,5 @@
-.form-horizontal .control-label {
-	width: 40px;
-}
-
 .form-horizontal .controls {
-	margin-left: 60px;
+	margin-left: 0;
 }
 
 .btn-toolbar {
