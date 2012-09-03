@@ -5,6 +5,8 @@
 	<title>Paero Options</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/style.css">
+	<script src="js/jquery-1.8.1.min.js"></script>
+	<script src="js/main.js"></script>
 </head>
 <body>
 
@@ -15,51 +17,50 @@
 			<p>Change the sites displayed on the new tab page here.</p>
 		</div>
 		<div class="span8">
-			<form class="form-horizontal">
+			<form id="sites" class="form-horizontal">
 				<div class="control-group">
 					<label class="control-label" for="url">#1</label>
 					<div class="controls">
-						<input type="text" id="url" placeholder="www.google.com">
-						<input type="text" class="input-mini" id="abbreviation" placeholder="Gl">
+						<input type="text" class="url" placeholder="www.google.com">
+						<input type="text" class="input-mini abbreviation" placeholder="Gl">
 						<label class="checkbox inline">
-							<input type="checkbox" id="enabled" value="enabled"> Enabled
+							<input type="checkbox" class="enabled" value="enabled"> Enabled
 						</label>
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="url">#2</label>
 					<div class="controls">
-						<input type="text" id="url" placeholder="www.google.com">
-						<input type="text" class="input-mini" id="abbreviation" placeholder="Gl">
+						<input type="text" class="url" placeholder="www.google.com">
+						<input type="text" class="input-mini abbreviation" placeholder="Gl">
 						<label class="checkbox inline">
-							<input type="checkbox" id="enabled" value="enabled"> Enabled
+							<input type="checkbox" class="enabled" value="enabled"> Enabled
 						</label>
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="url">#3</label>
 					<div class="controls">
-						<input type="text" id="url" placeholder="www.google.com">
-						<input type="text" class="input-mini" id="abbreviation" placeholder="Gl">
+						<input type="text" class="url" placeholder="www.google.com">
+						<input type="text" class="input-mini abbreviation" placeholder="Gl">
 						<label class="checkbox inline">
-							<input type="checkbox" id="enabled" value="enabled"> Enabled
+							<input type="checkbox" class="enabled" value="enabled"> Enabled
 						</label>
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="url">#4</label>
 					<div class="controls">
-						<input type="text" id="url" placeholder="www.google.com">
-						<input type="text" class="input-mini" id="abbreviation" placeholder="Gl">
+						<input type="text" class="url" placeholder="www.google.com">
+						<input type="text" class="input-mini abbreviation" placeholder="Gl">
 						<label class="checkbox inline">
-							<input type="checkbox" id="enabled" value="enabled"> Enabled
+							<input type="checkbox" class="enabled" value="enabled"> Enabled
 						</label>
 					</div>
 				</div>
 				<div class="control-group">
 					<div class="controls">
 						<button type="submit" class="btn btn-primary">Save changes</button>
-						<button type="button" class="btn">Cancel</button>
 					</div>
 				</div>
 			</form>
