@@ -2,6 +2,9 @@ $(document).ready(function() {
 	var upButton = '<a type="button" class="btn up"><i class="icon-arrow-up"></i></a>';
 	var downButton = '<a type="button" class="btn down"><i class="icon-arrow-down"></i></a>';
 
+	var trashButton = '<a type="button" class="btn btn-danger remove"><i class="icon-trash icon-white"></i></a>';
+	var addButton = '<a type="button" class="btn btn-success add"><i class="icon-plus icon-white"></i></a>';
+
 	function getButtons(up, down) {
 		var result = '<div class="btn-toolbar"><div class="btn-group">';
 
@@ -18,8 +21,48 @@ $(document).ready(function() {
 		return result;
 	}
 
+	updateControlGroupAddRemoveButtons();
+	bindAddRemoveButtons();
+
 	updateControlGroupSortingButtons();
 	bindSortingButtons();
+
+	function updateControlGroupAddRemoveButtons() {
+		var controlsCount = $('.controls').size();
+
+		$('.controls').each(function(index) {
+			$(this).children('.btn.add').remove();
+			$(this).children('.btn.remove').remove();
+
+			if (index != controlsCount - 1) {
+				$(this).append(trashButton);
+			}
+
+			if (index == controlsCount - 2) {
+				$(this).append(addButton);
+			}
+		});
+	}
+
+	function bindAddRemoveButtons() {
+		$('.btn.remove').off().on('click', removeControlGroup);
+		$('.btn.add').off().on('click', addControlGroup);
+	}
+
+	function removeControlGroup() {
+		parent = $(this).parents('.control-group');
+		parent.remove();
+
+		updateControlGroupAddRemoveButtons();
+		bindAddRemoveButtons();
+
+		updateControlGroupSortingButtons();
+		bindSortingButtons();
+	}
+
+	function addControlGroup() {
+
+	}
 
 	function updateControlGroupSortingButtons() {
 		var controlsCount = $('.controls').size();
@@ -65,7 +108,7 @@ $(document).ready(function() {
 
 		parent.remove();
 		next.after(parent);
-		
+
 		updateControlGroupSortingButtons();
 		bindSortingButtons();
 	}

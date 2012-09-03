@@ -5,4 +5,10 @@
 .btn-toolbar {
 	display: inline-block;
 	margin: 0;
+
+	vertical-align: middle;
+}
+
+.controls > .btn {
+	margin-right: 4px;
 }
