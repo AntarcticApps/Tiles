@@ -2,7 +2,21 @@ $(document).ready(function() {
 	var upButton = '<a type="button" class="btn"><i class="icon-arrow-up"></i></a>';
 	var downButton = '<a type="button" class="btn"><i class="icon-arrow-down"></i></a>';
 
-	var buttonPair = '<div class="btn-toolbar"><div class="btn-group">' + upButton + downButton + '</div></div>';
+	function getButtons(up, down) {
+		var result = '<div class="btn-toolbar"><div class="btn-group">';
+
+		if (up) {
+			result += upButton;
+		}
+
+		if (down) {
+			result += downButton;
+		}
+
+		result += '</div></div>';
+
+		return result;
+	}
 
 	var controlsCount = $('.controls').size();
 
@@ -12,11 +26,11 @@ $(document).ready(function() {
 		}
 
 		if (index == 0) {
-			$(this).append(downButton);
+			$(this).append(getButtons(false, true));
 		} else if (index == controlsCount - 2) {
-			$(this).append(upButton);
+			$(this).append(getButtons(true, false));
 		} else {
-			$(this).append(buttonPair);
+			$(this).append(getButtons(true, true));
 		}
 	});
 
