@@ -148,6 +148,14 @@ $(document).ready(function() {
 			fields[index].abbreviation = value;
 		});
 
+		chrome.storage.sync.set({"sites": fields}, function() {
+			$("span.label.label-success").addClass("show");
+
+			window.setTimeout(function() {
+				$("span.label.label-success").removeClass("show");
+			}, 2000);
+		});
+
 		console.log(fields);
 
 		return false;

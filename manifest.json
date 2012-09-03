@@ -8,7 +8,7 @@
   "permissions": [
     "history",
     "tabs",
-    "unlimitedStorage",
+    "storage",
     "<all_urls>"
   ],
 

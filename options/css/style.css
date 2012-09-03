@@ -12,3 +12,17 @@
 .controls > .btn {
 	margin-right: 4px;
 }
+
+.label.hide {
+	display: inline-block;
+
+	opacity: 0;
+
+	-webkit-transition: opacity 1s linear;
+}
+
+.label.show {
+	display: inline-block;
+
+	opacity: 1;
+}
