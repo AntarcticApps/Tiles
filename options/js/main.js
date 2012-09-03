@@ -34,12 +34,22 @@ $(document).ready(function() {
 		}
 	});
 
-	$('.btn.up').on('click', function() {
+	bindSortingButtons();
+
+	function bindSortingButtons() {
+		$('.btn.up').off().on('click', moveControlGroupUp);		
+	}
+
+	function moveControlGroupUp() {
 		parent = $(this).parents('.control-group');
 
+		var previous = parent.prev();
+
 		parent.remove();
-		parent.prev().before(parent);
-	});
+		previous.before(parent);
+
+		bindSortingButtons();
+	}
 
 	$('#sites').submit(function() {
 		var fields = [];
