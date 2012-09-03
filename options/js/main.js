@@ -163,6 +163,11 @@ $(document).ready(function() {
 		$('input:text.url').each(function(index, element) {
 			var value = $(this).val();
 
+			if (!value.match(/^(http|https):\/\//)) {
+				value = "http://" + value;
+				$(this).val(value);
+			}
+
 			fields[index] = {};
 			fields[index].url = value;
 		});
@@ -180,8 +185,6 @@ $(document).ready(function() {
 				$("#success").removeClass("show");
 			}, 2000);
 		});
-
-		console.log(fields);
 
 		return false;
 	});
