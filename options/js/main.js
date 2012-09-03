@@ -115,15 +115,31 @@ $(document).ready(function() {
 		updateAllButtons();
 	}
 
-	$('#sites').submit(function() {
+	$('#sites').submit(function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+
 		var fields = [];
 
-		$('input:text.url').val(function(index, value) {
+		$('input:text.url').each(function(index, element) {
+			var controlsCount = $('.controls').size();
+			var value = $(this).val();
+
+			if (!value || value.length == 0) {
+				if (controlsCount > 2) {
+					$(this).parents('.control-group').remove();
+
+					updateAllButtons();
+				}
+			}
+
 			fields[index] = {};
 			fields[index].url = value;
 		});
 
-		$('input:text.abbreviation').val(function(index, value) {
+		$('input:text.abbreviation').each(function(index, element) {
+			var value = $(this).val();
+
 			fields[index].abbreviation = value;
 		});
 
