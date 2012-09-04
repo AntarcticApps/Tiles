@@ -1,3 +1,5 @@
+var sites;
+
 $(document).ready(function() {
 	var upButton = '<a type="button" class="btn up"><i class="icon-arrow-up"></i></a>';
 	var downButton = '<a type="button" class="btn down"><i class="icon-arrow-down"></i></a>';
@@ -221,8 +223,11 @@ $(document).ready(function() {
 	});
 });
 
-function isWhite(color) {
+function isWhiteOrTransparent(color) {
 	const TOLERANCE = 20;
+
+	if (color[3] != 255)
+		return true;
 
 	return 255 - color[0] <= TOLERANCE
 		&& 255 - color[1] <= TOLERANCE
@@ -232,43 +237,36 @@ function isWhite(color) {
 function getFaviconColor(url, callback) {
 	var image = new Image();
 	image.onload = function() {
-		console.log(image.width, image.height);
 		var context = $("canvas")[0].getContext('2d');
 		context.clearRect(0, 0, $("canvas")[0].width, $("canvas")[0].height);
 		context.drawImage(image, 0, 0);
 
-		var average = [0, 0, 0, 0];
-		var opaquePixels = 0;
-
 		var majorityCandidate = null;
 		var retainCount = 1;
 
-		const TOLERANCE = 20;
+		const TOLERANCE = 10;
 
-		for (var x = 0; x < image.width; x++) {
-			for (var y = 0; y < image.height; y++) {
-				data = context.getImageData(x, y, 1, 1).data;
+		var imageData = context.getImageData(0, 0, image.width, image.height);
 
-				if (majorityCandidate == null
-					&& data[3] == 255
-					&& !isWhite(data)) {
-					majorityCandidate = data;
+		for (var i = 0; i < imageData.data.length; i += 4) {
+			var pixel = [imageData.data[i],
+			imageData.data[i + 1],
+			imageData.data[i + 2],
+			imageData.data[i + 3]];
+
+			if (majorityCandidate == null && !isWhiteOrTransparent(pixel)) {
+				majorityCandidate = pixel;
+			}
+
+			if (majorityCandidate) {
+				if (pixelsAreSimilar(majorityCandidate, pixel) && !isWhiteOrTransparent(pixel)) {
+					retainCount++;
+				} else if (!isWhiteOrTransparent(pixel)) {
+					retainCount--;
 				}
 
-				if (majorityCandidate) {
-					if (Math.abs(data[0] - majorityCandidate[0]) <= TOLERANCE
-						&& Math.abs(data[1] - majorityCandidate[1]) <= TOLERANCE
-						&& Math.abs(data[2] - majorityCandidate[2]) <= TOLERANCE
-						&& !isWhite(data)
-						&& data[3] == 255) {
-						retainCount++;
-					} else if (data[3] == 255 && !isWhite(data)) {
-						retainCount--;
-					}
-
-					if (retainCount == 0) {
-						majorityCandidate = data;
-					}
+				if (retainCount == 0) {
+					majorityCandidate = pixel;
 				}
 			}
 		}
@@ -277,4 +275,49 @@ function getFaviconColor(url, callback) {
 	}
 	image.src = url + '/favicon.ico';
 	console.log(image.src);
+}
+
+function pixelsAreSimilar(a, b) {
+	const TOLERANCE = 0.001;
+
+	var aHSL = rgbToHsl(a[0], a[1], a[2]);
+	var bHSL = rgbToHsl(b[0], b[1], b[2]);
+
+	return Math.abs(aHSL[0] - bHSL[0]) <= TOLERANCE;
+}
+
+/**
+ * Source: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+ * Converts an RGB color value to HSL. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes r, g, and b are contained in the set [0, 255] and
+ * returns h, s, and l in the set [0, 1].
+ *
+ * @param   Number  r       The red color value
+ * @param   Number  g       The green color value
+ * @param   Number  b       The blue color value
+ * @return  Array           The HSL representation
+ */
+function rgbToHsl(r, g, b){
+	r /= 255, g /= 255, b /= 255;
+
+	var max = Math.max(r, g, b), min = Math.min(r, g, b);
+	var h, s, l = (max + min) / 2;
+
+	if (max == min){
+	    h = s = 0; // achromatic
+	} else {
+	    var d = max - min;
+	    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+	    
+	    switch(max) {
+	        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+	        case g: h = (b - r) / d + 2; break;
+	        case b: h = (r - g) / d + 4; break;
+	    }
+	   
+	    h /= 6;
+	}
+
+	return [h, s, l];
 }
