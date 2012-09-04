@@ -140,88 +140,6 @@ $(document).ready(function() {
 		updateAllButtons();
 	}
 
-	function isWhite(color) {
-		const TOLERANCE = 20;
-
-		return 255 - color[0] <= TOLERANCE
-			&& 255 - color[1] <= TOLERANCE
-			&& 255 - color[2] <= TOLERANCE;
-	}
-
-	function getFaviconColor(url, callback) {
-		var image = new Image();
-		image.onload = function() {
-			console.log(image.width, image.height);
-			var context = $("canvas")[0].getContext('2d');
-			context.clearRect(0, 0, $("canvas")[0].width, $("canvas")[0].height);
-			context.drawImage(image, 0, 0);
-
-			var average = [0, 0, 0, 0];
-			var opaquePixels = 0;
-
-			var majorityCandidate = null;
-			var retainCount = 1;
-
-			const TOLERANCE = 20;
-
-			for (var x = 0; x < image.width; x++) {
-				for (var y = 0; y < image.height; y++) {
-					data = context.getImageData(x, y, 1, 1).data;
-
-					if (majorityCandidate == null
-						&& data[3] == 255
-						&& !isWhite(data)) {
-						majorityCandidate = data;
-					}
-
-					if (majorityCandidate) {
-						if (Math.abs(data[0] - majorityCandidate[0]) <= TOLERANCE
-							&& Math.abs(data[1] - majorityCandidate[1]) <= TOLERANCE
-							&& Math.abs(data[2] - majorityCandidate[2]) <= TOLERANCE
-							&& !isWhite(data)
-							&& data[3] == 255) {
-							retainCount++;
-
-							// for (var i = 0; i < data.length; i++) {
-							// 	majorityCandidate[i] = (majorityCandidate[i] + data[i]) / 2;
-							// }
-						} else if (data[3] == 255
-							&& !isWhite(data)) {
-							retainCount--;
-						}
-
-						if (retainCount == 0) {
-							majorityCandidate = data;
-						}
-					}
-
-					// if (data[3] == 255) {
-					// 	for (var i = 0; i < data.length; i++) {
-					// 		average[i] += data[i];
-					// 	}
-
-					// 	opaquePixels++;
-					// }
-				}
-			}
-
-			// for (var i = 0; i < average.length; i++) {
-			// 	average[i] /= opaquePixels;
-
-			// 	if (i != average.length - 1) {
-			// 		average[i] = Math.round(average[i]);
-			// 	} else {
-			// 		average[i] /= 255;
-			// 	}
-			// }
-
-			callback(majorityCandidate);
-		}
-		image.src = url + '/favicon.ico';
-		console.log(image.src);
-		// image.src = 'http://www.google.com/s2/favicons?domain=' + url;
-	}
-
 	$('#sites').submit(function(event) {
 		event.preventDefault();
 		event.stopPropagation();
@@ -306,3 +224,61 @@ $(document).ready(function() {
 		return false;
 	});
 });
+
+function isWhite(color) {
+	const TOLERANCE = 20;
+
+	return 255 - color[0] <= TOLERANCE
+		&& 255 - color[1] <= TOLERANCE
+		&& 255 - color[2] <= TOLERANCE;
+}
+
+function getFaviconColor(url, callback) {
+	var image = new Image();
+	image.onload = function() {
+		console.log(image.width, image.height);
+		var context = $("canvas")[0].getContext('2d');
+		context.clearRect(0, 0, $("canvas")[0].width, $("canvas")[0].height);
+		context.drawImage(image, 0, 0);
+
+		var average = [0, 0, 0, 0];
+		var opaquePixels = 0;
+
+		var majorityCandidate = null;
+		var retainCount = 1;
+
+		const TOLERANCE = 20;
+
+		for (var x = 0; x < image.width; x++) {
+			for (var y = 0; y < image.height; y++) {
+				data = context.getImageData(x, y, 1, 1).data;
+
+				if (majorityCandidate == null
+					&& data[3] == 255
+					&& !isWhite(data)) {
+					majorityCandidate = data;
+				}
+
+				if (majorityCandidate) {
+					if (Math.abs(data[0] - majorityCandidate[0]) <= TOLERANCE
+						&& Math.abs(data[1] - majorityCandidate[1]) <= TOLERANCE
+						&& Math.abs(data[2] - majorityCandidate[2]) <= TOLERANCE
+						&& !isWhite(data)
+						&& data[3] == 255) {
+						retainCount++;
+					} else if (data[3] == 255 && !isWhite(data)) {
+						retainCount--;
+					}
+
+					if (retainCount == 0) {
+						majorityCandidate = data;
+					}
+				}
+			}
+		}
+
+		callback(majorityCandidate);
+	}
+	image.src = url + '/favicon.ico';
+	console.log(image.src);
+}
