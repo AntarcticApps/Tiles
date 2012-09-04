@@ -282,6 +282,8 @@ function getFaviconColor(url, callback) {
 		callback(majorityCandidate);
 	}
 
+	var failColor = [0, 0, 0, 0];
+
 	$.get(url).success(function(data) {
 		// Search for Apple touch icon
 		var regex = /<link rel="apple-touch-icon" href="(.*)" ?\/?>/gim;
@@ -302,11 +304,12 @@ function getFaviconColor(url, callback) {
 			$.get(domain + '/favicon.ico').success(function() {
 				image.src = domain + '/favicon.ico';
 			}).error(function() {
-				callback([0, 0, 0, 0]);
+				callback(failColor);
 			})
 		});
 	}).error(function() {
 		console.log("Could not load url – " + url);
+		callback(failColor);
 	});
 }
 
