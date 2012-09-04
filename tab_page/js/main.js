@@ -19,6 +19,10 @@ function init() {
 
 			var li = createSite(site.abbreviation, site.url);
 
+			var color = site.color;
+
+			li.style.color = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + color.alpha +')';
+
 			li.onclick = function() {
 				var options = {
 					url: site.url,

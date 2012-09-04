@@ -160,7 +160,12 @@ $(document).ready(function() {
 
 			for (var i = 0; i < average.length; i++) {
 				average[i] /= image.width * image.height;
-				average[i] /= 255;
+
+				if (i != average.length - 1) {
+					average[i] = Math.round(average[i]);
+				} else {
+					average[i] /= 255;
+				}
 			}
 
 			callback(average);
