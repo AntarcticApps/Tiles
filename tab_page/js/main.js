@@ -15,29 +15,33 @@ function init() {
 		}
 
 		for (var i = 0; i < sites.length; i++) {
-			var site = sites[i];
+			(function() {
+				var site = sites[i];
 
-			var li = createSite(site.abbreviation, site.url);
+				var li = createSite(site.abbreviation, site.url);
 
-			var color = site.color;
+				var color = site.color;
 
-			if (color) {
-				li.style.color = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + 1 +')';
-				console.log(site.url, li.style.color);
-			}
-
-			li.onclick = function() {
-				var options = {
-					url: site.url,
-					active: true
+				if (color) {
+					li.style.background = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + 1 +')';
+					console.log(site.url, li.style.color);
 				}
 
-				chrome.tabs.update(options);
-			}
+				li.onclick = function() {
+					var options = {
+						url: site.url,
+						active: true
+					}
 
-			siteList.appendChild(li);
+					chrome.tabs.update(options);
+				}
+8
+				siteList.appendChild(li);
+			})();
 		}
 	});
+
+	
 }
 
 function createSite(abbreviation, url) {
