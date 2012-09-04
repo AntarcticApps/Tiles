@@ -14,6 +14,9 @@ $(document).ready(function() {
 	</div> \
 </div>';
 
+	var submitButtonSavingText = "Saving...";
+	var submitButtonSubmitText = "Save";
+
 	chrome.storage.sync.get('sites', function(items) {
 		sites = items['sites'];
 
@@ -148,6 +151,8 @@ $(document).ready(function() {
 
 		var fields = [];
 
+		$("button.submit").addClass("disabled").html(submitButtonSavingText);
+
 		$('input:text.url').each(function(index, element) {
 			var siteControlsCount = $('.site-controls').size();
 			var value = $(this).val();
@@ -207,11 +212,7 @@ $(document).ready(function() {
 
 					if (sitesWithColors == fields.length) {
 						chrome.storage.sync.set({"sites": fields}, function() {
-							$("#success").addClass("show");
-
-							window.setTimeout(function() {
-								$("#success").removeClass("show");
-							}, 2000);
+							$("button.submit").removeClass("disabled").html(submitButtonSubmitText);
 						});
 					}
 				});
