@@ -215,28 +215,33 @@ $(document).ready(function() {
 		var sitesWithColors = 0;
 
 		for (var i = 0; i < fields.length; i++) {
-			var site = fields[i];
+			(function() {
+				var site = fields[i];
 
-			getFaviconColor(site.url, function(color) {
-				site.color = {
-					'red': color[0],
-					'green': color[1],
-					'blue': color[2],
-					'alpha': color[3]
-				};
+				getFaviconColor(site.url, function(color) {
+					console.log(site);
+					console.log(color);
 
-				sitesWithColors++;
+					site.color = {
+						'red': color[0],
+						'green': color[1],
+						'blue': color[2],
+						'alpha': color[3]
+					};
 
-				if (sitesWithColors == fields.length) {
-					chrome.storage.sync.set({"sites": fields}, function() {
-						$("#success").addClass("show");
+					sitesWithColors++;
 
-						window.setTimeout(function() {
-							$("#success").removeClass("show");
-						}, 2000);
-					});
-				}
-			});
+					if (sitesWithColors == fields.length) {
+						chrome.storage.sync.set({"sites": fields}, function() {
+							$("#success").addClass("show");
+
+							window.setTimeout(function() {
+								$("#success").removeClass("show");
+							}, 2000);
+						});
+					}
+				});
+			})();
 		}
 
 		return false;
