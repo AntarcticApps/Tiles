@@ -240,6 +240,7 @@ function isWhiteOrTransparent(color) {
 function getFaviconColor(url, callback) {
 	var image = new Image();
 	image.onload = function() {
+		console.log(image.src);
 		var context = $("canvas")[0].getContext('2d');
 		context.clearRect(0, 0, $("canvas")[0].width, $("canvas")[0].height);
 		context.drawImage(image, 0, 0);
@@ -280,8 +281,20 @@ function getFaviconColor(url, callback) {
 
 		callback(majorityCandidate);
 	}
-	image.src = url + '/favicon.ico';
-	console.log(image.src);
+
+	$.get(url).success(function(data) {
+		$.get(url + '/favicon.ico').success(function() {
+			image.src = url + '/favicon.ico';
+		}).error(function() {
+			$.get(url + '/favicon.ico').success(function() {
+				console.log("Found favicon!");
+			}).error(function() {
+				callback([0, 0, 0, 1]);
+			});
+		});
+	}).error(function() {
+		console.log("Could not load url – " + url);
+	});
 }
 
 function pixelsAreSimilar(a, b) {
