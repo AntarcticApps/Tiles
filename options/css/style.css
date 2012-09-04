@@ -30,3 +30,7 @@
 .container.hidden {
 	display: none;
 }
+
+canvas {
+	/*display: none;*/
+}

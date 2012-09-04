@@ -140,6 +140,39 @@ $(document).ready(function() {
 		updateAllButtons();
 	}
 
+	function getFaviconColor(url) {
+		var image = new Image();
+		image.onload = function() {
+			var context = $("canvas")[0].getContext('2d');
+			context.drawImage(image, 0, 0);
+
+			console.log(image.src);
+
+			var average = [0, 0, 0, 0];
+
+			for (var x = 0; x < image.width; x++) {
+				for (var y = 0; y < image.height; y++) {
+					data = context.getImageData(x, y, 1, 1).data;
+
+					for (var i = 0; i < data.length; i++) {
+						average[i] += data[i];
+					}
+				}
+			}
+
+			for (var i = 0; i < average.length; i++) {
+				average[i] /= image.width * image.height;
+				average[i] /= 255;
+			}
+
+			console.log(average);
+		}
+		image.src = url + '/favicon.ico';
+		// image.src = 'http://www.google.com/s2/favicons?domain=' + url;
+
+		return 0;
+	}
+
 	$('#sites').submit(function(event) {
 		event.preventDefault();
 		event.stopPropagation();
@@ -177,6 +210,12 @@ $(document).ready(function() {
 
 			fields[index].abbreviation = value;
 		});
+
+		for (var i = 0; i < fields.length; i++) {
+			var site = fields[i];
+
+			console.log(getFaviconColor(site.url));
+		}
 
 		chrome.storage.sync.set({"sites": fields}, function() {
 			$("#success").addClass("show");
