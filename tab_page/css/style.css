@@ -31,7 +31,7 @@ html, body {
 	margin: 0 auto;
 }
 
-#sites li {
+#sites > ul > li {
 	display: inline-block;
 
 	cursor: pointer;
@@ -56,14 +56,21 @@ html, body {
 	-webkit-user-select: none;
 }
 
-#sites li:hover {
+#sites > ul > li:hover,
+#sites > ul > li:active {
 	text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+	/*opacity: 0.8;*/
+
+	box-shadow: inset 0 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+#sites > ul > li:active {
 	opacity: 0.8;
 }
 
 #sites li > span {
-	font-size: 14px;
-	line-height: 14px;
+	font-size: 16px;
+	line-height: 16px;
 
 	display: inline-block;
 }
