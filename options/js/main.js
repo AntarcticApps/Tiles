@@ -172,12 +172,6 @@ $(document).ready(function() {
 			fields[index].url = value;
 		});
 
-		for (var i = 0; i < fields.length; i++) {
-			getTitleOfURL(fields[i].url, function(title) {
-				console.log(title);
-			});
-		}
-
 		$('input:text.abbreviation').each(function(index, element) {
 			var value = $(this).val();
 
@@ -218,15 +212,6 @@ $(document).ready(function() {
 		return false;
 	});
 });
-
-function getTitleOfURL(url, callback) {
-	$.get(url, function(response) {
-		var title = (/<title>(.*?)<\/title>/m).exec(response);
-		if (title) {
-			callback(title[1]);
-		}
-	});
-}
 
 function isWhite(color) {
 	const TOLERANCE = 20;
