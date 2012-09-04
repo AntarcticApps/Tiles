@@ -21,7 +21,9 @@ function init() {
 
 			var color = site.color;
 
-			li.style.color = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + color.alpha +')';
+			if (color) {
+				li.style.color = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + color.alpha +')';
+			}
 
 			li.onclick = function() {
 				var options = {
