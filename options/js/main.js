@@ -143,23 +143,30 @@ $(document).ready(function() {
 	function getFaviconColor(url, callback) {
 		var image = new Image();
 		image.onload = function() {
+			console.log(image.width, image.height);
 			var context = $("canvas")[0].getContext('2d');
+			context.clearRect(0, 0, $("canvas")[0].width, $("canvas")[0].height);
 			context.drawImage(image, 0, 0);
 
 			var average = [0, 0, 0, 0];
+			var opaquePixels = 0;
 
 			for (var x = 0; x < image.width; x++) {
 				for (var y = 0; y < image.height; y++) {
 					data = context.getImageData(x, y, 1, 1).data;
 
-					for (var i = 0; i < data.length; i++) {
-						average[i] += data[i];
+					if (data[3] == 255) {
+						for (var i = 0; i < data.length; i++) {
+							average[i] += data[i];
+						}
+
+						opaquePixels++;
 					}
 				}
 			}
 
 			for (var i = 0; i < average.length; i++) {
-				average[i] /= image.width * image.height;
+				average[i] /= opaquePixels;
 
 				if (i != average.length - 1) {
 					average[i] = Math.round(average[i]);

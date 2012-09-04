@@ -22,7 +22,7 @@ function init() {
 			var color = site.color;
 
 			if (color) {
-				li.style.color = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + color.alpha +')';
+				li.style.color = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + 1 +')';
 				console.log(site.url, li.style.color);
 			}
 
