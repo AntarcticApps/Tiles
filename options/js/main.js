@@ -173,7 +173,7 @@ $(document).ready(function() {
 		});
 
 		for (var i = 0; i < fields.length; i++) {
-			getTitleOfURL(fields.url, function(title) {
+			getTitleOfURL(fields[i].url, function(title) {
 				console.log(title);
 			});
 		}
@@ -223,7 +223,7 @@ function getTitleOfURL(url, callback) {
 	$.get(url, function(response) {
 		var title = (/<title>(.*?)<\/title>/m).exec(response);
 		if (title) {
-			callback(title);
+			callback(title[1]);
 		}
 	});
 }
