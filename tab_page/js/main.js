@@ -35,7 +35,7 @@ function init() {
 
 					chrome.tabs.update(options);
 				}
-8
+				
 				siteList.appendChild(li);
 			})();
 		}
