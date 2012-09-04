@@ -8,7 +8,7 @@ $(document).ready(function() {
 	var controlGroup = '<div class="control-group"> \
 	<div class="controls site-controls"> \
 		<input type="text" class="url" placeholder="www.google.com"> \
-		<input type="text" class="input-mini abbreviation" placeholder="Gl" maxlength="2"> \
+		<input type="text" class="input-nano abbreviation" placeholder="Gl" maxlength="2"> \
 	</div> \
 </div>';
 

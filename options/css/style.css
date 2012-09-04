@@ -31,6 +31,10 @@
 	display: none;
 }
 
+.input-nano {
+	width: 25px;
+}
+
 canvas {
 	display: none;
 }
