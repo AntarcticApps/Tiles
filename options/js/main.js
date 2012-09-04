@@ -15,21 +15,25 @@ $(document).ready(function() {
 	chrome.storage.sync.get('sites', function(items) {
 		sites = items['sites'];
 
-		if (sites.length == 0) {
+		if (sites == undefined || sites == null) {
 			$("#sites").prepend(controlGroup);
-		}
+		} else {
+			if (sites.length == 0) {
+				$("#sites").prepend(controlGroup);
+			}
 
-		sites = sites.reverse();
+			sites = sites.reverse();
 
-		for (var i = 0; i < sites.length; i++) {
-			var newControlGroup = controlGroup;
-			var site = sites[i];
+			for (var i = 0; i < sites.length; i++) {
+				var newControlGroup = controlGroup;
+				var site = sites[i];
 
-			newControlGroup = $(newControlGroup);
-			newControlGroup.find('input.url').val(site.url);
-			newControlGroup.find('input.abbreviation').val(site.abbreviation);
+				newControlGroup = $(newControlGroup);
+				newControlGroup.find('input.url').val(site.url);
+				newControlGroup.find('input.abbreviation').val(site.abbreviation);
 
-			$("#sites").prepend(newControlGroup);
+				$("#sites").prepend(newControlGroup);
+			}
 		}
 
 		updateAllButtons();
