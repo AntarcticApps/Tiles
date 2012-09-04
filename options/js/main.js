@@ -6,7 +6,7 @@ $(document).ready(function() {
 	var addButton = '<a type="button" class="btn btn-success add"><i class="icon-plus icon-white"></i></a>';
 
 	var controlGroup = '<div class="control-group"> \
-	<div class="controls"> \
+	<div class="controls site-controls"> \
 		<input type="text" class="url" placeholder="www.google.com"> \
 		<input type="text" class="input-mini abbreviation" placeholder="Gl"> \
 	</div> \
@@ -61,17 +61,17 @@ $(document).ready(function() {
 	}
 
 	function updateControlGroupAddRemoveButtons() {
-		var controlsCount = $('.controls').size();
+		var siteControlsCount = $('.site-controls').size();
 
-		$('.controls').each(function(index) {
+		$('.site-controls').each(function(index) {
 			$(this).children('.btn.add').remove();
 			$(this).children('.btn.remove').remove();
 
-			if (index != controlsCount - 1 && controlsCount != 2) {
+			if (index != siteControlsCount - 1 && siteControlsCount != 1) {
 				$(this).append(trashButton);
 			}
 
-			if (index == controlsCount - 2) {
+			if (index == siteControlsCount - 1) {
 				$(this).append(addButton);
 			}
 		});
@@ -96,18 +96,14 @@ $(document).ready(function() {
 	}
 
 	function updateControlGroupSortingButtons() {
-		var controlsCount = $('.controls').size();
+		var siteControlsCount = $('.site-controls').size();
 
-		$('.controls').each(function(index) {
+		$('.site-controls').each(function(index) {
 			$(this).children('.btn-toolbar').remove();
-
-			if (index == controlsCount - 1 || controlsCount == 2) {
-				return;
-			}
 
 			if (index == 0) {
 				$(this).append(getButtons(false, true));
-			} else if (index == controlsCount - 2) {
+			} else if (index == siteControlsCount - 1) {
 				$(this).append(getButtons(true, false));
 			} else {
 				$(this).append(getButtons(true, true));
@@ -182,11 +178,11 @@ $(document).ready(function() {
 		var fields = [];
 
 		$('input:text.url').each(function(index, element) {
-			var controlsCount = $('.controls').size();
+			var siteControlsCount = $('.site-controls').size();
 			var value = $(this).val();
 
 			if (!value || value.length == 0) {
-				if (controlsCount > 2) {
+				if (siteControlsCount > 1) {
 					$(this).parents('.control-group').remove();
 
 					updateAllButtons();
