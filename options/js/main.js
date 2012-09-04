@@ -171,6 +171,7 @@ $(document).ready(function() {
 			callback(average);
 		}
 		image.src = url + '/favicon.ico';
+		console.log(image.src);
 		// image.src = 'http://www.google.com/s2/favicons?domain=' + url;
 	}
 
@@ -219,8 +220,7 @@ $(document).ready(function() {
 				var site = fields[i];
 
 				getFaviconColor(site.url, function(color) {
-					console.log(site);
-					console.log(color);
+					console.log(site, color);
 
 					site.color = {
 						'red': color[0],

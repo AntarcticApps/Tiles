@@ -23,6 +23,7 @@ function init() {
 
 			if (color) {
 				li.style.color = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + color.alpha +')';
+				console.log(site.url, li.style.color);
 			}
 
 			li.onclick = function() {
