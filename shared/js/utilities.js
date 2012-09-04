@@ -5,6 +5,10 @@ function domainRegex(url) {
 	return result;
 }
 
+function getDomain(url) {
+	return /^((([^:\/?#]+):)?(\/\/([^\/?#]*))?)/igm.exec(url)[0];
+}
+
 function getHostname(url) {
 	var hostname = domainRegex(url)[4];
 

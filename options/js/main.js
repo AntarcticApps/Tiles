@@ -283,6 +283,14 @@ function getFaviconColor(url, callback) {
 	}
 
 	$.get(url).success(function(data) {
+		var regex = /<link rel="apple-touch-icon" href="(.*)" ?\/?>/gim;
+		var results = regex.exec(data);
+
+		if (results != null) {
+			image.src = getDomain(url) + results[1];
+			return;
+		}
+
 		$.get(url + '/favicon.ico').success(function() {
 			image.src = url + '/favicon.ico';
 		}).error(function() {
