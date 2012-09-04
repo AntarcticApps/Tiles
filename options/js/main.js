@@ -67,7 +67,7 @@ $(document).ready(function() {
 			$(this).children('.btn.add').remove();
 			$(this).children('.btn.remove').remove();
 
-			if (index != siteControlsCount - 1 && siteControlsCount != 1) {
+			if (index != siteControlsCount && siteControlsCount != 1) {
 				$(this).append(trashButton);
 			}
 
