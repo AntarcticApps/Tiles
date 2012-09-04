@@ -140,13 +140,11 @@ $(document).ready(function() {
 		updateAllButtons();
 	}
 
-	function getFaviconColor(url) {
+	function getFaviconColor(url, callback) {
 		var image = new Image();
 		image.onload = function() {
 			var context = $("canvas")[0].getContext('2d');
 			context.drawImage(image, 0, 0);
-
-			console.log(image.src);
 
 			var average = [0, 0, 0, 0];
 
@@ -165,12 +163,10 @@ $(document).ready(function() {
 				average[i] /= 255;
 			}
 
-			console.log(average);
+			callback(average);
 		}
 		image.src = url + '/favicon.ico';
 		// image.src = 'http://www.google.com/s2/favicons?domain=' + url;
-
-		return 0;
 	}
 
 	$('#sites').submit(function(event) {
@@ -211,19 +207,32 @@ $(document).ready(function() {
 			fields[index].abbreviation = value;
 		});
 
+		var sitesWithColors = 0;
+
 		for (var i = 0; i < fields.length; i++) {
 			var site = fields[i];
 
-			console.log(getFaviconColor(site.url));
+			getFaviconColor(site.url, function(color) {
+				site.color = {
+					'red': color[0],
+					'green': color[1],
+					'blue': color[2],
+					'alpha': color[3]
+				};
+
+				sitesWithColors++;
+
+				if (sitesWithColors == fields.length) {
+					chrome.storage.sync.set({"sites": fields}, function() {
+						$("#success").addClass("show");
+
+						window.setTimeout(function() {
+							$("#success").removeClass("show");
+						}, 2000);
+					});
+				}
+			});
 		}
-
-		chrome.storage.sync.set({"sites": fields}, function() {
-			$("#success").addClass("show");
-
-			window.setTimeout(function() {
-				$("#success").removeClass("show");
-			}, 2000);
-		});
 
 		return false;
 	});
