@@ -173,15 +173,9 @@ $(document).ready(function() {
 		});
 
 		for (var i = 0; i < fields.length; i++) {
-			(function() {
-				var url = fields[i].url;
-				$.get(url, function(response) {
-					var title = (/<title>(.*?)<\/title>/m).exec(response);
-					if (title) {
-						console.log(url, title);
-					}
-				});
-			})();
+			getTitleOfURL(fields.url, function(title) {
+				console.log(title);
+			});
 		}
 
 		$('input:text.abbreviation').each(function(index, element) {
@@ -224,6 +218,15 @@ $(document).ready(function() {
 		return false;
 	});
 });
+
+function getTitleOfURL(url, callback) {
+	$.get(url, function(response) {
+		var title = (/<title>(.*?)<\/title>/m).exec(response);
+		if (title) {
+			callback(title);
+		}
+	});
+}
 
 function isWhite(color) {
 	const TOLERANCE = 20;
