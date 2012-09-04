@@ -176,10 +176,9 @@ $(document).ready(function() {
 			var value = $(this).val();
 
 			if (value) {
-				fields[index].abbreviation = value.substring(0, 2);
+				fields[index].abbreviation = makeAbbreviation(value);
 			} else {
-				var abbreviation = hostname(fields[index].url).substring(0, 2);
-				abbreviation = abbreviation.substring(0, 1).toUpperCase() + abbreviation.substring(1, 2).toLowerCase();
+				var abbreviation = makeAbbreviation(hostname(fields[index].url));
 
 				fields[index].abbreviation = abbreviation;
 				$(this).val(abbreviation);
@@ -220,6 +219,10 @@ $(document).ready(function() {
 		return false;
 	});
 });
+
+function makeAbbreviation(string) {
+	return string.substring(0, 1).toUpperCase() + string.substring(1, 2).toLowerCase();
+}
 
 function isWhite(color) {
 	const TOLERANCE = 20;
