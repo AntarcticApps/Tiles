@@ -261,12 +261,16 @@ function getFaviconColor(url, callback) {
 			if (majorityCandidate) {
 				if (pixelsAreSimilar(majorityCandidate, pixel) && !isWhiteOrTransparent(pixel)) {
 					retainCount++;
+
+					majorityCandidate = averagePixels(majorityCandidate, pixel, retainCount);
 				} else if (!isWhiteOrTransparent(pixel)) {
 					retainCount--;
 				}
 
 				if (retainCount == 0) {
 					majorityCandidate = pixel;
+
+					retainCount = 1;
 				}
 			}
 		}
@@ -320,4 +324,22 @@ function rgbToHsl(r, g, b){
 	}
 
 	return [h, s, l];
+}
+
+function averagePixels(a, b, ratio) {
+	var weight;
+	if (ratio == 0) {
+		weight = 0.5;
+	} else {
+		weight = 1 - (1 / ratio);
+	}
+
+	var avg = [];
+	for (var i = 0; i < a.length; i++) {
+		avg[i] = Math.round( (weight * a[i]) + ((1 - weight) * b[i]) );
+	}
+
+	// console.log(a);
+
+	return avg;
 }
