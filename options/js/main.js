@@ -175,7 +175,15 @@ $(document).ready(function() {
 		$('input:text.abbreviation').each(function(index, element) {
 			var value = $(this).val();
 
-			fields[index].abbreviation = value.substring(0, 2);
+			if (value) {
+				fields[index].abbreviation = value.substring(0, 2);
+			} else {
+				var abbreviation = hostname(fields[index].url).substring(0, 2);
+				abbreviation = abbreviation.substring(0, 1).toUpperCase() + abbreviation.substring(1, 2).toLowerCase();
+
+				fields[index].abbreviation = abbreviation;
+				$(this).val(abbreviation);
+			}
 		});
 
 		var sitesWithColors = 0;
