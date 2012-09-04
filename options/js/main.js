@@ -180,7 +180,7 @@ $(document).ready(function() {
 			if (value) {
 				fields[index].abbreviation = makeAbbreviation(value);
 			} else {
-				var abbreviation = makeAbbreviation(hostname(fields[index].url));
+				var abbreviation = makeAbbreviation(getHostname(fields[index].url));
 
 				fields[index].abbreviation = abbreviation;
 				$(this).val(abbreviation);
