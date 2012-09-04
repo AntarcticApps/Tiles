@@ -56,3 +56,21 @@ html, body {
 #sites li:hover {
 	text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
 }
+
+#sites li > span {
+	font-size: 14px;
+	line-height: 14px;
+
+	display: inline-block;
+}
+
+#sites li > span.url {
+	position: absolute;
+
+	width: 100%;
+
+	text-align: center;
+
+	left: 0;
+	bottom: 20px;
+}
