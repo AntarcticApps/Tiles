@@ -1,3 +1,5 @@
+var sites;
+
 document.addEventListener('DOMContentLoaded', function() {
 	document.removeEventListener('DOMContentLoaded', arguments.callee, false);
 	init();
@@ -26,7 +28,7 @@ function init() {
 					li.style.background = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + 1 +')';
 					console.log(site.url, li.style.color);
 				}
-
+				
 				li.onclick = function() {
 					var options = {
 						url: site.url,
@@ -35,13 +37,19 @@ function init() {
 
 					chrome.tabs.update(options);
 				}
-				
+
 				siteList.appendChild(li);
 			})();
 		}
 	});
 
-	
+	document.onkeypress = function(e) {
+		var character = String.fromCharCode(e.charCode);
+		var value = parseInt(character);
+		if (value != NaN) {
+			document.location = sites[value].url;
+		}
+	}
 }
 
 function createSite(abbreviation, url) {
