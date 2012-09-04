@@ -10,7 +10,7 @@ $(document).ready(function() {
 	var controlGroup = '<div class="control-group"> \
 	<div class="controls site-controls"> \
 		<input type="text" class="url" placeholder="www.google.com"> \
-		<input type="text" class="input-mini abbreviation" placeholder="Gl" maxlength="2"> \
+		<input type="text" class="input-nano abbreviation" placeholder="Gl" maxlength="2"> \
 	</div> \
 </div>';
 
@@ -178,10 +178,9 @@ $(document).ready(function() {
 			var value = $(this).val();
 
 			if (value) {
-				fields[index].abbreviation = value.substring(0, 2);
+				fields[index].abbreviation = makeAbbreviation(value);
 			} else {
-				var abbreviation = hostname(fields[index].url).substring(0, 2);
-				abbreviation = abbreviation.substring(0, 1).toUpperCase() + abbreviation.substring(1, 2).toLowerCase();
+				var abbreviation = makeAbbreviation(hostname(fields[index].url));
 
 				fields[index].abbreviation = abbreviation;
 				$(this).val(abbreviation);
@@ -222,6 +221,10 @@ $(document).ready(function() {
 		return false;
 	});
 });
+
+function makeAbbreviation(string) {
+	return string.substring(0, 1).toUpperCase() + string.substring(1, 2).toLowerCase();
+}
 
 function isWhiteOrTransparent(color) {
 	const TOLERANCE = 20;
@@ -338,8 +341,6 @@ function averagePixels(a, b, ratio) {
 	for (var i = 0; i < a.length; i++) {
 		avg[i] = Math.round( (weight * a[i]) + ((1 - weight) * b[i]) );
 	}
-
-	// console.log(a);
 
 	return avg;
 }
