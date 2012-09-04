@@ -283,6 +283,7 @@ function getFaviconColor(url, callback) {
 	}
 
 	$.get(url).success(function(data) {
+		// Search for Apple touch icon
 		var regex = /<link rel="apple-touch-icon" href="(.*)" ?\/?>/gim;
 		var results = regex.exec(data);
 
@@ -292,13 +293,17 @@ function getFaviconColor(url, callback) {
 		}
 
 		$.get(url + '/favicon.ico').success(function() {
+			// Search the existing directory
 			image.src = url + '/favicon.ico';
 		}).error(function() {
-			$.get(url + '/favicon.ico').success(function() {
-				console.log("Found favicon!");
+			// Search for the favicon in the root of the site.
+			var domain = getDomain(url);
+
+			$.get(domain + '/favicon.ico').success(function() {
+				image.src = domain + '/favicon.ico';
 			}).error(function() {
-				callback([0, 0, 0, 1]);
-			});
+				callback([0, 0, 0, 0]);
+			})
 		});
 	}).error(function() {
 		console.log("Could not load url – " + url);
