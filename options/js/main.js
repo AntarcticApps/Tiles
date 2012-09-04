@@ -207,6 +207,18 @@ $(document).ready(function() {
 			fields[index].url = value;
 		});
 
+		for (var i = 0; i < fields.length; i++) {
+			(function() {
+				var url = fields[i].url;
+				$.get(url, function(response) {
+					var title = (/<title>(.*?)<\/title>/m).exec(response);
+					if (title) {
+						console.log(url, title);
+					}
+				});
+			})();
+		}
+
 		$('input:text.abbreviation').each(function(index, element) {
 			var value = $(this).val();
 
