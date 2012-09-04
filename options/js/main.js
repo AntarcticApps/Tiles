@@ -269,7 +269,7 @@ $(document).ready(function() {
 		$('input:text.abbreviation').each(function(index, element) {
 			var value = $(this).val();
 
-			fields[index].abbreviation = value;
+			fields[index].abbreviation = value.substring(0, 2);
 		});
 
 		var sitesWithColors = 0;
