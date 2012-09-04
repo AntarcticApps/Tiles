@@ -85,3 +85,9 @@ html, body {
 	left: 0;
 	bottom: 20px;
 }
+
+a.btn.settings {
+	position: absolute;
+	left: 20px;
+	bottom: 20px;
+}

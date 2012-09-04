@@ -50,6 +50,17 @@ function init() {
 			document.location = sites[value].url;
 		}
 	}
+
+	var settingsLink = document.createElement("a");
+	settingsLink.setAttribute("class", "settings btn");
+	settingsLink.onclick = function() {
+		chrome.tabs.create({
+			url: "options/options.html"
+		});
+	}
+
+	settingsLink.innerHTML = "Settings";
+	document.body.appendChild(settingsLink);
 }
 
 function createSite(abbreviation, url) {
