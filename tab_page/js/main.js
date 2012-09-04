@@ -66,7 +66,7 @@ function init() {
 function createSite(abbreviation, url) {
 	var site = document.createElement('li');
 
-	site.innerHTML = abbreviation + '<span class="url">' + hostname(url) + '</span>';
+	site.innerHTML = abbreviation + '<span class="url">' + getHostname(url) + '</span>';
 
 	return site;
 }

@@ -1,9 +1,12 @@
-function hostname(url) {
+function domainRegex(url) {
 	var domainRegex = /^(([^:\/?#]+):)?(\/\/([^\/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/igm;
-	var a = domainRegex.exec(url);
-	domainRegex.lastIndex = 0;
+	var result = domainRegex.exec(url);
 
-	var hostname = a[4];
+	return result;
+}
+
+function getHostname(url) {
+	var hostname = domainRegex(url)[4];
 
 	if (hostname.substring(0, 4) == "www.") {
 		hostname = hostname.substring(4);
