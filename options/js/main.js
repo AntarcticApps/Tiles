@@ -42,6 +42,7 @@ $(document).ready(function() {
 		}
 
 		updateAllButtons();
+		$("#sites").sortable();
 
 		$(".container").removeClass("hidden");
 	});
