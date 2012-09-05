@@ -389,8 +389,9 @@ function rgbToHsl(r, g, b){
 
 function averagePixels(a, b, ratio) {
 	var weight;
-	if (ratio == 0) {
-		weight = 0.5;
+	ratio++;
+	if (ratio <= 0) {
+		return null;
 	} else {
 		weight = 1 - (1 / ratio);
 	}
