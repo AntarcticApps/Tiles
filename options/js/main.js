@@ -291,7 +291,13 @@ function getFaviconColor(url, callback) {
 		var results = regex.exec(data);
 
 		if (results != null) {
-			image.src = getDomain(url) + results[1];
+			var iconPath = results[1];
+
+			if (iconPath.substring(0, 4) == "http") {
+				image.src = iconPath;
+			} else {
+				image.src = getDomain(url) + iconPath;
+			}
 			return;
 		}
 
