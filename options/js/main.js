@@ -39,7 +39,11 @@ $(document).ready(function() {
 		}
 
 		updateAllButtons();
-		$("#sites").sortable();
+		$("#sites").sortable({
+			update: function(event, ui) {
+				updateAllButtons();
+			}
+		});
 
 		$(".container").removeClass("hidden");
 	});
