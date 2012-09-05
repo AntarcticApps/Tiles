@@ -42,6 +42,7 @@ $(document).ready(function() {
 		updateAllButtons();
 		$("#sites").sortable({
 			handle: '.handle',
+			axis: 'y',
 			update: function(event, ui) {
 				updateAllButtons();
 			}
