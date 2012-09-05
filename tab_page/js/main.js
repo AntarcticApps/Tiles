@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function init() {
 	var siteDiv = document.getElementById('sites');
-	var siteList = siteDiv.getElementsByTagName('ul')[0];
+	var siteList = siteDiv.getElementsByTagName('div')[0];
 
 	chrome.storage.sync.get('sites', function(items) {
 		sites = items['sites'];
@@ -20,25 +20,18 @@ function init() {
 			(function() {
 				var site = sites[i];
 
-				var li = createSite(site.abbreviation, site.url);
+				var link = createSite(site.abbreviation, site.url);
 
 				var color = site.color;
 
 				if (color) {
-					li.style.background = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + 1 +')';
-					console.log(site.url, li.style.color);
+					link.style.background = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + 1 +')';
+					console.log(site.url, link.style.color);
 				}
 				
-				li.onclick = function() {
-					var options = {
-						url: site.url,
-						active: true
-					}
+				link.setAttribute("href", site.url);
 
-					chrome.tabs.update(options);
-				}
-
-				siteList.appendChild(li);
+				siteList.appendChild(link);
 			})();
 		}
 	});
@@ -64,7 +57,7 @@ function init() {
 }
 
 function createSite(abbreviation, url) {
-	var site = document.createElement('li');
+	var site = document.createElement('a');
 
 	site.innerHTML = abbreviation + '<span class="url">' + getHostname(url) + '</span>';
 
