@@ -199,7 +199,7 @@ $(document).ready(function() {
 				var site = fields[i];
 
 				getFaviconColor(site.url, function(color) {
-					console.log(site, color);
+					console.log((sitesWithColors + 1) + " / " + fields.length + " – Got color for " + site.url);
 
 					site.color = {
 						'red': color[0],
@@ -240,8 +240,8 @@ function isWhiteOrTransparent(color) {
 
 function getFaviconColor(url, callback) {
 	var image = new Image();
+
 	image.onload = function() {
-		console.log(image.src);
 		var context = $("canvas")[0].getContext('2d');
 		context.clearRect(0, 0, $("canvas")[0].width, $("canvas")[0].height);
 		context.drawImage(image, 0, 0);
@@ -311,11 +311,12 @@ function getFaviconColor(url, callback) {
 			$.get(domain + '/favicon.ico').success(function() {
 				image.src = domain + '/favicon.ico';
 			}).error(function() {
+				console.error("Could not find any icons for url – " + url);
 				callback(failColor);
 			})
 		});
 	}).error(function() {
-		console.log("Could not load url – " + url);
+		console.error("Could not load url – " + url);
 		callback(failColor);
 	});
 }
