@@ -6,6 +6,7 @@ $(document).ready(function() {
 
 	var controlGroup = '<div class="control-group"> \
 	<div class="controls site-controls"> \
+		<a type="button" class="btn disabled handle"><i class="icon-list"></i></a> \
 		<input type="text" class="url" placeholder="www.google.com"> \
 		<input type="text" class="input-nano abbreviation" placeholder="Gl" maxlength="2"> \
 	</div> \
@@ -40,6 +41,7 @@ $(document).ready(function() {
 
 		updateAllButtons();
 		$("#sites").sortable({
+			handle: '.handle',
 			update: function(event, ui) {
 				updateAllButtons();
 			}

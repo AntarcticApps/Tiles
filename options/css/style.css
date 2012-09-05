@@ -35,6 +35,10 @@
 	width: 25px;
 }
 
+a.btn.handle {
+	cursor: pointer;
+}
+
 canvas {
 	display: none;
 }
