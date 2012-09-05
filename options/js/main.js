@@ -1,9 +1,6 @@
 var sites;
 
 $(document).ready(function() {
-	var upButton = '<a type="button" class="btn up"><i class="icon-arrow-up"></i></a>';
-	var downButton = '<a type="button" class="btn down"><i class="icon-arrow-down"></i></a>';
-
 	var trashButton = '<a type="button" class="btn btn-danger remove"><i class="icon-trash icon-white"></i></a>';
 	var addButton = '<a type="button" class="btn btn-success add"><i class="icon-plus icon-white"></i></a>';
 
@@ -67,7 +64,6 @@ $(document).ready(function() {
 
 	function updateAllButtons() {
 		updateControlGroupAddRemoveButtons();
-		updateControlGroupSortingButtons();
 	}
 
 	function updateControlGroupAddRemoveButtons() {
@@ -101,47 +97,6 @@ $(document).ready(function() {
 		parent = $(this).parents('.control-group');
 
 		parent.after(controlGroup);
-
-		updateAllButtons();
-	}
-
-	function updateControlGroupSortingButtons() {
-		var siteControlsCount = $('.site-controls').size();
-
-		$('.site-controls').each(function(index) {
-			$(this).children('.btn-toolbar').remove();
-
-			if (index == 0) {
-				$(this).append(getButtons(false, true));
-			} else if (index == siteControlsCount - 1) {
-				$(this).append(getButtons(true, false));
-			} else {
-				$(this).append(getButtons(true, true));
-			}
-		});
-
-		$('.btn.up').off().on('click', moveControlGroupUp);		
-		$('.btn.down').off().on('click', moveControlGroupDown);
-	}
-
-	function moveControlGroupUp() {
-		parent = $(this).parents('.control-group');
-
-		var previous = parent.prev();
-
-		parent.remove();
-		previous.before(parent);
-
-		updateAllButtons();
-	}
-
-	function moveControlGroupDown() {
-		parent = $(this).parents('.control-group');
-
-		var next = parent.next();
-
-		parent.remove();
-		next.after(parent);
 
 		updateAllButtons();
 	}
