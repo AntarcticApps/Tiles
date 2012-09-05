@@ -287,7 +287,7 @@ function getFaviconColor(url, callback) {
 
 	$.get(url).success(function(data) {
 		// Search for Apple touch icon
-		var regex = /<link rel="apple-touch-icon" href="(.*)" ?\/?>/gim;
+		var regex = /<link rel="apple-touch-icon" href="([\S]+)" ?\/?>/gim;
 		var results = regex.exec(data);
 
 		if (results != null) {
@@ -295,9 +295,30 @@ function getFaviconColor(url, callback) {
 
 			if (iconPath.substring(0, 4) == "http") {
 				image.src = iconPath;
+			} else if (iconPath.substring(0, 2) == "//") {
+				image.src = "http:" + iconPath;
 			} else {
 				image.src = getDomain(url) + iconPath;
 			}
+
+			return;
+		}
+
+		// Search for any icon
+		var regex = /<link rel="[\S ]*icon" href="([\S]+)" ?\/?>/gim;
+		var results = regex.exec(data);
+		
+		if (results != null) {
+			var iconPath = results[1];
+
+			if (iconPath.substring(0, 4) == "http") {
+				image.src = iconPath;
+			} else if (iconPath.substring(0, 2) == "//") {
+				image.src = "http:" + iconPath;
+			} else {
+				image.src = getDomain(url) + iconPath;
+			}
+
 			return;
 		}
 
