@@ -13,6 +13,7 @@ const CONTROL_GROUP = '<div class="control-group"> \
 const SUBMIT_BUTTON_SAVING_TEXT = "Saving...";
 const SUBMIT_BUTTON_SUBMIT_TEXT = "Save";
 
+const FAVICON_LOAD_FAIL_URL_REPLACE = "#{url}";
 const FAVICON_LOAD_FAIL_MESSAGE = "Could not retrieve favicon for #{url}. Check the URL and ensure the site does not redirect.";
 
 $(document).ready(function() {
@@ -187,7 +188,7 @@ function getFaviconColor(url, callback) {
 	image.onerror = function() {
 		console.error("Loading favicon image failed.");
 
-		$(".alert-error").removeClass("hidden").find("span").html(FAVICON_LOAD_FAIL_MESSAGE.replace("#{url}", url));
+		$(".alert-error").removeClass("hidden").find("span").html(FAVICON_LOAD_FAIL_MESSAGE.replace(FAVICON_LOAD_FAIL_URL_REPLACE, url));
 
 		callback(failColor);
 	}
