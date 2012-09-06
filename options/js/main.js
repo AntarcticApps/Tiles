@@ -1,12 +1,13 @@
-const TRASH_BUTTON = '<a type="button" class="btn btn-danger remove"><i class="icon-trash icon-white"></i></a>';
-const ADD_BUTTON = '<a type="button" class="btn btn-success add"><i class="icon-plus icon-white"></i></a>';
-
 const CONTROL_GROUP = '<div class="control-group"> \
-<div class="controls site-controls"> \
-	<a type="button" class="btn disabled handle"><i class="icon-list"></i></a> \
-	<input type="text" class="url" placeholder="www.google.com"> \
-	<input type="text" class="input-nano abbreviation" placeholder="Gl" maxlength="2"> \
-</div> \
+	<div class="controls site-controls"> \
+		<a type="button" class="btn disabled handle"><i class="icon-list"></i></a> \
+		<input type="text" class="url" placeholder="www.google.com"> \
+		<input type="text" class="input-nano abbreviation" placeholder="Gl" maxlength="2"> \
+		<div class="action-buttons"> \
+			<a type="button" class="btn btn-danger remove"><i class="icon-trash icon-white"></i></a> \
+			<a type="button" class="btn btn-success add"><i class="icon-plus icon-white"></i></a> \
+		</div> \
+	</div> \
 </div>';
 
 const SUBMIT_BUTTON_SAVING_TEXT = "Saving...";
@@ -51,22 +52,6 @@ $(document).ready(function() {
 		$(".container").removeClass("hidden");
 	});
 
-	function getButtons(up, down) {
-		var result = '<div class="btn-toolbar"><div class="btn-group">';
-
-		if (up) {
-			result += upButton;
-		}
-
-		if (down) {
-			result += downButton;
-		}
-
-		result += '</div></div>';
-
-		return result;
-	}
-
 	updateAllButtons();
 
 	function updateAllButtons() {
@@ -76,18 +61,11 @@ $(document).ready(function() {
 	function updateControlGroupAddRemoveButtons() {
 		var siteControlsCount = $('.site-controls').size();
 
-		$('.site-controls').each(function(index) {
-			$(this).children('.btn.add').remove();
-			$(this).children('.btn.remove').remove();
-
-			if (index != siteControlsCount && siteControlsCount != 1) {
-				$(this).append(TRASH_BUTTON);
-			}
-
-			if (index == siteControlsCount - 1) {
-				$(this).append(ADD_BUTTON);
-			}
-		});
+		if (siteControlsCount == 1) {
+			$('.site-controls').find('.btn.remove').addClass("hidden");
+		} else {
+			$('.site-controls').find('.btn.remove').removeClass("hidden");
+		}
 
 		$('.btn.remove').off().on('click', removeControlGroup);
 		$('.btn.add').off().on('click', addControlGroup);

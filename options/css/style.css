@@ -13,6 +13,10 @@
 	margin-right: 4px;
 }
 
+.controls .action-buttons {
+	display: inline-block;
+}
+
 #success.hide {
 	display: inline-block;
 
@@ -27,7 +31,7 @@
 	opacity: 1;
 }
 
-.container.hidden {
+.hidden {
 	display: none;
 }
 
