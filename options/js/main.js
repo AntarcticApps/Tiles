@@ -40,25 +40,21 @@ $(document).ready(function() {
 			}
 		}
 
-		updateAllButtons();
+		updateButtons();
 		$("#sites").sortable({
 			handle: '.handle',
 			axis: 'y',
 			update: function(event, ui) {
-				updateAllButtons();
+				updateButtons();
 			}
 		});
 
 		$(".container").removeClass("hidden");
 	});
 
-	updateAllButtons();
+	updateButtons();
 
-	function updateAllButtons() {
-		updateControlGroupAddRemoveButtons();
-	}
-
-	function updateControlGroupAddRemoveButtons() {
+	function updateButtons() {
 		var siteControlsCount = $('.site-controls').size();
 
 		if (siteControlsCount == 1) {
@@ -75,7 +71,7 @@ $(document).ready(function() {
 		parent = $(this).parents('.control-group');
 		parent.remove();
 
-		updateAllButtons();
+		updateButtons();
 	}
 
 	function addControlGroup() {
@@ -83,7 +79,7 @@ $(document).ready(function() {
 
 		parent.after(CONTROL_GROUP);
 
-		updateAllButtons();
+		updateButtons();
 	}
 
 	$('form').submit(function(event) {
@@ -102,7 +98,7 @@ $(document).ready(function() {
 				if (siteControlsCount > 1) {
 					$(this).parents('.control-group').remove();
 
-					updateAllButtons();
+					updateButtons();
 					return;
 				}
 			}
