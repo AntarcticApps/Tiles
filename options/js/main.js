@@ -186,7 +186,7 @@ function getFaviconColor(url, callback) {
 	var image = new Image();
 
 	image.onerror = function() {
-		console.error("Loading favicon image failed.");
+		console.error("Loading favicon image failed.", url);
 
 		$(".alert-error").removeClass("hidden").find("span").html(FAVICON_LOAD_FAIL_MESSAGE.replace(FAVICON_LOAD_FAIL_URL_REPLACE, url));
 
