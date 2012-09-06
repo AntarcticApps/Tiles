@@ -208,7 +208,7 @@ function getFaviconColor(url, callback) {
 				if (pixelsAreSimilar(majorityCandidate, pixel) && !isWhiteOrTransparent(pixel)) {
 					retainCount++;
 
-					majorityCandidate = averagePixels(majorityCandidate, pixel, retainCount);
+					// majorityCandidate = averagePixels(majorityCandidate, pixel, retainCount);
 				} else if (!isWhiteOrTransparent(pixel)) {
 					retainCount--;
 				}
