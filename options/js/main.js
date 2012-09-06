@@ -1,34 +1,34 @@
-var sites;
+const TRASH_BUTTON = '<a type="button" class="btn btn-danger remove"><i class="icon-trash icon-white"></i></a>';
+const ADD_BUTTON = '<a type="button" class="btn btn-success add"><i class="icon-plus icon-white"></i></a>';
 
-$(document).ready(function() {
-	var trashButton = '<a type="button" class="btn btn-danger remove"><i class="icon-trash icon-white"></i></a>';
-	var addButton = '<a type="button" class="btn btn-success add"><i class="icon-plus icon-white"></i></a>';
-
-	var controlGroup = '<div class="control-group"> \
-	<div class="controls site-controls"> \
-		<a type="button" class="btn disabled handle"><i class="icon-list"></i></a> \
-		<input type="text" class="url" placeholder="www.google.com"> \
-		<input type="text" class="input-nano abbreviation" placeholder="Gl" maxlength="2"> \
-	</div> \
+const CONTROL_GROUP = '<div class="control-group"> \
+<div class="controls site-controls"> \
+	<a type="button" class="btn disabled handle"><i class="icon-list"></i></a> \
+	<input type="text" class="url" placeholder="www.google.com"> \
+	<input type="text" class="input-nano abbreviation" placeholder="Gl" maxlength="2"> \
+</div> \
 </div>';
 
-	var submitButtonSavingText = "Saving...";
-	var submitButtonSubmitText = "Save";
+const SUBMIT_BUTTON_SAVING_TEXT = "Saving...";
+const SUBMIT_BUTTON_SUBMIT_TEXT = "Save";
+
+$(document).ready(function() {
+	var sites = [];
 
 	chrome.storage.sync.get('sites', function(items) {
 		sites = items['sites'];
 
 		if (sites == undefined || sites == null) {
-			$("#sites").prepend(controlGroup);
+			$("#sites").prepend(CONTROL_GROUP);
 		} else {
 			if (sites.length == 0) {
-				$("#sites").prepend(controlGroup);
+				$("#sites").prepend(CONTROL_GROUP);
 			}
 
 			sites = sites.reverse();
 
 			for (var i = 0; i < sites.length; i++) {
-				var newControlGroup = controlGroup;
+				var newControlGroup = CONTROL_GROUP;
 				var site = sites[i];
 
 				newControlGroup = $(newControlGroup);
@@ -81,11 +81,11 @@ $(document).ready(function() {
 			$(this).children('.btn.remove').remove();
 
 			if (index != siteControlsCount && siteControlsCount != 1) {
-				$(this).append(trashButton);
+				$(this).append(TRASH_BUTTON);
 			}
 
 			if (index == siteControlsCount - 1) {
-				$(this).append(addButton);
+				$(this).append(ADD_BUTTON);
 			}
 		});
 
@@ -103,7 +103,7 @@ $(document).ready(function() {
 	function addControlGroup() {
 		parent = $(this).parents('.control-group');
 
-		parent.after(controlGroup);
+		parent.after(CONTROL_GROUP);
 
 		updateAllButtons();
 	}
@@ -114,7 +114,7 @@ $(document).ready(function() {
 
 		var fields = [];
 
-		$("button.submit").addClass("disabled").html(submitButtonSavingText);
+		$("button.submit").addClass("disabled").html(SUBMIT_BUTTON_SAVING_TEXT);
 
 		$('input:text.url').each(function(index, element) {
 			var siteControlsCount = $('.site-controls').size();
@@ -175,7 +175,7 @@ $(document).ready(function() {
 
 					if (sitesWithColors == fields.length) {
 						chrome.storage.sync.set({"sites": fields}, function() {
-							$("button.submit").removeClass("disabled").html(submitButtonSubmitText);
+							$("button.submit").removeClass("disabled").html(SUBMIT_BUTTON_SUBMIT_TEXT);
 						});
 					}
 				});
