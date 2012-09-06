@@ -2,19 +2,20 @@
 	margin-left: 0;
 }
 
-.btn-toolbar {
-	display: inline-block;
-	margin: 0;
-
-	vertical-align: middle;
-}
-
 .controls > .btn {
 	margin-right: 4px;
 }
 
 .controls .action-buttons {
 	display: inline-block;
+}
+
+.controls .input-nano {
+	width: 25px;
+}
+
+.controls a.btn.handle {
+	cursor: pointer;
 }
 
 #success.hide {
@@ -33,14 +34,6 @@
 
 .hidden {
 	display: none;
-}
-
-.input-nano {
-	width: 25px;
-}
-
-a.btn.handle {
-	cursor: pointer;
 }
 
 canvas {
