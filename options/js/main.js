@@ -239,7 +239,6 @@ function getFaviconColor(url, callback) {
 	var failColor = [0, 0, 0, 0];
 
 	$.get(url).success(function(data) {
-		console.log("Loaded page for", url);
 		// Search for Apple touch icon
 		var regex = /<link rel="apple-touch-icon" href="([\S]+)" ?\/?>/gim;
 		var results = regex.exec(data);
