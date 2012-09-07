@@ -42,6 +42,8 @@ function init() {
 
 						const ROW_HEIGHT = 220;
 						const COL_WIDTH = 220;
+						const ROW_OUTER_HEIGHT = 228;
+						const COL_OUTER_WIDTH = 228;
 						const COLS = 3;
 						const CHANGE_LOCATION_DELAY = 200;
 
@@ -49,7 +51,7 @@ function init() {
 						var scaleY = window.innerHeight / sitesScale / ROW_HEIGHT;
 
 						var sitesMidX = parseInt(sitesElement.style.width) / 2;
-						var sitesMidY = ROW_HEIGHT * COLS / 2;
+						var sitesMidY = ROW_OUTER_HEIGHT * COLS / 2;
 
 						var centerX = link.offsetLeft + COL_WIDTH / 2;
 						var centerY = link.offsetTop + ROW_HEIGHT / 2;
