@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function init() {	
 	var siteDiv = document.getElementById('sites');
-	// var siteList = siteDiv.getElementsByTagName('div')[0];
 
 	chrome.storage.sync.get('sites', function(items) {
 		sites = items['sites'];
@@ -15,7 +14,8 @@ function init() {
 		document.addEventListener("DOMNodeInserted", layout, false);
 
 		if (sites.length == 0) {
-			alert("Oh noez!");
+			goToOptionsPage(false);
+			return;
 		}
 
 		for (var i = 0; i < sites.length; i++) {
@@ -72,17 +72,6 @@ function init() {
 			})();
 		}
 	});
-	
-	var optionsLink = document.createElement("a");
-	optionsLink.setAttribute("class", "settings btn");
-	optionsLink.onclick = function() {
-		chrome.tabs.create({
-			url: "options/options.html"
-		});
-	}
-
-	optionsLink.innerHTML = "Options";
-	document.body.appendChild(optionsLink);
 
 	window.onresize = function() {
 		layout();
@@ -94,12 +83,24 @@ function init() {
 		    "documentUrlPatterns": [window.location.origin + "/*"],
 		    "contexts": ["page", "link"],
 		    "onclick" : function() {
-				chrome.tabs.create({
-					url: "options/options.html"
-				});
-			}
+		    	goToOptionsPage(true)
+		    }
 		});
 	});
+}
+
+function goToOptionsPage(newTab) {
+	var optionsURL = "options/options.html"
+
+	if (newTab) {
+		chrome.tabs.create({
+			url: opetionsURL
+		});
+	} else {
+		chrome.tabs.getCurrent(function(tab) {
+			chrome.tabs.update(tab.id, { url : optionsURL })
+		});
+	}
 }
 
 function layout() {
