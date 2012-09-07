@@ -104,6 +104,8 @@ $(document).ready(function() {
 
 		var fields = [];
 
+		$(".alert-error").addClass("hidden");
+
 		$("button.submit").addClass("disabled").html(SUBMIT_BUTTON_SAVING_TEXT);
 
 		$('input:text.url').each(function(index, element) {
