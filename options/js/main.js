@@ -13,6 +13,9 @@ const CONTROL_GROUP = '<div class="control-group"> \
 const SUBMIT_BUTTON_SAVING_TEXT = "Saving...";
 const SUBMIT_BUTTON_SUBMIT_TEXT = "Save";
 
+const FAVICON_LOAD_FAIL_URL_REPLACE = "#{url}";
+const FAVICON_LOAD_FAIL_MESSAGE = "Could not retrieve favicon for #{url}. Check the URL and ensure the site does not redirect.";
+
 $(document).ready(function() {
 	var sites = [];
 
@@ -40,25 +43,25 @@ $(document).ready(function() {
 			}
 		}
 
-		updateAllButtons();
+		updateButtons();
 		$("#sites").sortable({
 			handle: '.handle',
 			axis: 'y',
 			update: function(event, ui) {
-				updateAllButtons();
+				updateButtons();
 			}
+		});
+
+		$("button.close").on('click', function() {
+			$(".alert-error").addClass("hidden").find("span").empty();
 		});
 
 		$(".container").removeClass("hidden");
 	});
 
-	updateAllButtons();
+	updateButtons();
 
-	function updateAllButtons() {
-		updateControlGroupAddRemoveButtons();
-	}
-
-	function updateControlGroupAddRemoveButtons() {
+	function updateButtons() {
 		var siteControlsCount = $('.site-controls').size();
 
 		if (siteControlsCount == 1) {
@@ -75,7 +78,7 @@ $(document).ready(function() {
 		parent = $(this).parents('.control-group');
 		parent.remove();
 
-		updateAllButtons();
+		updateButtons();
 	}
 
 	function addControlGroup() {
@@ -83,7 +86,7 @@ $(document).ready(function() {
 
 		parent.after(CONTROL_GROUP);
 
-		updateAllButtons();
+		updateButtons();
 	}
 
 	$('form').submit(function(event) {
@@ -102,7 +105,7 @@ $(document).ready(function() {
 				if (siteControlsCount > 1) {
 					$(this).parents('.control-group').remove();
 
-					updateAllButtons();
+					updateButtons();
 					return;
 				}
 			}
@@ -182,6 +185,14 @@ function isWhiteOrTransparent(color) {
 function getFaviconColor(url, callback) {
 	var image = new Image();
 
+	image.onerror = function() {
+		console.error("Loading favicon image failed.", url);
+
+		$(".alert-error").removeClass("hidden").find("span").html(FAVICON_LOAD_FAIL_MESSAGE.replace(FAVICON_LOAD_FAIL_URL_REPLACE, url));
+
+		callback(failColor);
+	}
+
 	image.onload = function() {
 		var context = $("canvas")[0].getContext('2d');
 		context.clearRect(0, 0, $("canvas")[0].width, $("canvas")[0].height);
@@ -227,6 +238,7 @@ function getFaviconColor(url, callback) {
 	var failColor = [0, 0, 0, 0];
 
 	$.get(url).success(function(data) {
+		console.log("Loaded page for", url);
 		// Search for Apple touch icon
 		var regex = /<link rel="apple-touch-icon" href="([\S]+)" ?\/?>/gim;
 		var results = regex.exec(data);
