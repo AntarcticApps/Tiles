@@ -31,40 +31,49 @@ function init() {
 					console.log(site.url, link.style.color);
 				}
 				
-				link.setAttribute("href", site.url);
+				// link.setAttribute("href", site.url);
 
-				link.onclick = function() {
-					var sitesElement = document.getElementById("sites");
+				link.onclick = function(e) {
+					if (e.metaKey == false) {
+						var sitesElement = document.getElementById("sites");
 
-					link.setAttribute("class", "animate");
-					var sitesTransform = sitesElement.style.webkitTransform;
-					var floatRegex = /scale\(([0-9]*\.?[0-9]*), ?([0-9]*\.?[0-9]*)\)/;
-					var sitesScale = floatRegex.exec(sitesTransform)[1];
+						link.setAttribute("class", "animate");
+						var sitesTransform = sitesElement.style.webkitTransform;
+						var floatRegex = /scale\(([0-9]*\.?[0-9]*), ?([0-9]*\.?[0-9]*)\)/;
+						var sitesScale = floatRegex.exec(sitesTransform)[1];
 
-					const ROW_HEIGHT = 220;
-					const COL_WIDTH = 220;
-					const COLS = 3;
+						const ROW_HEIGHT = 220;
+						const COL_WIDTH = 220;
+						const COLS = 3;
+						const CHANGE_LOCATION_DELAY = 200;
 
-					var scaleX = window.innerWidth / sitesScale / COL_WIDTH;
-					var scaleY = window.innerHeight / sitesScale / ROW_HEIGHT;
+						var scaleX = window.innerWidth / sitesScale / COL_WIDTH;
+						var scaleY = window.innerHeight / sitesScale / ROW_HEIGHT;
 
-					var sitesMidX = parseInt(sitesElement.style.width) / 2;
-					var sitesMidY = ROW_HEIGHT * COLS / 2;
+						var sitesMidX = parseInt(sitesElement.style.width) / 2;
+						var sitesMidY = ROW_HEIGHT * COLS / 2;
 
-					var centerX = link.offsetLeft + COL_WIDTH / 2;
-					var centerY = link.offsetTop + ROW_HEIGHT / 2;
+						var centerX = link.offsetLeft + COL_WIDTH / 2;
+						var centerY = link.offsetTop + ROW_HEIGHT / 2;
 
-					var translateX = sitesMidX - centerX;
-					var translateY = sitesMidY - centerY;
-					link.style.webkitTransform = "translate(" + translateX + "px, " + translateY + "px) scale(" + scaleX + ", " + scaleY + ")";
-					link.style.background = "white";
+						var translateX = sitesMidX - centerX;
+						var translateY = sitesMidY - centerY;
+						link.style.webkitTransform = "translate(" + translateX + "px, " + translateY + "px) scale(" + scaleX + ", " + scaleY + ")";
+						link.style.background = "white";
+
+						setTimeout(function() {
+							window.location = site.url;
+						}, CHANGE_LOCATION_DELAY);
+					} else {
+						chrome.tabs.create({ 'url': site.url, active: false });
+					}
 				}
 
 				siteDiv.appendChild(link);
 			})();
 		}
 	});
-
+	
 	var optionsLink = document.createElement("a");
 	optionsLink.setAttribute("class", "settings btn");
 	optionsLink.onclick = function() {
