@@ -57,7 +57,7 @@ html, body {
 
 	color: #fff;
 
-	/*-webkit-transform: translateZ(0px);*/
+	-webkit-transform: translateZ(0px);
 
 	-webkit-user-select: none;
 }
