@@ -12,6 +12,10 @@ html, body {
 	position: relative;
 }
 
+body {
+	-webkit-transform: translateZ(0);
+}
+
 #sites {
 	position: absolute;
 	top: 50%;
@@ -26,7 +30,6 @@ html, body {
 	/*padding: 2px;*/
 
 	/*height: 496px; // 240px * 2 + 8px;*/
-
 }
 
 #sites a {
@@ -53,7 +56,6 @@ html, body {
 
 	color: #fff;
 
-	-webkit-transition: text-shadow 0.1s linear;
 	-webkit-user-select: none;
 
 	-webkit-transition: box-shadow .2s;
@@ -65,10 +67,22 @@ html, body {
 	/*opacity: 0.8;*/
 
 	box-shadow: inset 0 0 0 6px rgba(255, 255, 255, 0.5);
+
+	-webkit-transition-property: box-shadow, -webkit-transform, background;
+	-webkit-transition-duration: .5s;
+	-webkit-transition-timing-function: ease-in-out;
 }
 
 #sites a:active {
-	opacity: 0.8;
+	/*opacity: 0.8;*/
+	box-shadow: inset 0 0 0 6px rgba(255, 255, 255, 0.8);
+}
+
+#sites a.animate {
+	z-index: 1000;
+	color: rgba(0,0,0,0);
+	text-shadow: none;
+	box-shadow: none;
 }
 
 #sites a span {
