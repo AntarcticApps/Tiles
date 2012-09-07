@@ -89,6 +89,14 @@ $(document).ready(function() {
 		updateButtons();
 	}
 
+	function saveSites(sites) {
+		console.log("Saving all sites");
+
+		chrome.storage.sync.set({"sites": sites}, function() {
+			$("button.submit").removeClass("disabled").html(SUBMIT_BUTTON_SUBMIT_TEXT);
+		});
+	}
+
 	$('form').submit(function(event) {
 		event.preventDefault();
 		event.stopPropagation();
@@ -137,32 +145,56 @@ $(document).ready(function() {
 			$(this).val(fields[index].abbreviation);
 		});
 
-		var sitesWithColors = 0;
+		var numberOfSitesRequiringColor = fields.length;
 
-		for (var i = 0; i < fields.length; i++) {
-			(function() {
-				var site = fields[i];
+		chrome.storage.sync.get('sites', function(items) {
+			sites = items['sites'];
 
-				getFaviconColor(site.url, function(color) {
-					console.log((sitesWithColors + 1) + " / " + fields.length + " – Got color for " + site.url);
+			for (var i = 0; i < fields.length; i++) {
+				fields[i].color = null;
+			}
 
-					site.color = {
-						'red': color[0],
-						'green': color[1],
-						'blue': color[2],
-						'alpha': color[3]
-					};
+			if (sites != null && sites.length != 0) {
+				for (var i = 0; i < sites.length; i++) {
+					for (var j = 0; j < fields.length; j++) {
+						if (sites[i].url == fields[j].url) {
+							fields[j].color = sites[i].color;
 
-					sitesWithColors++;
+							numberOfSitesRequiringColor--;
+						}
+					}
+				}
+			}
 
-					if (sitesWithColors == fields.length) {
-						chrome.storage.sync.set({"sites": fields}, function() {
-							$("button.submit").removeClass("disabled").html(SUBMIT_BUTTON_SUBMIT_TEXT);
+			for (var i = 0; i < fields.length; i++) {
+				(function() {
+					var site = fields[i];
+
+					if (site.color != null) {
+						if (numberOfSitesRequiringColor <= 0) {
+							saveSites(fields);
+						}
+					} else {
+						getFaviconColor(site.url, function(color) {
+							site.color = {
+								'red': color[0],
+								'green': color[1],
+								'blue': color[2],
+								'alpha': color[3]
+							};
+
+							numberOfSitesRequiringColor--;
+
+							console.log((fields.length - numberOfSitesRequiringColor) + " / " + fields.length + " – Got color for " + site.url);
+
+							if (numberOfSitesRequiringColor <= 0) {
+								saveSites(fields);
+							}
 						});
 					}
-				});
-			})();
-		}
+				})();
+			}
+		});
 
 		return false;
 	});
@@ -239,7 +271,6 @@ function getFaviconColor(url, callback) {
 	var failColor = [0, 0, 0, 0];
 
 	$.get(url).success(function(data) {
-		console.log("Loaded page for", url);
 		// Search for Apple touch icon
 		var regex = /<link rel="apple-touch-icon" href="([\S]+)" ?\/?>/gim;
 		var results = regex.exec(data);
