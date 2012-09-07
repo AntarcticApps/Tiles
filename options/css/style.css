@@ -1,3 +1,8 @@
+.container {
+	width: 500px;
+	margin: 0 auto;
+}
+
 .form-horizontal .controls {
 	margin-left: 0;
 }
