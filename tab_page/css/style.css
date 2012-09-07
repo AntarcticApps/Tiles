@@ -58,7 +58,7 @@ html, body {
 
 	color: #fff;
 
-	-webkit-transform: translateZ(0px);
+	-webkit-font-smoothing: subpixel-antialiased;
 
 	-webkit-user-select: none;
 }
