@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function init() {	
 	var siteDiv = document.getElementById('sites');
-	// var siteList = siteDiv.getElementsByTagName('div')[0];
+	var siteList = siteDiv.getElementsByTagName('div')[0];
 
 	chrome.storage.sync.get('sites', function(items) {
 		sites = items['sites'];
@@ -33,7 +33,7 @@ function init() {
 				
 				link.setAttribute("href", site.url);
 
-				siteDiv.appendChild(link);
+				siteList.appendChild(link);
 			})();
 		}
 	});
@@ -56,14 +56,23 @@ function init() {
 
 	optionsLink.innerHTML = "Options";
 	document.body.appendChild(optionsLink);
+
+	window.onresize = function(e) {
+		layout();
+	};
 }
 
 function layout() {
 	document.removeEventListener("DOMNodeInserted", layout);
 	
+	var rows = 3;
 	var cols = Math.ceil(sites.length / 3);
-	var shouldWidth = cols * 220;
-	shouldWidth += (cols - 2) * 4;
+	var shouldWidth = cols * 224;
+	while (shouldWidth > window.innerWidth) {
+		rows++;
+		cols = Math.ceil(sites.length / rows);
+		shouldWidth = cols * 224;
+	}
 	document.getElementById("sites").style.width = shouldWidth + "px";
 }
 
