@@ -19,6 +19,8 @@ html, body {
 	position: relative;
 
 	overflow: hidden;
+
+	-webkit-font-smoothing: subpixel-antialiased;
 }
 
 #sites {
@@ -34,7 +36,7 @@ html, body {
 	-webkit-transition: opacity .5s linear;
 }
 
-#sites a {
+#sites > a {
 	display: inline-block;
 
 	cursor: default !important;
@@ -61,10 +63,9 @@ html, body {
 	-webkit-user-select: none;
 }
 
-#sites a:hover,
-#sites a:active {
+#sites > a:hover,
+#sites > a:active {
 	text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
-	/*opacity: 0.8;*/
 
 	box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.5);
 
@@ -73,12 +74,11 @@ html, body {
 	-webkit-transition-timing-function: linear;
 }
 
-#sites a:active {
-	/*opacity: 0.8;*/
+#sites > a:active {
 	box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.8);
 }
 
-#sites a.animate {
+#sites > a.animate {
 	z-index: 1000;
 	color: rgba(0,0,0,0);
 	text-shadow: none;
@@ -91,14 +91,14 @@ html, body {
 	-webkit-transition-timing-function: cubic-bezier;
 }
 
-#sites a span {
+#sites > a > span {
 	font-size: 16px;
 	line-height: 16px;
 
 	display: inline-block;
 }
 
-#sites a span.url {
+#sites > a > span.url {
 	position: absolute;
 
 	width: 100%;
@@ -110,8 +110,4 @@ html, body {
 
 	opacity: 1.0;
 	-webkit-transition: opacity 0.2s linear;
-}
-
-a.btn.settings {
-	display: none;
 }
