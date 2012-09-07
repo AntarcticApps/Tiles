@@ -30,9 +30,7 @@ function init() {
 					link.style.background = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + 1 +')';
 					console.log(site.url, link.style.color);
 				}
-				
-				// link.setAttribute("href", site.url);
-
+								
 				link.onclick = function(e) {
 					if (e.metaKey == false) {
 						var sitesElement = document.getElementById("sites");
