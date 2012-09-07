@@ -67,10 +67,11 @@ function layout() {
 	
 	var sitesElement = document.getElementById("sites");
 
-	const ROW_HEIGHT = 224;
-	const COL_WIDTH = 224;
-	const MAX_HEIGHT = window.innerHeight - 4;
-	const MAX_WIDTH = window.innerWidth - 4;
+	const MARGIN = 8;
+	const ROW_HEIGHT = 220 + MARGIN;
+	const COL_WIDTH = 220 + MARGIN;
+	const MAX_HEIGHT = window.innerHeight - MARGIN;
+	const MAX_WIDTH = window.innerWidth - MARGIN;
 
 	var cols = Math.ceil(sites.length / 3);
 	var shouldWidth = cols * COL_WIDTH;
