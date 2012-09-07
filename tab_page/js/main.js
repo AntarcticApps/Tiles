@@ -67,15 +67,16 @@ function layout() {
 	
 	var sitesElement = document.getElementById("sites");
 
+	var rowHeight = 224;
+	var colWidth = 224;
 	var cols = Math.ceil(sites.length / 3);
-	var shouldWidth = cols * 224;
+	var shouldWidth = cols * colWidth;
 	sitesElement.style.width = shouldWidth + "px";
-	var scale = 1;
-	// if (shouldWidth > window.innerWidth) {
-		scale = window.innerWidth / (shouldWidth + 20);
-	// }
+	var scale = window.innerWidth / (shouldWidth + 20);
+	if (rowHeight * 3 * scale > window.innerHeight) {
+		scale = window.innerHeight / (rowHeight * 3);
+	}
 	sitesElement.style.webkitTransform = "scale(" + scale + ", " + scale + ")";
-	// sitesElement.style.marginLeft = -shouldWidth / 2 + "px";
 	sitesElement.style.marginLeft = -shouldWidth / 2 + "px";
 }
 
