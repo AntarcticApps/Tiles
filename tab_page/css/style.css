@@ -13,38 +13,25 @@ html, body {
 }
 
 #sites {
-	/*position: absolute;*/
-	/*top: 50%;*/
-	/*left: 50%;*/
+	position: absolute;
+	top: 50%;
+	left: 50%;
 
-	/*margin: -webkit-calc((-224px * 3) / 2) 0 0 0;*/
+	margin-top: -webkit-calc((-224px * 3) / 2);
 	/*padding: 0 20px;*/
-
-	display: table;
-
-	margin: auto auto;
 
 	text-align: left;
 
-	height: 100%;
-	padding: 2px;
+/*	height: 100%;
+*/	padding: 2px;
 
 	/*height: 496px; // 240px * 2 + 8px;*/
 
 }
 
-.links {
-	display: table-cell;
-	vertical-align: middle;
-
+#sites a {
 	height: -webkit-calc(224px * 3);
 
-	/*-webkit-column-count: auto;
-	-webkit-column-width: 200px;
-	-webkit-column-gap: 4px;*/
-}
-
-#sites a {
 	display: inline-block;
 
 	cursor: pointer;

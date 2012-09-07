@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function init() {	
 	var siteDiv = document.getElementById('sites');
-	var siteList = siteDiv.getElementsByTagName('div')[0];
+	// var siteList = siteDiv.getElementsByTagName('div')[0];
 
 	chrome.storage.sync.get('sites', function(items) {
 		sites = items['sites'];
@@ -33,7 +33,7 @@ function init() {
 				
 				link.setAttribute("href", site.url);
 
-				siteList.appendChild(link);
+				siteDiv.appendChild(link);
 			})();
 		}
 	});
@@ -57,7 +57,7 @@ function init() {
 	optionsLink.innerHTML = "Options";
 	document.body.appendChild(optionsLink);
 
-	window.onresize = function(e) {
+	window.onresize = function() {
 		layout();
 	};
 }
@@ -65,15 +65,18 @@ function init() {
 function layout() {
 	document.removeEventListener("DOMNodeInserted", layout);
 	
-	var rows = 3;
+	var sitesElement = document.getElementById("sites");
+
 	var cols = Math.ceil(sites.length / 3);
 	var shouldWidth = cols * 224;
-	while (shouldWidth > window.innerWidth) {
-		rows++;
-		cols = Math.ceil(sites.length / rows);
-		shouldWidth = cols * 224;
-	}
-	document.getElementById("sites").style.width = shouldWidth + "px";
+	sitesElement.style.width = shouldWidth + "px";
+	var scale = 1;
+	// if (shouldWidth > window.innerWidth) {
+		scale = window.innerWidth / (shouldWidth + 20);
+	// }
+	sitesElement.style.webkitTransform = "scale(" + scale + ", " + scale + ")";
+	// sitesElement.style.marginLeft = -shouldWidth / 2 + "px";
+	sitesElement.style.marginLeft = -shouldWidth / 2 + "px";
 }
 
 function createSite(abbreviation, url) {
