@@ -53,7 +53,7 @@ function goToOptionsPage(newTab) {
 
 	if (newTab) {
 		chrome.tabs.create({
-			url: opetionsURL
+			url: optionsURL
 		});
 	} else {
 		chrome.tabs.getCurrent(function(tab) {
