@@ -198,19 +198,6 @@ $(document).ready(function() {
 
 		return false;
 	});
-
-	chrome.contextMenus.removeAll(function() {
-		chrome.contextMenus.create({
-		    "title": "Paero Options",
-		    "documentUrlPatterns": [window.location.origin + "/*"],
-		    "contexts": ["page", "link"],
-		    "onclick" : function() {
-				chrome.tabs.create({
-					url: "options/options.html"
-				});
-			}
-		});
-	});
 });
 
 function makeAbbreviation(string) {
