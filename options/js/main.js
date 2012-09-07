@@ -132,8 +132,9 @@ $(document).ready(function() {
 				var abbreviation = makeAbbreviation(getHostname(fields[index].url));
 
 				fields[index].abbreviation = abbreviation;
-				$(this).val(abbreviation);
 			}
+
+			$(this).val(fields[index].abbreviation);
 		});
 
 		var sitesWithColors = 0;
