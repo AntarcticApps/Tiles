@@ -108,6 +108,8 @@ function layout() {
 	
 	var sitesElement = document.getElementById("sites");
 
+	sitesElement.style.opacity = "1.0";
+
 	const MARGIN = 8;
 	const ROW_HEIGHT = 220 + MARGIN;
 	const COL_WIDTH = 220 + MARGIN;

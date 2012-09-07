@@ -17,6 +17,8 @@ html, body {
 	background: #000;
 
 	position: relative;
+
+	overflow: hidden;
 }
 
 #sites {
@@ -25,14 +27,11 @@ html, body {
 	left: 50%;
 
 	margin-top: -webkit-calc((-228px * 3) / 2);
-	/*padding: 0 20px;*/
 
 	text-align: left;
 
-	/*height: 100%;*/
-	/*padding: 2px;*/
-
-	/*height: 496px; // 240px * 2 + 8px;*/
+	opacity: 0.0;
+	-webkit-transition: opacity .5s linear;
 }
 
 #sites a {
