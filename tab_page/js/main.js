@@ -28,7 +28,6 @@ function init() {
 
 				if (color) {
 					link.style.background = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + 1 +')';
-					console.log(site.url, link.style.color);
 				}
 								
 				link.onclick = function(e) {
