@@ -167,6 +167,8 @@ $(document).ready(function() {
 				}
 			}
 
+			console.log(numberOfSitesRequiringColor + " sites require a color check");
+
 			for (var i = 0; i < fields.length; i++) {
 				(function() {
 					var site = fields[i];
