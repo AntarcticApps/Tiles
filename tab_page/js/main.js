@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false );
 
 function init() {	
-	var siteDiv = document.getElementById('sites');
+	var sitesElement = document.getElementById('sites');
 
 	chrome.storage.sync.get('sites', function(items) {
 		sites = items['sites'];
@@ -18,59 +18,18 @@ function init() {
 			return;
 		}
 
+		var fragment = document.createDocumentFragment();
 		for (var i = 0; i < sites.length; i++) {
-			(function() {
-				var site = sites[i];
+			var site = sites[i];
+			var tile = createTile(site.abbreviation, site.url);
+			var color = site.color;
+			tile.style.background = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + 1 +')';
+			tile.setAttribute("data-url", site.url);
+			tile.onclick = onTileClick;
 
-				var link = createSite(site.abbreviation, site.url);
-
-				var color = site.color;
-
-				if (color) {
-					link.style.background = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + 1 +')';
-				}
-								
-				link.onclick = function(e) {
-					if (e.metaKey == false) {
-						var sitesElement = document.getElementById("sites");
-
-						link.setAttribute("class", "animate");
-						var sitesTransform = sitesElement.style.webkitTransform;
-						var floatRegex = /scale\(([0-9]*\.?[0-9]*), ?([0-9]*\.?[0-9]*)\)/;
-						var sitesScale = floatRegex.exec(sitesTransform)[1];
-
-						const ROW_HEIGHT = 220;
-						const COL_WIDTH = 220;
-						const ROW_OUTER_HEIGHT = 228;
-						const COL_OUTER_WIDTH = 228;
-						const COLS = 3;
-						const CHANGE_LOCATION_DELAY = 200;
-
-						var scaleX = window.innerWidth / sitesScale / COL_WIDTH;
-						var scaleY = window.innerHeight / sitesScale / ROW_HEIGHT;
-
-						var sitesMidX = parseInt(sitesElement.style.width) / 2;
-						var sitesMidY = ROW_OUTER_HEIGHT * COLS / 2;
-
-						var centerX = link.offsetLeft + COL_WIDTH / 2;
-						var centerY = link.offsetTop + ROW_HEIGHT / 2;
-
-						var translateX = sitesMidX - centerX;
-						var translateY = sitesMidY - centerY;
-						link.style.webkitTransform = "translate(" + translateX + "px, " + translateY + "px) scale(" + scaleX + ", " + scaleY + ")";
-						link.style.background = "white";
-
-						setTimeout(function() {
-							window.location = site.url;
-						}, CHANGE_LOCATION_DELAY);
-					} else {
-						chrome.tabs.create({ 'url': site.url, active: false });
-					}
-				}
-
-				siteDiv.appendChild(link);
-			})();
+			fragment.appendChild(tile);
 		}
+		sitesElement.appendChild(fragment);
 	});
 
 	window.onresize = function() {
@@ -128,10 +87,50 @@ function layout() {
 	sitesElement.style.marginLeft = -shouldWidth / 2 + "px";
 }
 
-function createSite(abbreviation, url) {
+function createTile(abbreviation, url) {
 	var site = document.createElement('a');
-
+	site.setAttribute("class", "tile");
 	site.innerHTML = abbreviation + '<span class="url">' + getHostname(url) + '</span>';
-
 	return site;
+}
+
+function onTileClick(e) {
+	var target = e.target;
+	var url = target.getAttribute("data-url");
+
+	if (e.metaKey == false) {
+		var sitesElement = document.getElementById("sites");
+
+		target.setAttribute("class", "tile animate");
+		var sitesTransform = sitesElement.style.webkitTransform;
+		var floatRegex = /scale\(([0-9]*\.?[0-9]*), ?([0-9]*\.?[0-9]*)\)/;
+		var sitesScale = floatRegex.exec(sitesTransform)[1];
+
+		const ROW_HEIGHT = 220;
+		const COL_WIDTH = 220;
+		const ROW_OUTER_HEIGHT = 228;
+		const COL_OUTER_WIDTH = 228;
+		const COLS = 3;
+		const CHANGE_LOCATION_DELAY = 200;
+
+		var scaleX = window.innerWidth / sitesScale / COL_WIDTH;
+		var scaleY = window.innerHeight / sitesScale / ROW_HEIGHT;
+
+		var sitesMidX = parseInt(sitesElement.style.width) / 2;
+		var sitesMidY = ROW_OUTER_HEIGHT * COLS / 2;
+
+		var centerX = target.offsetLeft + COL_WIDTH / 2;
+		var centerY = target.offsetTop + ROW_HEIGHT / 2;
+
+		var translateX = sitesMidX - centerX;
+		var translateY = sitesMidY - centerY;
+		target.style.webkitTransform = "translate(" + translateX + "px, " + translateY + "px) scale(" + scaleX + ", " + scaleY + ")";
+		target.style.background = "white";
+
+		setTimeout(function() {
+			window.location = url;
+		}, CHANGE_LOCATION_DELAY);
+	} else {
+		chrome.tabs.create({ 'url': url, active: false });
+	}
 }

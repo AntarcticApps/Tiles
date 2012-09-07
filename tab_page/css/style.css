@@ -1,6 +1,6 @@
 
 @media screen and (max-width: 600px), screen and (max-height: 400px) {
-	#sites a span.url {
+	.url {
 		opacity: 0 !important;
 	}
 }
@@ -33,10 +33,10 @@ html, body {
 	text-align: left;
 
 	opacity: 0.0;
-	-webkit-transition: opacity .5s linear;
+	-webkit-transition: opacity .4s linear;
 }
 
-#sites > a {
+.tile {
 	display: inline-block;
 
 	cursor: default !important;
@@ -63,8 +63,8 @@ html, body {
 	-webkit-user-select: none;
 }
 
-#sites > a:hover,
-#sites > a:active {
+.tile:hover,
+.tile:active {
 	text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
 
 	box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.5);
@@ -74,11 +74,11 @@ html, body {
 	-webkit-transition-timing-function: linear;
 }
 
-#sites > a:active {
+.tile:active {
 	box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.8);
 }
 
-#sites > a.animate {
+.tile.animate {
 	z-index: 1000;
 	color: rgba(0,0,0,0);
 	text-shadow: none;
@@ -91,14 +91,12 @@ html, body {
 	-webkit-transition-timing-function: cubic-bezier;
 }
 
-#sites > a > span {
+.url {
 	font-size: 16px;
 	line-height: 16px;
 
 	display: inline-block;
-}
 
-#sites > a > span.url {
 	position: absolute;
 
 	width: 100%;
