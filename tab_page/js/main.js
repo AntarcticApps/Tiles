@@ -65,14 +65,6 @@ function init() {
 		}
 	});
 
-	document.onkeypress = function(e) {
-		var character = String.fromCharCode(e.charCode);
-		var value = parseInt(character);
-		if (value != NaN) {
-			document.location = sites[value].url;
-		}
-	}
-
 	var optionsLink = document.createElement("a");
 	optionsLink.setAttribute("class", "settings btn");
 	optionsLink.onclick = function() {
