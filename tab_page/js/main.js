@@ -31,7 +31,7 @@ function init() {
 					console.log(site.url, link.style.color);
 				}
 				
-				// link.setAttribute("href", site.url);
+				link.setAttribute("href", site.url);
 
 				link.onclick = function() {
 					var sitesElement = document.getElementById("sites");
