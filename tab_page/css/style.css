@@ -1,3 +1,10 @@
+
+@media screen and (max-width: 600px), screen and (max-height: 400px) {
+	#sites a span.url {
+		opacity: 0 !important;
+	}
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -10,10 +17,6 @@ html, body {
 	background: #000;
 
 	position: relative;
-}
-
-body {
-	-webkit-transform: translateZ(0);
 }
 
 #sites {
@@ -53,6 +56,8 @@ body {
 	text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
 
 	color: #fff;
+
+	/*-webkit-transform: translateZ(0px);*/
 
 	-webkit-user-select: none;
 }
@@ -103,6 +108,9 @@ body {
 
 	left: 0;
 	bottom: 20px;
+
+	opacity: 1.0;
+	-webkit-transition: opacity 0.2s linear;
 }
 
 a.btn.settings {
