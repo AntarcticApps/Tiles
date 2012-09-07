@@ -67,14 +67,18 @@ function layout() {
 	
 	var sitesElement = document.getElementById("sites");
 
-	var rowHeight = 224;
-	var colWidth = 224;
+	const ROW_HEIGHT = 224;
+	const COL_WIDTH = 224;
+	const MAX_HEIGHT = window.innerHeight - 4;
+	const MAX_WIDTH = window.innerWidth - 4;
+
 	var cols = Math.ceil(sites.length / 3);
-	var shouldWidth = cols * colWidth;
+	var shouldWidth = cols * COL_WIDTH;
 	sitesElement.style.width = shouldWidth + "px";
-	var scale = window.innerWidth / (shouldWidth + 20);
-	if (rowHeight * 3 * scale > window.innerHeight) {
-		scale = window.innerHeight / (rowHeight * 3);
+
+	var scale = MAX_WIDTH / (shouldWidth + 20);
+	if (ROW_HEIGHT * 3 * scale > MAX_HEIGHT) {
+		scale = MAX_HEIGHT / (ROW_HEIGHT * 3);
 	}
 	sitesElement.style.webkitTransform = "scale(" + scale + ", " + scale + ")";
 	sitesElement.style.marginLeft = -shouldWidth / 2 + "px";
