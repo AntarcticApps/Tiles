@@ -310,20 +310,24 @@ function getFaviconColor(url, callback) {
 		var hrefs = {};
 		for (var i = 0; i < links.length; i++) {
 			var relations = /rel="([\w -]*)"/.exec(links[i]);
-			relations = relations[1].split(' ');
 
-			var href = /href="([^ ]*)"/.exec(links[i])[1];
+			// If there is no relation, it's probably not an icon
+			if (relations) {
+				relations = relations[1].split(' ');
 
-			for (var j = 0; j < relations.length; j++) {
-				if (relations[j] != 'icon' && relations[j] != 'apple-touch-icon') {
-					continue;
+				var href = /href="([^ ]*)"/.exec(links[i])[1];
+
+				for (var j = 0; j < relations.length; j++) {
+					if (relations[j] != 'icon' && relations[j] != 'apple-touch-icon') {
+						continue;
+					}
+
+					if (!hrefs[relations[j]]) {
+						hrefs[relations[j]] = [];
+					}
+
+					hrefs[relations[j]].push(href);
 				}
-
-				if (!hrefs[relations[j]]) {
-					hrefs[relations[j]] = [];
-				}
-
-				hrefs[relations[j]].push(href);
 			}
 		}
 
