@@ -296,37 +296,54 @@ function getFaviconColor(url, callback) {
 	var failColor = [0, 0, 0, 0];
 
 	$.get(url).success(function(data) {
-		// Search for Apple touch icon
-		var regex = /<link rel="apple-touch-icon" href="([\S]+)" ?\/?>/gim;
-		var results = regex.exec(data);
+		// Search for explicitly declared icon hrefs
+		var links = [];
 
-		if (results != null) {
-			var iconPath = results[1];
+		var results;
+		var regex;
 
-			if (iconPath.substring(0, 4) == "http") {
-				image.src = iconPath;
-			} else if (iconPath.substring(0, 2) == "//") {
-				image.src = "http:" + iconPath;
-			} else {
-				image.src = getDomain(url) + iconPath;
-			}
-
-			return;
+		regex = /<link (.*) ?\/?>/gim;
+		while ((results = regex.exec(data)) !== null) {
+			links.push(results[1]);
 		}
 
-		// Search for any icon
-		var regex = /<link rel="[\S ]*icon" href="([\S]+)" ?\/?>/gim;
-		var results = regex.exec(data);
-		
-		if (results != null) {
-			var iconPath = results[1];
+		var hrefs = {};
+		for (var i = 0; i < links.length; i++) {
+			var relations = /rel="([\w -]*)"/.exec(links[i]);
+			relations = relations[1].split(' ');
 
-			if (iconPath.substring(0, 4) == "http") {
-				image.src = iconPath;
-			} else if (iconPath.substring(0, 2) == "//") {
-				image.src = "http:" + iconPath;
-			} else {
-				image.src = getDomain(url) + iconPath;
+			var href = /href="([^ ]*)"/.exec(links[i])[1];
+
+			for (var j = 0; j < relations.length; j++) {
+				if (relations[j] != 'icon' && relations[j] != 'apple-touch-icon') {
+					continue;
+				}
+
+				if (!hrefs[relations[j]]) {
+					hrefs[relations[j]] = [];
+				}
+
+				hrefs[relations[j]].push(href);
+			}
+		}
+
+		var iconPath;
+		if (hrefs['apple-touch-icon']) {
+			iconPath = hrefs['apple-touch-icon'][0];
+		} else if (hrefs['icon']) {
+			iconPath = hrefs['icon'][0];
+
+			// Pick an icon that isn't missing it's preceding '/'
+			for (var i = 0; i < hrefs['icon'].length && iconPath.substring(0, 1) != '/'; i++) {
+				iconPath = hrefs['icon'][i];
+			}
+		}
+
+		if (iconPath) {
+			if (iconPath.substring(0, 2) == '//') {
+				image.src = 'http:' + iconPath;
+			} else if (iconPath.substring(0, 1) == '/') {
+				image.src = 'http://' + getHostname(url) + iconPath;
 			}
 
 			return;
