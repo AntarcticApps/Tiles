@@ -13,7 +13,7 @@ function init() {
 
 		document.addEventListener("DOMNodeInserted", layout, false);
 
-		if (sites.length == 0) {
+		if (sites == undefined || sites == null || sites.length == 0) {
 			goToOptionsPage(false);
 			return;
 		}
