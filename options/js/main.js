@@ -13,6 +13,7 @@ const CONTROL_GROUP = '<div class="control-group"> \
 const SUBMIT_BUTTON_SAVING_TEXT = "Saving...";
 const SUBMIT_BUTTON_SUBMIT_TEXT = "Save";
 
+const FAVICON_LOAD_FAIL_TITLE = "Failed to retrieve favicon!";
 const FAVICON_LOAD_FAIL_URL_REPLACE = "#{url}";
 const FAVICON_LOAD_FAIL_MESSAGE = "Could not retrieve favicon for #{url}. Check the URL and ensure the site does not redirect.";
 
@@ -92,6 +93,8 @@ $(document).ready(function() {
 	function saveSites(sites) {
 		console.log("Saving all sites");
 
+		console.log(sites);
+
 		chrome.storage.sync.set({"sites": sites}, function() {
 			$("button.submit").removeClass("disabled").html(SUBMIT_BUTTON_SUBMIT_TEXT);
 		});
@@ -102,6 +105,8 @@ $(document).ready(function() {
 		event.stopPropagation();
 
 		var fields = [];
+
+		$(".alert-error").addClass("hidden");
 
 		$("button.submit").addClass("disabled").html(SUBMIT_BUTTON_SAVING_TEXT);
 
@@ -146,6 +151,7 @@ $(document).ready(function() {
 		});
 
 		var numberOfSitesRequiringColor = fields.length;
+		const TIME_BEFORE_UPDATE = 1000 * 60 * 60;
 
 		chrome.storage.sync.get('sites', function(items) {
 			sites = items['sites'];
@@ -158,21 +164,32 @@ $(document).ready(function() {
 				for (var i = 0; i < sites.length; i++) {
 					for (var j = 0; j < fields.length; j++) {
 						if (sites[i].url == fields[j].url) {
-							fields[j].color = sites[i].color;
+							if (!sites[i].lastUpdated || Date.now() - sites[i].lastUpdated >= TIME_BEFORE_UPDATE) {
+								fields[i].color = null;
+							} else {
+								fields[j].color = sites[i].color;
+								fields[i].lastUpdated = sites[i].lastUpdated;
 
-							numberOfSitesRequiringColor--;
+								numberOfSitesRequiringColor--;
+							}
 						}
 					}
 				}
 			}
+
+			console.log(numberOfSitesRequiringColor + " sites require a color check");
+
+			var siteSaved = false;
 
 			for (var i = 0; i < fields.length; i++) {
 				(function() {
 					var site = fields[i];
 
 					if (site.color != null) {
-						if (numberOfSitesRequiringColor <= 0) {
+						if (!siteSaved && numberOfSitesRequiringColor <= 0) {
 							saveSites(fields);
+
+							siteSaved = true;
 						}
 					} else {
 						getFaviconColor(site.url, function(color) {
@@ -183,12 +200,16 @@ $(document).ready(function() {
 								'alpha': color[3]
 							};
 
+							site.lastUpdated = Date.now();
+
 							numberOfSitesRequiringColor--;
 
 							console.log((fields.length - numberOfSitesRequiringColor) + " / " + fields.length + " – Got color for " + site.url);
 
-							if (numberOfSitesRequiringColor <= 0) {
+							if (!siteSaved && numberOfSitesRequiringColor <= 0) {
 								saveSites(fields);
+
+								siteSaved = true;
 							}
 						});
 					}
@@ -221,7 +242,9 @@ function getFaviconColor(url, callback) {
 	image.onerror = function() {
 		console.error("Loading favicon image failed.", url);
 
-		$(".alert-error").removeClass("hidden").find("span").html(FAVICON_LOAD_FAIL_MESSAGE.replace(FAVICON_LOAD_FAIL_URL_REPLACE, url));
+		$(".alert-error").removeClass("hidden");
+		$(".alert-error").children("span").html(FAVICON_LOAD_FAIL_MESSAGE.replace(FAVICON_LOAD_FAIL_URL_REPLACE, url));
+		$(".alert-error").children("h4").html(FAVICON_LOAD_FAIL_TITLE);
 
 		callback(failColor);
 	}
@@ -323,6 +346,11 @@ function getFaviconColor(url, callback) {
 		});
 	}).error(function() {
 		console.error("Could not load url – " + url);
+
+		$(".alert-error").removeClass("hidden");
+		$(".alert-error").children("span").html(FAVICON_LOAD_FAIL_MESSAGE.replace(FAVICON_LOAD_FAIL_URL_REPLACE, url));
+		$(".alert-error").children("h4").html(FAVICON_LOAD_FAIL_TITLE);
+
 		callback(failColor);
 	});
 }
