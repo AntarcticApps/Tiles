@@ -338,8 +338,14 @@ function getFaviconColor(url, callback) {
 			iconPath = hrefs['icon'][0];
 
 			// Pick an icon that isn't missing it's preceding '/'
-			for (var i = 0; i < hrefs['icon'].length && iconPath.substring(0, 1) != '/'; i++) {
+			for (var i = 0; i < hrefs['icon'].length; i++) {
 				iconPath = hrefs['icon'][i];
+
+				if (iconPath.substring(0, 1) != '/' && iconPath.substring(0, 4) != 'http') {
+					continue;
+				} else {
+					break;
+				}
 			}
 		}
 
@@ -348,6 +354,8 @@ function getFaviconColor(url, callback) {
 				image.src = 'http:' + iconPath;
 			} else if (iconPath.substring(0, 1) == '/') {
 				image.src = 'http://' + getHostname(url) + iconPath;
+			} else {
+				image.src = iconPath;
 			}
 
 			return;
