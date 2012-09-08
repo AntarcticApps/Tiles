@@ -240,7 +240,7 @@ function getFaviconColor(url, callback) {
 	var image = new Image();
 
 	image.onerror = function() {
-		console.error("Loading favicon image failed.", url);
+		console.error("Loading favicon from " + image.src + " failed for " + url);
 
 		$(".alert-error").removeClass("hidden");
 		$(".alert-error").children("span").html(FAVICON_LOAD_FAIL_MESSAGE.replace(FAVICON_LOAD_FAIL_URL_REPLACE, url));
@@ -250,6 +250,8 @@ function getFaviconColor(url, callback) {
 	}
 
 	image.onload = function() {
+		console.log("Using favicon url " + image.src + " for " + url);
+
 		var context = $("canvas")[0].getContext('2d');
 		context.clearRect(0, 0, $("canvas")[0].width, $("canvas")[0].height);
 		context.drawImage(image, 0, 0);
