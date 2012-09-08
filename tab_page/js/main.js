@@ -38,7 +38,7 @@ function init() {
 
 	chrome.contextMenus.removeAll(function() {
 		chrome.contextMenus.create({
-		    "title": "Paero Options",
+		    "title": "Tiles Options",
 		    "documentUrlPatterns": [window.location.origin + "/*"],
 		    "contexts": ["page", "link"],
 		    "onclick" : function() {

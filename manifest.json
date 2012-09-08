@@ -1,8 +1,8 @@
 {
-  "name": "Paero",
+  "name": "Tiles",
   "version": "1.0",
   "manifest_version": 2,
-  "description": "A minimalistic new tab page.",
+  "description": "A tiled new tab page.",
   "options_page": "options/options.html",
 
   "permissions": [
@@ -13,7 +13,13 @@
     "<all_urls>"
   ],
 
+  "icons": {
+    "16": "icons/icon-bitty.png",
+    "48": "icons/icon-small.png",
+    "128": "icons/icon-large.png"
+  },
+
   "chrome_url_overrides": {
-    "newtab": "tab_page/paero.html"
+    "newtab": "tab_page/tiles.html"
   }
 }
