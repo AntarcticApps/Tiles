@@ -234,6 +234,7 @@ function getMajorityColor(imageData, ignoredColor) {
 
 	var majorityCandidate = null;
 	var retainCount = 1;
+	var age = 1;
 
 	for (var i = 0; i < imageData.data.length; i += 4) {
 		var pixel = [imageData.data[i],
@@ -244,24 +245,27 @@ function getMajorityColor(imageData, ignoredColor) {
 		if (ignoredColor != undefined && pixelsAreSimilar(ignoredColor, pixel))
 			continue;
 
-		if (majorityCandidate == null && !isWhiteOrTransparent(pixel)) {
+		if (isWhiteOrTransparent(pixel))
+			continue;
+
+		if (majorityCandidate == null) {
 			majorityCandidate = pixel;
-		}
+		} else {
+			age++;
 
-		if (majorityCandidate) {
-			if (pixelsAreSimilar(majorityCandidate, pixel) && !isWhiteOrTransparent(pixel)) {
+			if (pixelsAreSimilar(majorityCandidate, pixel)) {
 				retainCount++;
-
-				majorityCandidate = averagePixels(majorityCandidate, pixel, retainCount);
-			} else if (!isWhiteOrTransparent(pixel)) {
+				majorityCandidate = averagePixels(majorityCandidate, pixel, age);
+			} else {
 				retainCount--;
 			}
 
 			if (retainCount == 0) {
 				majorityCandidate = pixel;
-
 				retainCount = 1;
 			}
+
+			// console.log(majorityCandidate + " " + retainCount);
 		}
 	}
 
@@ -294,11 +298,11 @@ function getFaviconColor(url, callback) {
 		majorityCandidates[1] = getMajorityColor(imageData, majorityCandidates[0]);
 
 		if (majorityCandidates[1] == null) {
-			callback(majorityCandidates[0])
+			callback(majorityCandidates[0]);
 		} else if (rgbToHsl(majorityCandidates[0])[1] > rgbToHsl(majorityCandidates[1])[1]) {
-			callback(majorityCandidates[0])
+			callback(majorityCandidates[0]);
 		} else {
-			callback(majorityCandidates[1])
+			callback(majorityCandidates[1]);
 		}
 	}
 
