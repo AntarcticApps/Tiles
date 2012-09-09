@@ -164,14 +164,15 @@ $(document).ready(function() {
 				for (var i = 0; i < sites.length; i++) {
 					for (var j = 0; j < fields.length; j++) {
 						if (sites[i].url == fields[j].url) {
-							if (!sites[i].lastUpdated || Date.now() - sites[i].lastUpdated >= TIME_BEFORE_UPDATE) {
-								fields[i].color = null;
-							} else {
-								fields[j].color = sites[i].color;
-								fields[i].lastUpdated = sites[i].lastUpdated;
+							// if (!sites[i].lastUpdated || Date.now() - sites[i].lastUpdated >= TIME_BEFORE_UPDATE) {
+							// 	fields[i].color = null;
+							// } else {
+							// 	fields[j].color = sites[i].color;
+							// 	fields[i].lastUpdated = sites[i].lastUpdated;
 
-								numberOfSitesRequiringColor--;
-							}
+							// 	numberOfSitesRequiringColor--;
+							// }
+							fields[j].color = null;
 						}
 					}
 				}
@@ -236,6 +237,45 @@ function isWhiteOrTransparent(color) {
 		&& 255 - color[2] <= TOLERANCE;
 }
 
+function getMajorityColor(imageData, ignoredColor) {
+	const TOLERANCE = 10;
+
+	var majorityCandidate = null;
+	var retainCount = 1;
+
+	for (var i = 0; i < imageData.data.length; i += 4) {
+		var pixel = [imageData.data[i],
+		imageData.data[i + 1],
+		imageData.data[i + 2],
+		imageData.data[i + 3]];
+
+		if (ignoredColor != undefined && pixelsAreSimilar(ignoredColor, pixel))
+			continue;
+
+		if (majorityCandidate == null && !isWhiteOrTransparent(pixel)) {
+			majorityCandidate = pixel;
+		}
+
+		if (majorityCandidate) {
+			if (pixelsAreSimilar(majorityCandidate, pixel) && !isWhiteOrTransparent(pixel)) {
+				retainCount++;
+
+				majorityCandidate = averagePixels(majorityCandidate, pixel, retainCount);
+			} else if (!isWhiteOrTransparent(pixel)) {
+				retainCount--;
+			}
+
+			if (retainCount == 0) {
+				majorityCandidate = pixel;
+
+				retainCount = 1;
+			}
+		}
+	}
+
+	return majorityCandidate;
+}
+
 function getFaviconColor(url, callback) {
 	var image = new Image();
 
@@ -255,42 +295,19 @@ function getFaviconColor(url, callback) {
 		var context = $("canvas")[0].getContext('2d');
 		context.clearRect(0, 0, $("canvas")[0].width, $("canvas")[0].height);
 		context.drawImage(image, 0, 0);
-
-		var majorityCandidate = null;
-		var retainCount = 1;
-
-		const TOLERANCE = 10;
-
 		var imageData = context.getImageData(0, 0, image.width, image.height);
 
-		for (var i = 0; i < imageData.data.length; i += 4) {
-			var pixel = [imageData.data[i],
-			imageData.data[i + 1],
-			imageData.data[i + 2],
-			imageData.data[i + 3]];
+		var majorityCandidates = [null, null];
+		majorityCandidates[0] = getMajorityColor(imageData);
+		majorityCandidates[1] = getMajorityColor(imageData, majorityCandidates[0]);
 
-			if (majorityCandidate == null && !isWhiteOrTransparent(pixel)) {
-				majorityCandidate = pixel;
-			}
-
-			if (majorityCandidate) {
-				if (pixelsAreSimilar(majorityCandidate, pixel) && !isWhiteOrTransparent(pixel)) {
-					retainCount++;
-
-					majorityCandidate = averagePixels(majorityCandidate, pixel, retainCount);
-				} else if (!isWhiteOrTransparent(pixel)) {
-					retainCount--;
-				}
-
-				if (retainCount == 0) {
-					majorityCandidate = pixel;
-
-					retainCount = 1;
-				}
-			}
+		if (majorityCandidates[1] == null) {
+			callback(majorityCandidates[0])
+		} else if (rgbToHsl(majorityCandidates[0])[1] > rgbToHsl(majorityCandidates[1])[1]) {
+			callback(majorityCandidates[0])
+		} else {
+			callback(majorityCandidates[1])
 		}
-
-		callback(majorityCandidate);
 	}
 
 	var failColor = [0, 0, 0, 0];
