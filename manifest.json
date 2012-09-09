@@ -27,5 +27,9 @@
     "default_icon": "icons/icon-bitty-gray.png",
     "default_title": "Tiles",
     "default_popup": "browserAction/popup.html"
+  },
+
+  "background": {
+    "scripts": ["browserAction/background.js"]
   }
 }
