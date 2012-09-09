@@ -21,5 +21,11 @@
 
   "chrome_url_overrides": {
     "newtab": "tab_page/tiles.html"
+  },
+
+  "browser_action": {
+    "default_icon": "icons/icon-bitty.png",
+    "default_title": "Tiles",
+    "default_popup": "browserAction/popup.html"
   }
 }
