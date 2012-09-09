@@ -159,14 +159,15 @@ $(document).ready(function() {
 				for (var i = 0; i < sites.length; i++) {
 					for (var j = 0; j < fields.length; j++) {
 						if (sites[i].url == fields[j].url) {
-							if (!sites[i].lastUpdated || Date.now() - sites[i].lastUpdated >= TIME_BEFORE_UPDATE) {
-								fields[i].color = null;
-							} else {
-								fields[j].color = sites[i].color;
-								fields[i].lastUpdated = sites[i].lastUpdated;
+							// if (!sites[i].lastUpdated || Date.now() - sites[i].lastUpdated >= TIME_BEFORE_UPDATE) {
+							// 	fields[i].color = null;
+							// } else {
+							// 	fields[j].color = sites[i].color;
+							// 	fields[i].lastUpdated = sites[i].lastUpdated;
 
-								numberOfSitesRequiringColor--;
-							}
+							// 	numberOfSitesRequiringColor--;
+							// }
+							fields[j].color = null;
 						}
 					}
 				}
@@ -211,9 +212,6 @@ $(document).ready(function() {
 
 		return false;
 	});
-<<<<<<< HEAD
-});
-=======
 });
 
 function makeAbbreviation(string) {
@@ -232,10 +230,10 @@ function isWhiteOrTransparent(color) {
 }
 
 function getMajorityColor(imageData, ignoredColor) {
+	const TOLERANCE = 10;
+
 	var majorityCandidate = null;
 	var retainCount = 1;
-	var age = 1;
-	var sumRGB = [0, 0, 0, 0];
 
 	for (var i = 0; i < imageData.data.length; i += 4) {
 		var pixel = [imageData.data[i],
@@ -246,48 +244,28 @@ function getMajorityColor(imageData, ignoredColor) {
 		if (ignoredColor != undefined && pixelsAreSimilar(ignoredColor, pixel))
 			continue;
 
-		if (isWhiteOrTransparent(pixel))
-			continue;
-
-		if (majorityCandidate == null) {
+		if (majorityCandidate == null && !isWhiteOrTransparent(pixel)) {
 			majorityCandidate = pixel;
-			for (var j = 0; j < sumRGB.length; j++) {
-				sumRGB[j] = pixel[j];
-			}
-		} else {
+		}
 
-			if (pixelsAreSimilar(majorityCandidate, pixel)) {
+		if (majorityCandidate) {
+			if (pixelsAreSimilar(majorityCandidate, pixel) && !isWhiteOrTransparent(pixel)) {
 				retainCount++;
 
-				// majorityCandidate = averagePixels(majorityCandidate, pixel, age);
-
-				age++;
-				for (var j = 0; j < pixel.length; j++) {
-					sumRGB[j] += pixel[j];
-				}
-			} else {
+				majorityCandidate = averagePixels(majorityCandidate, pixel, retainCount);
+			} else if (!isWhiteOrTransparent(pixel)) {
 				retainCount--;
 			}
 
 			if (retainCount == 0) {
 				majorityCandidate = pixel;
+
 				retainCount = 1;
-				age = 1;
-
-				for (var j = 0; j < sumRGB.length; j++) {
-					sumRGB[j] = pixel[j];
-				}
 			}
-
-			// console.log(majorityCandidate + " " + retainCount);
 		}
 	}
 
-	for (var j = 0; j < sumRGB.length; j++) {
-		sumRGB[j] = Math.round(sumRGB[j] / age);
-	}
-
-	return sumRGB;
+	return majorityCandidate;
 }
 
 function getFaviconColor(url, callback) {
@@ -316,11 +294,11 @@ function getFaviconColor(url, callback) {
 		majorityCandidates[1] = getMajorityColor(imageData, majorityCandidates[0]);
 
 		if (majorityCandidates[1] == null) {
-			callback(majorityCandidates[0]);
+			callback(majorityCandidates[0])
 		} else if (rgbToHsl(majorityCandidates[0])[1] > rgbToHsl(majorityCandidates[1])[1]) {
-			callback(majorityCandidates[0]);
+			callback(majorityCandidates[0])
 		} else {
-			callback(majorityCandidates[1]);
+			callback(majorityCandidates[1])
 		}
 	}
 
@@ -475,4 +453,3 @@ function averagePixels(a, b, ratio) {
 
 	return avg;
 }
->>>>>>> Create two candidates for the main color.
