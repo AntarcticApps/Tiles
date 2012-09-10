@@ -1,20 +1,34 @@
 chrome.tabs.onActivated.addListener(function(info) {
 	chrome.tabs.get(info.tabId, function(tab) {
-		updateIcon(tab.url);
+		update(tab.url);
 	});
 });
 
 chrome.tabs.onUpdated.addListener(function(tabID, changeInfo, tab) {
 	if (tab.active) {
-		updateIcon(tab.url);
+		update(tab.url);
 	}
 });
 
-function updateIcon(url) {
+function setPopup(save) {
+	if (save) {
+		chrome.browserAction.setPopup({"popup": "browserAction/save.html"});
+	} else {
+		chrome.browserAction.setPopup({"popup": "browserAction/delete.html"});		
+	}
+}
+
+function update(url) {
+	siteExists(url, function(exists) {
+		setPopup(!exists);
+
+		changeIcon(exists, null);
+	});
+}
+
+function siteExists(url, callback) {
 	chrome.storage.sync.get('sites', function(items) {
 		sites = items['sites'];
-
-		changeIcon(false, null);
 
 		if (url.substring(url.length - 1) == '/') {
 			url = url.substring(0, url.length - 1);
@@ -23,11 +37,12 @@ function updateIcon(url) {
 		if (sites) {
 			for (var i = 0; i < sites.length; i++) {
 				if (sites[i].url == url) {
-					changeIcon(true, null);
-					break;
+					return callback(true);
 				}
 			}
 		}
+
+		return callback(false);
 	});
 }
 
