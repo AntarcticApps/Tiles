@@ -106,8 +106,6 @@ $(document).ready(function() {
 		event.preventDefault();
 		event.stopPropagation();
 
-		var fields = [];
-
 		$(".alert-error").addClass("hidden");
 
 		$("button.submit").addClass("disabled").html(SUBMIT_BUTTON_SAVING_TEXT);
@@ -126,30 +124,30 @@ $(document).ready(function() {
 			}
 		});
 
-		$('input:text.url').each(function(index, element) {
-			var value = $(this).val();
+		var fields = [];
 
-			if (!value.match(/^(http|https):\/\//)) {
-				value = "http://" + value;
-				$(this).val(value);
+		$('#sites .site-controls').each(function(index, element) {
+			urlField = $(this).children('input:text.url').eq(0);
+			abbreviationField = $(this).children('input:text.abbreviation').eq(0);
+
+			var url = urlField.val();
+			var abbreviation = abbreviationField.val();
+
+			if (!url.match(/^(http|https):\/\//)) {
+				url = "http://" + url;
+
+				urlField.val(url);
+			}
+
+			if (!abbreviation) {
+				abbreviation = makeAbbreviation(getHostname(url));
+
+				abbreviationField.val(abbreviation);
 			}
 
 			fields[index] = {};
-			fields[index].url = value;
-		});
-
-		$('input:text.abbreviation').each(function(index, element) {
-			var value = $(this).val();
-
-			if (value) {
-				fields[index].abbreviation = makeAbbreviation(value);
-			} else {
-				var abbreviation = makeAbbreviation(getHostname(fields[index].url));
-
-				fields[index].abbreviation = abbreviation;
-			}
-
-			$(this).val(fields[index].abbreviation);
+			fields[index].url = url;
+			fields[index].abbreviation = abbreviation;
 		});
 
 		var numberOfSitesRequiringColor = fields.length;
