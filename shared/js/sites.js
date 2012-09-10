@@ -1,3 +1,21 @@
+function createSite(url, abbreviation, callback) {
+	var site = {};
+
+	site.url = url;
+
+	if (abbreviation) {
+		site.abbreviation = abbreviation;
+	} else {
+		site.abbreviation = getHostname(url);
+	}
+
+	site.abbreviation = makeAbbreviation(site.abbreviation);
+
+	setSiteColor(site, function(site, error) {
+		callback(site, error);
+	});
+}
+
 function setSiteColor(site, callback) {
 	getFaviconColor(site.url, function(color) {
 		var error = false;
