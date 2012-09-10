@@ -1,3 +1,5 @@
+var currentURL = null;
+
 chrome.tabs.onActivated.addListener(function(info) {
 	chrome.tabs.get(info.tabId, function(tab) {
 		update(tab.url);
@@ -10,6 +12,10 @@ chrome.tabs.onUpdated.addListener(function(tabID, changeInfo, tab) {
 	}
 });
 
+chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+	sendResponse({url: currentURL});
+});
+
 function setPopup(save) {
 	if (save) {
 		chrome.browserAction.setPopup({"popup": "browserAction/save.html"});
@@ -19,6 +25,8 @@ function setPopup(save) {
 }
 
 function update(url) {
+	currentURL = url;
+
 	siteExists(url, function(exists) {
 		setPopup(!exists);
 
