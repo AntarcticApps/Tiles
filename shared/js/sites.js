@@ -16,6 +16,22 @@ function createSite(url, abbreviation, callback) {
 	});
 }
 
+function getSites(callback) {
+	chrome.storage.sync.get('sites', function(items) {
+		sites = items['sites'];
+
+		if (sites == undefined || sites == null) {
+			return callback(null);
+		} else {
+			if (sites.length == 0) {
+				return callback(null);
+			}
+		}
+
+		return callback(sites);
+	});
+}
+
 function setSiteColor(site, callback) {
 	getFaviconColor(site.url, function(color) {
 		var error = false;

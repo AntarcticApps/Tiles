@@ -20,15 +20,11 @@ const FAVICON_LOAD_FAIL_MESSAGE = "Could not retrieve favicon for #{url}. Check 
 $(document).ready(function() {
 	var sites = [];
 
-	chrome.storage.sync.get('sites', function(items) {
-		sites = items['sites'];
-
-		if (sites == undefined || sites == null) {
+	getSites(function (data) {
+		if (!data) {
 			$("#sites").prepend(CONTROL_GROUP);
 		} else {
-			if (sites.length == 0) {
-				$("#sites").prepend(CONTROL_GROUP);
-			}
+			sites = data;
 
 			sites = sites.reverse();
 
