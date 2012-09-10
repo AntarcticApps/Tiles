@@ -5,7 +5,7 @@ chrome.tabs.onActivated.addListener(function(info) {
 });
 
 chrome.tabs.onUpdated.addListener(function(tabID, changeInfo, tab) {
-	if (changeInfo.active) {
+	if (tab.active) {
 		updateIcon(tab.url);
 	}
 });
