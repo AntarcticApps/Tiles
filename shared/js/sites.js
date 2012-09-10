@@ -1,3 +1,11 @@
+function siteNeedsColorUpdate(site) {
+	const TIME_BEFORE_UPDATE = 1000 * 60 * 60;
+
+	var elapsedTime = Date.now() - site.lastUpdated;
+
+	return (!site.lastUpdated || elapsedTime >= TIME_BEFORE_UPDATE);
+}
+
 function makeAbbreviation(string) {
 	return string.substring(0, 1).toUpperCase() + string.substring(1, 2).toLowerCase();
 }

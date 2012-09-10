@@ -153,7 +153,6 @@ $(document).ready(function() {
 		});
 
 		var numberOfSitesRequiringColor = fields.length;
-		const TIME_BEFORE_UPDATE = 1000 * 60 * 60;
 
 		chrome.storage.sync.get('sites', function(items) {
 			sites = items['sites'];
@@ -166,7 +165,7 @@ $(document).ready(function() {
 				for (var i = 0; i < sites.length; i++) {
 					for (var j = 0; j < fields.length; j++) {
 						if (sites[i].url == fields[j].url) {
-							if (!sites[i].lastUpdated || Date.now() - sites[i].lastUpdated >= TIME_BEFORE_UPDATE) {
+							if (siteNeedsColorUpdate(sites[i])) {
 								fields[i].color = null;
 							} else {
 								fields[j].color = sites[i].color;
