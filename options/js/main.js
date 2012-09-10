@@ -193,15 +193,12 @@ $(document).ready(function() {
 							siteSaved = true;
 						}
 					} else {
-						getFaviconColor(site.url, function(color) {
-							site.color = {
-								'red': color[0],
-								'green': color[1],
-								'blue': color[2],
-								'alpha': color[3]
-							};
-
-							site.lastUpdated = Date.now();
+						setSiteColor(site, function(site, error) {
+							if (error) {
+								$(".alert-error").removeClass("hidden");
+								$(".alert-error").children("span").html(FAVICON_LOAD_FAIL_MESSAGE.replace(FAVICON_LOAD_FAIL_URL_REPLACE, url));
+								$(".alert-error").children("h4").html(FAVICON_LOAD_FAIL_TITLE);
+							}
 
 							numberOfSitesRequiringColor--;
 

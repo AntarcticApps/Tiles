@@ -1,3 +1,26 @@
+function setSiteColor(site, callback) {
+	getFaviconColor(site.url, function(color) {
+		var error = false;
+
+		if (!color) {
+			error = true;
+
+			color = [0, 0, 0, 0];
+		}
+
+		site.color = {
+			'red': color[0],
+			'green': color[1],
+			'blue': color[2],
+			'alpha': color[3]
+		};
+
+		site.lastUpdated = Date.now();
+
+		return callback(site, error);
+	});
+}
+
 function siteNeedsColorUpdate(site) {
 	const TIME_BEFORE_UPDATE = 1000 * 60 * 60;
 
@@ -27,11 +50,7 @@ function getFaviconColor(url, callback) {
 	image.onerror = function() {
 		console.error("Loading favicon from " + image.src + " failed for " + url);
 
-		$(".alert-error").removeClass("hidden");
-		$(".alert-error").children("span").html(FAVICON_LOAD_FAIL_MESSAGE.replace(FAVICON_LOAD_FAIL_URL_REPLACE, url));
-		$(".alert-error").children("h4").html(FAVICON_LOAD_FAIL_TITLE);
-
-		callback(failColor);
+		callback(null);
 	}
 
 	image.onload = function() {
@@ -77,8 +96,6 @@ function getFaviconColor(url, callback) {
 
 		callback(majorityCandidate);
 	}
-
-	var failColor = [0, 0, 0, 0];
 
 	$.get(url).success(function(data) {
 		// Search for explicitly declared icon hrefs
@@ -157,17 +174,13 @@ function getFaviconColor(url, callback) {
 				image.src = domain + '/favicon.ico';
 			}).error(function() {
 				console.error("Could not find any icons for url – " + url);
-				callback(failColor);
+				callback(null);
 			})
 		});
 	}).error(function() {
 		console.error("Could not load url – " + url);
 
-		$(".alert-error").removeClass("hidden");
-		$(".alert-error").children("span").html(FAVICON_LOAD_FAIL_MESSAGE.replace(FAVICON_LOAD_FAIL_URL_REPLACE, url));
-		$(".alert-error").children("h4").html(FAVICON_LOAD_FAIL_TITLE);
-
-		callback(failColor);
+		callback(null);
 	});
 }
 
