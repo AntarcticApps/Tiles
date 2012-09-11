@@ -34,7 +34,7 @@ function saveSite(site, callback) {
 		var found = false;
 
 		for (var i = 0; i < sites.length; i++) {
-			if (sites[i].url == site) {
+			if (sites[i].url == site.url) {
 				sites[i] = site;
 
 				found = true;
