@@ -148,6 +148,8 @@ $(document).ready(function() {
 
 		var numberOfSitesRequiringColor = fields.length;
 
+		const TIME_BEFORE_UPDATE = 1000 * 60 * 60;
+
 		chrome.storage.sync.get('sites', function(items) {
 			sites = items['sites'];
 
