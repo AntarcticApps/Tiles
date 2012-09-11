@@ -266,8 +266,6 @@ function getMajorityColor(imageData, ignoredColor) {
 			if (pixelsAreSimilar(majorityCandidate, pixel)) {
 				retainCount++;
 
-				// majorityCandidate = averagePixels(majorityCandidate, pixel, age);
-
 				age++;
 				for (var j = 0; j < pixel.length; j++) {
 					sumRGB[j] += pixel[j];
@@ -285,14 +283,14 @@ function getMajorityColor(imageData, ignoredColor) {
 					sumRGB[j] = pixel[j];
 				}
 			}
-
-			// console.log(majorityCandidate + " " + retainCount);
 		}
 	}
 
 	for (var j = 0; j < sumRGB.length; j++) {
 		sumRGB[j] = Math.round(sumRGB[j] / age);
 	}
+
+	sumRGB = correctLightnessIfNeeded(sumRGB);
 
 	return sumRGB;
 }
@@ -466,6 +464,52 @@ function rgbToHsl(rgb){
 	return [h, s, l];
 }
 
+/**
+ * Converts an HSL color value to RGB. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes h, s, and l are contained in the set [0, 1] and
+ * returns r, g, and b in the set [0, 255].
+ *
+ * @param   Number  h       The hue
+ * @param   Number  s       The saturation
+ * @param   Number  l       The lightness
+ * @return  Array           The RGB representation
+ */
+function hslToRgb(hsl){
+	var h = hsl[0], s = hsl[1], l = hsl[2];
+    var r, g, b;
+
+    if(s == 0){
+        r = g = b = l; // achromatic
+    }else{
+        function hue2rgb(p, q, t){
+            if(t < 0) t += 1;
+            if(t > 1) t -= 1;
+            if(t < 1/6) return p + (q - p) * 6 * t;
+            if(t < 1/2) return q;
+            if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+            return p;
+        }
+
+        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        var p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1/3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1/3);
+    }
+
+    return [r * 255, g * 255, b * 255];
+}
+
+function safeAlphaHslToRgb(hsl) {
+	var rgb = hslToRgb(hsl);
+	var safeRgb = [0, 0, 0, 255]
+	for (var i = 0; i < hsl.length; i++) {
+		safeRgb[i] = Math.floor(rgb[i]);
+	}
+	return safeRgb;
+}
+
 function averagePixels(a, b, ratio) {
 	var weight;
 	ratio++;
@@ -481,4 +525,16 @@ function averagePixels(a, b, ratio) {
 	}
 
 	return avg;
+}
+
+function correctLightnessIfNeeded(rgb) {
+	const MAX_BRIGHTNESS = 0.8;
+
+	var hsl = rgbToHsl(rgb);
+	if (hsl[2] > MAX_BRIGHTNESS) {
+		hsl[2] = MAX_BRIGHTNESS;
+		rgb = safeAlphaHslToRgb(hsl);
+	}
+
+	return rgb;
 }
