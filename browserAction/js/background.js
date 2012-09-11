@@ -1,14 +1,15 @@
 var currentURL = null;
+var currentTabID = null;
 
 chrome.tabs.onActivated.addListener(function(info) {
 	chrome.tabs.get(info.tabId, function(tab) {
-		update(tab.url);
+		update(tab);
 	});
 });
 
 chrome.tabs.onUpdated.addListener(function(tabID, changeInfo, tab) {
 	if (tab.active) {
-		update(tab.url);
+		update(tab);
 	}
 });
 
@@ -29,17 +30,24 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 function setPopup(save) {
+	var details = {};
+
 	if (save) {
-		chrome.browserAction.setPopup({"popup": "browserAction/save.html"});
+		details.popup = 'browserAction/save.html';
 	} else {
-		chrome.browserAction.setPopup({"popup": "browserAction/delete.html"});		
+		details.popup = 'browserAction/delete.html';
 	}
+
+	details.tabId = currentTabID;
+
+	chrome.browserAction.setPopup(details);
 }
 
-function update(url) {
-	currentURL = url;
+function update(tab) {
+	currentTabID = tab.id;
+	currentURL = tab.url;
 
-	siteExists(url, function(exists) {
+	siteExists(tab.url, function(exists) {
 		setPopup(!exists);
 
 		changeIcon(exists, null);
@@ -68,6 +76,8 @@ function changeIcon(colors, callback) {
 	} else {
 		details.path = '../icons/icon-bitty-gray.png';
 	}
+
+	details.tabId = currentTabID;
 
 	chrome.browserAction.setIcon(details, callback);
 }
