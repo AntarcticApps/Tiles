@@ -3,8 +3,7 @@ chrome.extension.sendMessage({message: "save"}, function(response) {
 		saveSite(site, function() {
 			document.getElementsByTagName('span')[0].innerHTML = "Site saved!";
 
-			chrome.extension.sendMessage({message: "saved"}, function(response) {
-			});
+			chrome.extension.sendMessage({message: "saved"}, function(response) {});
 		});
 	});
 });
