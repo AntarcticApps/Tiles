@@ -230,11 +230,10 @@ function isWhiteOrTransparent(color) {
 }
 
 function getMajorityColor(imageData, ignoredColor) {
-	const TOLERANCE = 10;
-
 	var majorityCandidate = null;
 	var retainCount = 1;
 	var age = 1;
+	var sumRGB = [0, 0, 0, 0];
 
 	for (var i = 0; i < imageData.data.length; i += 4) {
 		var pixel = [imageData.data[i],
@@ -250,12 +249,20 @@ function getMajorityColor(imageData, ignoredColor) {
 
 		if (majorityCandidate == null) {
 			majorityCandidate = pixel;
+			for (var j = 0; j < sumRGB.length; j++) {
+				sumRGB[j] = pixel[j];
+			}
 		} else {
-			age++;
 
 			if (pixelsAreSimilar(majorityCandidate, pixel)) {
 				retainCount++;
-				majorityCandidate = averagePixels(majorityCandidate, pixel, age);
+
+				// majorityCandidate = averagePixels(majorityCandidate, pixel, age);
+
+				age++;
+				for (var j = 0; j < pixel.length; j++) {
+					sumRGB[j] += pixel[j];
+				}
 			} else {
 				retainCount--;
 			}
@@ -263,13 +270,22 @@ function getMajorityColor(imageData, ignoredColor) {
 			if (retainCount == 0) {
 				majorityCandidate = pixel;
 				retainCount = 1;
+				age = 1;
+
+				for (var j = 0; j < sumRGB.length; j++) {
+					sumRGB[j] = pixel[j];
+				}
 			}
 
 			// console.log(majorityCandidate + " " + retainCount);
 		}
 	}
 
-	return majorityCandidate;
+	for (var j = 0; j < sumRGB.length; j++) {
+		sumRGB[j] = Math.round(sumRGB[j] / age);
+	}
+
+	return sumRGB;
 }
 
 function getFaviconColor(url, callback) {
