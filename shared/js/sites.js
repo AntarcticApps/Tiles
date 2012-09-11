@@ -116,6 +116,63 @@ function isWhiteOrTransparent(color) {
 		&& 255 - color[2] <= TOLERANCE;
 }
 
+function getMajorityColor(imageData, ignoredColor) {
+	var majorityCandidate = null;
+	var retainCount = 1;
+	var age = 1;
+	var sumRGB = [0, 0, 0, 0];
+
+	for (var i = 0; i < imageData.data.length; i += 4) {
+		var pixel = [imageData.data[i],
+		imageData.data[i + 1],
+		imageData.data[i + 2],
+		imageData.data[i + 3]];
+
+		if (ignoredColor != undefined && pixelsAreSimilar(ignoredColor, pixel))
+			continue;
+
+		if (isWhiteOrTransparent(pixel))
+			continue;
+
+		if (majorityCandidate == null) {
+			majorityCandidate = pixel;
+			for (var j = 0; j < sumRGB.length; j++) {
+				sumRGB[j] = pixel[j];
+			}
+		} else {
+
+			if (pixelsAreSimilar(majorityCandidate, pixel)) {
+				retainCount++;
+
+				age++;
+				for (var j = 0; j < pixel.length; j++) {
+					sumRGB[j] += pixel[j];
+				}
+			} else {
+				retainCount--;
+			}
+
+			if (retainCount == 0) {
+				majorityCandidate = pixel;
+				retainCount = 1;
+				age = 1;
+
+				for (var j = 0; j < sumRGB.length; j++) {
+					sumRGB[j] = pixel[j];
+				}
+			}
+		}
+	}
+
+	for (var j = 0; j < sumRGB.length; j++) {
+		sumRGB[j] = Math.round(sumRGB[j] / age);
+	}
+
+	sumRGB = correctLightnessIfNeeded(sumRGB);
+
+	return sumRGB;
+}
+
 function getFaviconColor(url, callback) {
 	var image = new Image();
 
@@ -131,42 +188,19 @@ function getFaviconColor(url, callback) {
 		var context = $("canvas")[0].getContext('2d');
 		context.clearRect(0, 0, $("canvas")[0].width, $("canvas")[0].height);
 		context.drawImage(image, 0, 0);
-
-		var majorityCandidate = null;
-		var retainCount = 1;
-
-		const TOLERANCE = 10;
-
 		var imageData = context.getImageData(0, 0, image.width, image.height);
 
-		for (var i = 0; i < imageData.data.length; i += 4) {
-			var pixel = [imageData.data[i],
-			imageData.data[i + 1],
-			imageData.data[i + 2],
-			imageData.data[i + 3]];
+		var majorityCandidates = [null, null];
+		majorityCandidates[0] = getMajorityColor(imageData);
+		majorityCandidates[1] = getMajorityColor(imageData, majorityCandidates[0]);
 
-			if (majorityCandidate == null && !isWhiteOrTransparent(pixel)) {
-				majorityCandidate = pixel;
-			}
-
-			if (majorityCandidate) {
-				if (pixelsAreSimilar(majorityCandidate, pixel) && !isWhiteOrTransparent(pixel)) {
-					retainCount++;
-
-					majorityCandidate = averagePixels(majorityCandidate, pixel, retainCount);
-				} else if (!isWhiteOrTransparent(pixel)) {
-					retainCount--;
-				}
-
-				if (retainCount == 0) {
-					majorityCandidate = pixel;
-
-					retainCount = 1;
-				}
-			}
+		if (majorityCandidates[1] == null) {
+			callback(majorityCandidates[0]);
+		} else if (rgbToHsl(majorityCandidates[0])[1] > rgbToHsl(majorityCandidates[1])[1]) {
+			callback(majorityCandidates[0]);
+		} else {
+			callback(majorityCandidates[1]);
 		}
-
-		callback(majorityCandidate);
 	}
 
 	$.get(url).success(function(data) {
@@ -210,17 +244,6 @@ function getFaviconColor(url, callback) {
 			iconPath = hrefs['apple-touch-icon'][0];
 		} else if (hrefs['icon']) {
 			iconPath = hrefs['icon'][0];
-
-			// Pick an icon that isn't missing it's preceding '/'
-			for (var i = 0; i < hrefs['icon'].length; i++) {
-				iconPath = hrefs['icon'][i];
-
-				if (iconPath.substring(0, 1) != '/' && iconPath.substring(0, 4) != 'http') {
-					continue;
-				} else {
-					break;
-				}
-			}
 		}
 
 		if (iconPath) {
@@ -228,6 +251,12 @@ function getFaviconColor(url, callback) {
 				image.src = 'http:' + iconPath;
 			} else if (iconPath.substring(0, 1) == '/') {
 				image.src = 'http://' + getHostname(url) + iconPath;
+			} else if (iconPath.substring(0, 4) != 'http') {
+				if (url.substring(url.length - 1) != '/') {
+					image.src = url + '/' + iconPath;
+				} else {
+					image.src = url + iconPath;
+				}
 			} else {
 				image.src = iconPath;
 			}
@@ -257,10 +286,10 @@ function getFaviconColor(url, callback) {
 }
 
 function pixelsAreSimilar(a, b) {
-	const TOLERANCE = 0.001;
+	const TOLERANCE = 0.01;
 
-	var aHSL = rgbToHsl(a[0], a[1], a[2]);
-	var bHSL = rgbToHsl(b[0], b[1], b[2]);
+	var aHSL = rgbToHsl(a);
+	var bHSL = rgbToHsl(b);
 
 	return Math.abs(aHSL[0] - bHSL[0]) <= TOLERANCE;
 }
@@ -277,8 +306,10 @@ function pixelsAreSimilar(a, b) {
  * @param   Number  b       The blue color value
  * @return  Array           The HSL representation
  */
-function rgbToHsl(r, g, b){
-	r /= 255, g /= 255, b /= 255;
+function rgbToHsl(rgb){
+	var r = rgb[0] / 255;
+	var g = rgb[1] / 255;
+	var b = rgb[2] / 255;
 
 	var max = Math.max(r, g, b), min = Math.min(r, g, b);
 	var h, s, l = (max + min) / 2;
@@ -301,6 +332,52 @@ function rgbToHsl(r, g, b){
 	return [h, s, l];
 }
 
+/**
+ * Converts an HSL color value to RGB. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes h, s, and l are contained in the set [0, 1] and
+ * returns r, g, and b in the set [0, 255].
+ *
+ * @param   Number  h       The hue
+ * @param   Number  s       The saturation
+ * @param   Number  l       The lightness
+ * @return  Array           The RGB representation
+ */
+function hslToRgb(hsl){
+	var h = hsl[0], s = hsl[1], l = hsl[2];
+    var r, g, b;
+
+    if(s == 0){
+        r = g = b = l; // achromatic
+    }else{
+        function hue2rgb(p, q, t){
+            if(t < 0) t += 1;
+            if(t > 1) t -= 1;
+            if(t < 1/6) return p + (q - p) * 6 * t;
+            if(t < 1/2) return q;
+            if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+            return p;
+        }
+
+        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        var p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1/3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1/3);
+    }
+
+    return [r * 255, g * 255, b * 255];
+}
+
+function safeAlphaHslToRgb(hsl) {
+	var rgb = hslToRgb(hsl);
+	var safeRgb = [0, 0, 0, 255]
+	for (var i = 0; i < hsl.length; i++) {
+		safeRgb[i] = Math.floor(rgb[i]);
+	}
+	return safeRgb;
+}
+
 function averagePixels(a, b, ratio) {
 	var weight;
 	ratio++;
@@ -316,4 +393,16 @@ function averagePixels(a, b, ratio) {
 	}
 
 	return avg;
+}
+
+function correctLightnessIfNeeded(rgb) {
+	const MAX_BRIGHTNESS = 0.8;
+
+	var hsl = rgbToHsl(rgb);
+	if (hsl[2] > MAX_BRIGHTNESS) {
+		hsl[2] = MAX_BRIGHTNESS;
+		rgb = safeAlphaHslToRgb(hsl);
+	}
+
+	return rgb;
 }
