@@ -16,6 +16,27 @@ function createSite(url, abbreviation, callback) {
 	});
 }
 
+function saveSite(site, callback) {
+	getSites(function(sites) {
+		var found = false;
+
+		for (var i = 0; i < sites.length; i++) {
+			if (sites[i].url == site) {
+				sites[i] = site;
+
+				found = true;
+				break;
+			}
+		}
+
+		if (!found) {
+			sites.push(site);
+		}
+
+		chrome.storage.sync.set({"sites": sites}, callback);
+	});
+}
+
 function getSites(callback) {
 	chrome.storage.sync.get('sites', function(items) {
 		sites = items['sites'];
