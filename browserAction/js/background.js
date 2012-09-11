@@ -39,9 +39,7 @@ function update(url) {
 }
 
 function siteExists(url, callback) {
-	chrome.storage.sync.get('sites', function(items) {
-		sites = items['sites'];
-		
+	getSites(function(sites) {
 		if (sites) {
 			for (var i = 0; i < sites.length; i++) {
 				if (sites[i].url == url) {
