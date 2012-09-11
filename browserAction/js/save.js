@@ -1,3 +1,7 @@
 chrome.extension.sendMessage({greeting: "hello"}, function(response) {
-	document.getElementsByTagName('span')[0].innerHTML = response.url;
+	createSite(response.url, null, function(site) {
+		saveSite(site, function() {
+			document.getElementsByTagName('span')[0].innerHTML = "Site saved!";
+		});
+	});
 });
