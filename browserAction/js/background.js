@@ -13,8 +13,12 @@ chrome.tabs.onUpdated.addListener(function(tabID, changeInfo, tab) {
 });
 
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+	console.log(request.message);
+
 	if (request.message == "saved") {
 		changeIcon(true, null);
+	} else if (request.message == "delete") {
+		console.log("delete");
 	}
 
 	sendResponse({url: currentURL});
