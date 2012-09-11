@@ -33,8 +33,12 @@ function saveSite(site, callback) {
 			sites.push(site);
 		}
 
-		chrome.storage.sync.set({"sites": sites}, callback);
+		saveSites(sites, callback);
 	});
+}
+
+function saveSites(sites, callback) {
+	chrome.storage.sync.set({"sites": sites}, callback);
 }
 
 function getSites(callback) {
