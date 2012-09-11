@@ -16,7 +16,7 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request.message == "saved") {
 		changeIcon(true, null);
 	}
-	
+
 	sendResponse({url: currentURL});
 });
 
@@ -41,11 +41,7 @@ function update(url) {
 function siteExists(url, callback) {
 	chrome.storage.sync.get('sites', function(items) {
 		sites = items['sites'];
-
-		if (url.substring(url.length - 1) == '/') {
-			url = url.substring(0, url.length - 1);
-		}
-
+		
 		if (sites) {
 			for (var i = 0; i < sites.length; i++) {
 				if (sites[i].url == url) {
