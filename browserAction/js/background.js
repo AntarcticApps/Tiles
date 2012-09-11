@@ -13,6 +13,10 @@ chrome.tabs.onUpdated.addListener(function(tabID, changeInfo, tab) {
 });
 
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+	if (request.message == "saved") {
+		changeIcon(true, null);
+	}
+	
 	sendResponse({url: currentURL});
 });
 
