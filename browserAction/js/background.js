@@ -13,15 +13,19 @@ chrome.tabs.onUpdated.addListener(function(tabID, changeInfo, tab) {
 });
 
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
-	console.log(request.message);
-
-	if (request.message == "saved") {
+	if (request.message == "save") {
+		sendResponse({url: currentURL});
+	} else if (request.message == "saved") {
 		changeIcon(true, null);
 	} else if (request.message == "delete") {
-		console.log("delete");
+		deleteSite(currentURL, function() {
+			changeIcon(false, null);
+
+			sendResponse({message: "deleted"});
+		});
 	}
 
-	sendResponse({url: currentURL});
+	return true;
 });
 
 function setPopup(save) {

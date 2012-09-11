@@ -16,6 +16,19 @@ function createSite(url, abbreviation, callback) {
 	});
 }
 
+function deleteSite(url, callback) {
+	getSites(function(sites) {
+		for (var i = 0; i < sites.length; i++) {
+			if (sites[i].url == url) {
+				sites.splice(i, 1);
+				break;
+			}
+		}
+
+		saveSites(sites, callback);
+	})
+}
+
 function saveSite(site, callback) {
 	getSites(function(sites) {
 		var found = false;
