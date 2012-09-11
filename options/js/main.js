@@ -192,7 +192,7 @@ $(document).ready(function() {
 						setSiteColor(site, function(site, error) {
 							if (error) {
 								$(".alert-error").removeClass("hidden");
-								$(".alert-error").children("span").html(FAVICON_LOAD_FAIL_MESSAGE.replace(FAVICON_LOAD_FAIL_URL_REPLACE, url));
+								$(".alert-error").children("span").html(FAVICON_LOAD_FAIL_MESSAGE.replace(FAVICON_LOAD_FAIL_URL_REPLACE, site.url));
 								$(".alert-error").children("h4").html(FAVICON_LOAD_FAIL_TITLE);
 							}
 
