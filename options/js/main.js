@@ -95,6 +95,8 @@ $(document).ready(function() {
 
 		console.log(sites);
 
+		chrome.storage.sync.remove("sites");
+
 		chrome.storage.sync.set({"sites": sites}, function() {
 			$("button.submit").removeClass("disabled").html(SUBMIT_BUTTON_SUBMIT_TEXT);
 		});
