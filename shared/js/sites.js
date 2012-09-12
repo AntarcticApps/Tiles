@@ -31,18 +31,23 @@ function deleteSite(url, callback) {
 
 function saveSite(site, callback) {
 	getSites(function(sites) {
-		var found = false;
+		if (sites) {
+			var found = false;
 
-		for (var i = 0; i < sites.length; i++) {
-			if (sites[i].url == site.url) {
-				sites[i] = site;
+			for (var i = 0; i < sites.length; i++) {
+				if (sites[i].url == site.url) {
+					sites[i] = site;
 
-				found = true;
-				break;
+					found = true;
+					break;
+				}
 			}
-		}
 
-		if (!found) {
+			if (!found) {
+				sites.push(site);
+			}
+		} else {
+			sites = [];
 			sites.push(site);
 		}
 
