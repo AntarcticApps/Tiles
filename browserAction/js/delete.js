@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function init() {
 	setTimeout(function() {
 		document.getElementById('submit-btn').blur();
-	}, 100);
+	}, 50);
 
 	document.getElementById('form').onsubmit = function() {
 		chrome.extension.sendMessage({ message: "delete" }, function(response) {
