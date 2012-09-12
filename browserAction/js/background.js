@@ -14,19 +14,29 @@ chrome.tabs.onUpdated.addListener(function(tabID, changeInfo, tab) {
 });
 
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+	console.log('Message received: ' + request.message);
+
 	if (request.message == "getUrl") {
 		sendResponse({url: currentURL});
+
+		console.log('Sent URL');
 	} else if (request.message == "saved") {
 		setPopup(false, false);
 		changeIcon(true, null);
 
 		sendResponse({message: "success"});
+
+		console.log('Sent success');
 	} else if (request.message == "delete") {
+		console.log('Deleting....');
+
 		deleteSite(currentURL, function() {
 			setPopup(true, false);
 			changeIcon(false, null);
 
 			sendResponse({message: "deleted"});
+
+			console.log('Sent deleted');
 		});
 	}
 
@@ -49,6 +59,8 @@ function setPopup(save, error) {
 	details.tabId = currentTabID;
 
 	chrome.browserAction.setPopup(details);
+
+	console.log('Popup is set to ' + details.popup);
 }
 
 function update(tab) {
@@ -96,4 +108,6 @@ function changeIcon(colors, callback) {
 	details.tabId = currentTabID;
 
 	chrome.browserAction.setIcon(details, callback);
+
+	console.log('Icon is set to ' + details.path);
 }
