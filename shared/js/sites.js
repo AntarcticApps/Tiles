@@ -326,7 +326,9 @@ function faviconSearchForDeclared(url, success, error) {
 }
 
 function isContentImage(jqXHR) {
-	return jqXHR.getResponseHeader('content-type') == 'image/x-icon';
+	var contentType = jqXHR.getResponseHeader('content-type');
+
+	return contentType.indexOf('image') != -1;
 }
 
 function urlRemoveFile(url) {
