@@ -162,10 +162,10 @@ $(document).ready(function() {
 					for (var j = 0; j < fields.length; j++) {
 						if (sites[i].url == fields[j].url) {
 							if (!sites[i].lastUpdated || Date.now() - sites[i].lastUpdated >= TIME_BEFORE_UPDATE) {
-								fields[i].color = null;
+								fields[j].color = null;
 							} else {
 								fields[j].color = sites[i].color;
-								fields[i].lastUpdated = sites[i].lastUpdated;
+								fields[j].lastUpdated = sites[i].lastUpdated;
 
 								numberOfSitesRequiringColor--;
 							}
