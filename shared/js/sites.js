@@ -319,9 +319,9 @@ function faviconSearchForDeclared(url, success, error) {
 					return error();
 				}
 			}).error(error);
+		} else {
+			return success(null);
 		}
-
-		return success(null);
 	}).error(error);
 }
 
