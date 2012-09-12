@@ -7,11 +7,22 @@ body {
 }
 
 #wrapper {
-	padding: 20px;
+	padding: 10px;
 	margin: 0;
 }
 
-.waiting {
+#form {
+	margin: 0;
+	text-align: center;
+}
+
+.control-group:last-child {
+	margin: 0;
+}
+
+#message {
+	display: block;
+
 	width: 100%;
 	text-align: center;
 
@@ -19,4 +30,8 @@ body {
 	line-height: 14px;
 
 	color: #999;
+}
+
+#form button:focus {
+	outline: none;
 }

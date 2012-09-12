@@ -3,15 +3,9 @@ canvas {
 	display: none;
 }
 
-form {
-	margin: 0;
-
-	text-align: center;
-}
-
 input.abbrev {
 	width: 100px;
-	height: 44px;
+	height: 54px;
 	box-sizing: border-box;
 
 	font-size: 36px;
@@ -20,4 +14,5 @@ input.abbrev {
 
 button.add {
 	width: 100px;
+	height: 32px;
 }
