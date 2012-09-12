@@ -13,6 +13,31 @@ chrome.tabs.onUpdated.addListener(function(tabID, changeInfo, tab) {
 	}
 });
 
+chrome.contextMenus.removeAll(function() {
+	chrome.contextMenus.create({
+	    "title": "Tiles Options",
+	    "documentUrlPatterns": [chrome.extension.getURL("/") + "*"],
+	    "contexts": ["page", "link"],
+	    "onclick" : function() {
+	    	goToOptionsPage(true)
+	    }
+	});
+});
+
+function goToOptionsPage(newTab) {
+	var optionsURL = chrome.extension.getURL("options/options.html");
+
+	if (newTab) {
+		chrome.tabs.create({
+			url: optionsURL
+		});
+	} else {
+		chrome.tabs.getCurrent(function(tab) {
+			chrome.tabs.update(tab.id, { url : optionsURL })
+		});
+	}
+}
+
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 	console.log('Message received: ' + request.message);
 
@@ -35,6 +60,8 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 			changeIcon(false, null);
 
 			sendResponse({message: "deleted"});
+
+			chrome.extension.sendMessage({message: "deleted"}, function(response) { });
 
 			console.log('Sent deleted');
 		});

@@ -5,6 +5,15 @@ document.addEventListener('DOMContentLoaded', function() {
 	init();
 }, false );
 
+
+chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+	console.log('Message received: ' + request.message);
+
+	if (request.message == "saved" || request.message == "deleted") {
+		location.reload();
+	}
+});
+
 function init() {	
 	var sitesElement = document.getElementById('sites');
 
@@ -35,31 +44,6 @@ function init() {
 	window.onresize = function() {
 		layout();
 	};
-
-	chrome.contextMenus.removeAll(function() {
-		chrome.contextMenus.create({
-		    "title": "Tiles Options",
-		    "documentUrlPatterns": [window.location.origin + "/*"],
-		    "contexts": ["page", "link"],
-		    "onclick" : function() {
-		    	goToOptionsPage(true)
-		    }
-		});
-	});
-}
-
-function goToOptionsPage(newTab) {
-	var optionsURL = "options/options.html"
-
-	if (newTab) {
-		chrome.tabs.create({
-			url: optionsURL
-		});
-	} else {
-		chrome.tabs.getCurrent(function(tab) {
-			chrome.tabs.update(tab.id, { url : optionsURL })
-		});
-	}
 }
 
 function layout() {
