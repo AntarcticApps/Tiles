@@ -140,7 +140,7 @@ function showNoSitesMessage() {
 
 	var tile = document.createElement('div');
 	tile.setAttribute("class", "message");
-	tile.innerHTML = "No sites added.<br>Go add one!";
+	tile.innerHTML = "<span>No Tiles Added</span>";
 
 	document.getElementsByTagName('body')[0].appendChild(tile);
 }
