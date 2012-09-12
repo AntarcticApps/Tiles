@@ -1,3 +1,23 @@
+
 canvas {
 	display: none;
+}
+
+form {
+	margin: 20px;
+
+	text-align: center;
+}
+
+input.abbrev {
+	width: 70px;
+	height: 44px;
+	box-sizing: border-box;
+
+	font-size: 36px;
+	text-align: center;
+}
+
+button.add {
+	width: 70px;
 }
