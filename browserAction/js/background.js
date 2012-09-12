@@ -17,11 +17,13 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request.message == "getUrl") {
 		sendResponse({url: currentURL});
 	} else if (request.message == "saved") {
+		setPopup(false, false);
 		changeIcon(true, null);
 
 		sendResponse({message: "success"});
 	} else if (request.message == "delete") {
 		deleteSite(currentURL, function() {
+			setPopup(true, false);
 			changeIcon(false, null);
 
 			sendResponse({message: "deleted"});
