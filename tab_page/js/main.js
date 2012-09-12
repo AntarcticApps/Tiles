@@ -119,14 +119,15 @@ function onTileClick(e) {
 		const COL_WIDTH = 220;
 		const ROW_OUTER_HEIGHT = 228;
 		const COL_OUTER_WIDTH = 228;
-		const COLS = 3;
 		const CHANGE_LOCATION_DELAY = 300;
+
+		var rows = Math.min(3, sites.length);
 
 		var scaleX = window.innerWidth / sitesScale / COL_WIDTH;
 		var scaleY = window.innerHeight / sitesScale / ROW_HEIGHT;
 
 		var sitesMidX = parseInt(sitesElement.style.width) / 2;
-		var sitesMidY = ROW_OUTER_HEIGHT * COLS / 2;
+		var sitesMidY = ROW_OUTER_HEIGHT * rows / 2;
 
 		var centerX = target.offsetLeft + COL_WIDTH / 2;
 		var centerY = target.offsetTop + ROW_HEIGHT / 2;
