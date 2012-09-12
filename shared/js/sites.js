@@ -310,7 +310,13 @@ function faviconSearchForDeclared(url, success, error) {
 				}
 			}
 
-			return success(iconPath);
+			$.get(iconPath).success(function(data, textStatus, jqXHR) {
+				if (isContentImage(jqXHR)) {
+					return success(path);
+				} else {
+					return error();
+				}
+			}).error(error);
 		}
 
 		return success(null);
