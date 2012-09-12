@@ -281,7 +281,13 @@ function faviconSearchForDeclared(url, success, error) {
 			if (relations) {
 				relations = relations[1].split(' ');
 
-				var href = /href="([^ ]*)"/.exec(links[i])[1];
+				var hrefRegex = /href="([^ ]*)"/.exec(links[i]);
+
+				if (!hrefRegex) {
+					continue;
+				}
+				
+				var href = hrefRegex[1];
 
 				for (var j = 0; j < relations.length; j++) {
 					if (relations[j] != 'icon') { // && relations[j] != 'apple-touch-icon') {
