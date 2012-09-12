@@ -314,7 +314,7 @@ function faviconSearchForDeclared(url, success, error) {
 
 			$.get(iconPath).success(function(data, textStatus, jqXHR) {
 				if (isContentImage(jqXHR)) {
-					return success(path);
+					return success(iconPath);
 				} else {
 					return error();
 				}
