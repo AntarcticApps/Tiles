@@ -1,0 +1,14 @@
+{
+	"add_tile": {
+		"message": "Add Tile",
+		"description": "Tile save text in add tile popup."
+	},
+	"add_tile_saving": {
+		"message": "Saving&hellip;",
+		"description": "Tile saving text in add tile popup"
+	},
+	"delete_tile": {
+		"message": "Remove?",
+		"description": "Tile delete text in delete tile popup."
+	}
+}

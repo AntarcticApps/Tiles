@@ -4,6 +4,7 @@
   "manifest_version": 2,
   "description": "A tiled new tab page.",
   "options_page": "options/options.html",
+  "default_locale": "en",
 
   "permissions": [
     "history",

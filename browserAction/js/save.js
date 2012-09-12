@@ -1,13 +1,12 @@
 
-const SUBMIT_BUTTON_SUBMIT_TEXT = "Add Tile";
-const SUBMIT_BUTTON_SAVING_TEXT = "Saving&hellip;"
-
 document.addEventListener('DOMContentLoaded', function() {
 	document.removeEventListener('DOMContentLoaded', arguments.callee, false);
 	init();
 }, false );
 
 function init() {
+	document.getElementById('submit-btn').innerHTML = chrome.i18n.getMessage('add_tile');
+
 	chrome.extension.sendMessage({ message: "getUrl" }, function(response) {
 		document.getElementById('abbreviation').value = makeAbbreviation(getHostname(response.url));
 	});
@@ -16,7 +15,7 @@ function init() {
 		var submitButton = document.getElementById('submit-btn');
 		submitButton.setAttribute('class', submitButton.getAttribute('class') + ' disabled');
 		submitButton.setAttribute('disabled', 'disabled');
-		submitButton.innerHTML = SUBMIT_BUTTON_SAVING_TEXT;
+		submitButton.innerHTML = chrome.i18n.getMessage('add_tile_saving');
 
 		chrome.extension.sendMessage({ message: "getUrl" }, function(response) {
 			createSite(response.url, document.getElementById('abbreviation').value, function(site) {
