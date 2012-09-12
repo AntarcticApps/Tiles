@@ -334,7 +334,7 @@ function isContentImage(jqXHR) {
 	var contentType = jqXHR.getResponseHeader('content-type');
 
 	if (!contentType) {
-		return false;
+		return true;
 	}
 
 	return contentType.indexOf('image') != -1;
