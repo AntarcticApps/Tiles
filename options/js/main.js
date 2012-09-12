@@ -174,7 +174,7 @@ $(document).ready(function() {
 				}
 			}
 
-			console.log(numberOfSitesRequiringColor + " sites require a color check");
+			console.log(Math.min(numberOfSitesRequiringColor, 0) + " sites require a color check");
 
 			var siteSaved = false;
 
