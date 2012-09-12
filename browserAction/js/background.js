@@ -14,10 +14,12 @@ chrome.tabs.onUpdated.addListener(function(tabID, changeInfo, tab) {
 });
 
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
-	if (request.message == "save") {
+	if (request.message == "getUrl") {
 		sendResponse({url: currentURL});
 	} else if (request.message == "saved") {
 		changeIcon(true, null);
+
+		sendResponse({message: "success"});
 	} else if (request.message == "delete") {
 		deleteSite(currentURL, function() {
 			changeIcon(false, null);

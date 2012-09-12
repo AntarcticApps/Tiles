@@ -5,11 +5,17 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false );
 
 function init() {
+	chrome.extension.sendMessage({ message: "getUrl" }, function(response) {
+		document.getElementById('abbreviation').value = makeAbbreviation(getHostname(response.url));
+	});
+
 	document.getElementById('form').onsubmit = function() {
-		chrome.extension.sendMessage({ message: "save" }, function(response) {
+		chrome.extension.sendMessage({ message: "getUrl" }, function(response) {
 			createSite(response.url, document.getElementById('abbreviation').value, function(site) {
 				saveSite(site, function() {
-					chrome.extension.sendMessage({ message: "saved" }, function(response) {});
+					chrome.extension.sendMessage({ message: "saved" }, function(response) {
+						window.close();
+					});
 				});
 			});
 		});
