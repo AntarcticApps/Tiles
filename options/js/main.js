@@ -151,7 +151,7 @@ $(document).ready(function() {
 				for (var i = 0; i < sites.length; i++) {
 					for (var j = 0; j < fields.length; j++) {
 						if (sites[i].url == fields[j].url) {
-							if (!sites[i].lastUpdated || Date.now() - sites[i].lastUpdated >= TIME_BEFORE_UPDATE) {
+							if (siteNeedsColorUpdate(sites[i])) {
 								fields[j].color = null;
 							} else {
 								fields[j].color = sites[i].color;
