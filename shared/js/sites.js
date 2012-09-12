@@ -203,6 +203,57 @@ function getFaviconColor(url, callback) {
 		}
 	}
 
+	faviconSearchForDeclared(url, function(path) {
+		if (path) {
+			image.src = path;
+		} else {
+			faviconSearchCurrent(url, function(path) {
+				image.src = path;
+			}, function() {
+				faviconSearchRoot(url, function(path) {
+					image.src = path;
+				}, function() {
+					console.error("Could not find any icons for url - " + url);
+
+					callback(null);
+				})
+			});
+		}
+	}, function() {
+		console.error("Could not load url – " + url);
+
+		callback(null);
+	});
+}
+
+function faviconSearchRoot(url, success, error) {
+	// Search for the favicon in the root of the site.
+	var domain = getDomain(url);
+	var path = domain + '/favicon.ico';
+
+	$.get(path).success(function(data, textStatus, jqXHR) {
+		if (isContentImage(jqXHR)) {
+			return success(path);
+		} else {
+			return error();
+		}	
+	}).error(error);
+}
+
+function faviconSearchCurrent(url, success, error) {
+	var path = url + '/favicon.ico';
+
+	$.get(path).success(function(data, textStatus, jqXHR) {
+		// Search the existing directory
+		if (isContentImage(jqXHR)) {
+			return success(path);
+		} else {
+			return error();
+		}
+	}).error(error);
+}
+
+function faviconSearchForDeclared(url, success, error) {
 	$.get(url).success(function(data) {
 		// Search for explicitly declared icon hrefs
 		var links = [];
@@ -248,41 +299,26 @@ function getFaviconColor(url, callback) {
 
 		if (iconPath) {
 			if (iconPath.substring(0, 2) == '//') {
-				image.src = 'http:' + iconPath;
+				iconPath = 'http:' + iconPath;
 			} else if (iconPath.substring(0, 1) == '/') {
-				image.src = 'http://' + getHostname(url) + iconPath;
+				iconPath = 'http://' + getHostname(url) + iconPath;
 			} else if (iconPath.substring(0, 4) != 'http') {
 				if (url.substring(url.length - 1) != '/') {
-					image.src = url + '/' + iconPath;
+					iconPath = url + '/' + iconPath;
 				} else {
-					image.src = url + iconPath;
+					iconPath = url + iconPath;
 				}
-			} else {
-				image.src = iconPath;
 			}
 
-			return;
+			return success(iconPath);
 		}
 
-		$.get(url + '/favicon.ico').success(function() {
-			// Search the existing directory
-			image.src = url + '/favicon.ico';
-		}).error(function() {
-			// Search for the favicon in the root of the site.
-			var domain = getDomain(url);
+		return success(null);
+	}).error(error);
+}
 
-			$.get(domain + '/favicon.ico').success(function() {
-				image.src = domain + '/favicon.ico';
-			}).error(function() {
-				console.error("Could not find any icons for url – " + url);
-				callback(null);
-			})
-		});
-	}).error(function() {
-		console.error("Could not load url – " + url);
-
-		callback(null);
-	});
+function isContentImage(jqXHR) {
+	return jqXHR.getResponseHeader('content-type') == 'image/x-icon';
 }
 
 function pixelsAreSimilar(a, b) {
