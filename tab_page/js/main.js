@@ -14,7 +14,7 @@ function init() {
 		document.addEventListener("DOMNodeInserted", layout, false);
 
 		if (sites == undefined || sites == null || sites.length == 0) {
-			goToOptionsPage(false);
+			showNoSitesMessage();
 			return;
 		}
 
@@ -111,7 +111,7 @@ function onTileClick(e) {
 		const ROW_OUTER_HEIGHT = 228;
 		const COL_OUTER_WIDTH = 228;
 		const COLS = 3;
-		const CHANGE_LOCATION_DELAY = 200;
+		const CHANGE_LOCATION_DELAY = 300;
 
 		var scaleX = window.innerWidth / sitesScale / COL_WIDTH;
 		var scaleY = window.innerHeight / sitesScale / ROW_HEIGHT;
@@ -133,4 +133,14 @@ function onTileClick(e) {
 	} else {
 		chrome.tabs.create({ 'url': url, active: false });
 	}
+}
+
+function showNoSitesMessage() {
+	var siteElement = document.getElementById('sites');
+
+	var tile = document.createElement('div');
+	tile.setAttribute("class", "message");
+	tile.innerHTML = "No sites added.<br>Go add one!";
+
+	document.getElementsByTagName('body')[0].appendChild(tile);
 }
