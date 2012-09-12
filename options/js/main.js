@@ -1,13 +1,15 @@
 const CONTROL_GROUP = '<div class="control-group"> \
 	<div class="controls site-controls"> \
 		<a type="button" class="btn disabled handle"><i class="icon-list"></i></a> \
-		<span class="url input-large uneditable-input">www.google.com</span> \
-		<input type="text" class="input-nano abbreviation" placeholder="Gl" maxlength="2"> \
+		<span class="url input-large uneditable-input"></span> \
+		<input type="text" class="input-nano abbreviation" placeholder="" maxlength="2"> \
 		<div class="action-buttons"> \
 			<a type="button" class="btn btn-danger remove"><i class="icon-trash icon-white"></i></a> \
 		</div> \
 	</div> \
 </div>';
+
+const NO_TILES_ADDED_TEXT = "No tiles added.";
 
 const SUBMIT_BUTTON_SAVING_TEXT = "Saving&hellip;";
 const SUBMIT_BUTTON_SUBMIT_TEXT = "Save";
@@ -29,7 +31,7 @@ $(document).ready(function() {
 
 	getSites(function (data) {
 		if (!data) {
-			$("#sites").prepend(CONTROL_GROUP);
+			$("#sites").prepend(NO_TILES_ADDED_TEXT);
 		} else {
 			sites = data;
 
@@ -71,9 +73,7 @@ $(document).ready(function() {
 		parent = $(element).parents('.control-group');
 		parent.remove();
 
-		saveSites(makeSites());
-
-		chrome.extension.sendMessage({ message: "deleted" }, function(response) { });
+		chrome.extension.sendMessage({ message: "delete", url:parent.find('span.url').text() }, function(response) { });
 	}
 
 	function makeSites() {
