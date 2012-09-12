@@ -5,10 +5,14 @@
 	},
 	"add_tile_saving": {
 		"message": "Saving&hellip;",
-		"description": "Tile saving text in add tile popup"
+		"description": "Tile saving text in add tile popup."
 	},
 	"delete_tile": {
 		"message": "Remove?",
 		"description": "Tile delete text in delete tile popup."
+	},
+	"no_tiles_added": {
+		"message": "No Tiles Added",
+		"description": "No tiles added to new tab page."
 	}
 }
