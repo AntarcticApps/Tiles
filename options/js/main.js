@@ -5,7 +5,6 @@ const CONTROL_GROUP = '<div class="control-group"> \
 		<input type="text" class="input-nano abbreviation" placeholder="Gl" maxlength="2"> \
 		<div class="action-buttons"> \
 			<a type="button" class="btn btn-danger remove"><i class="icon-trash icon-white"></i></a> \
-			<a type="button" class="btn btn-success add"><i class="icon-plus icon-white"></i></a> \
 		</div> \
 	</div> \
 </div>';
@@ -68,20 +67,11 @@ $(document).ready(function() {
 		}
 
 		$('.btn.remove').off().on('click', removeControlGroup);
-		$('.btn.add').off().on('click', addControlGroup);
 	}
 
 	function removeControlGroup() {
 		parent = $(this).parents('.control-group');
 		parent.remove();
-
-		updateButtons();
-	}
-
-	function addControlGroup() {
-		parent = $(this).parents('.control-group');
-
-		parent.after(CONTROL_GROUP);
 
 		updateButtons();
 	}
