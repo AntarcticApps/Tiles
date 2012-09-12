@@ -10,7 +10,7 @@ const CONTROL_GROUP = '<div class="control-group"> \
 	</div> \
 </div>';
 
-const SUBMIT_BUTTON_SAVING_TEXT = "Saving...";
+const SUBMIT_BUTTON_SAVING_TEXT = "Saving&hellip;";
 const SUBMIT_BUTTON_SUBMIT_TEXT = "Save";
 
 const FAVICON_LOAD_FAIL_TITLE = "Failed to retrieve favicon!";
