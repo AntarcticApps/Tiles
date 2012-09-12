@@ -30,5 +30,13 @@
 
   "background": {
     "scripts": ["shared/js/sites.js", "browserAction/js/background.js"]
-  }
+  },
+
+  "web_accessible_resources": [
+    "tab_page/tiles.html",
+    "tab_page/css/style.css",
+    "tab_page/js/main.js",
+    "shared/js/sites.js",
+    "shared/js/utilities.js"
+  ]
 }
