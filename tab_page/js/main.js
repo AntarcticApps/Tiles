@@ -24,7 +24,7 @@ function init() {
 			var tile = createTile(site.abbreviation, site.url);
 			var color = site.color;
 			tile.style.background = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + 1 +')';
-			tile.setAttribute("data-url", site.url);
+			tile.dataset.url = site.url;
 			tile.onclick = onTileClick;
 
 			fragment.appendChild(tile);
@@ -107,7 +107,7 @@ function createTile(abbreviation, url) {
 
 function onTileClick(e) {
 	var target = e.target;
-	var url = target.getAttribute("data-url");
+	var url = target.dataset.url;
 
 	if (e.metaKey == false) {
 		var sitesElement = document.getElementById("sites");
