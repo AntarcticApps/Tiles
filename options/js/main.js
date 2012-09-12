@@ -1,7 +1,7 @@
 const CONTROL_GROUP = '<div class="control-group"> \
 	<div class="controls site-controls"> \
 		<a type="button" class="btn disabled handle"><i class="icon-list"></i></a> \
-		<input type="text" class="url" placeholder="www.google.com"> \
+		<span class="url input-large uneditable-input">www.google.com</span> \
 		<input type="text" class="input-nano abbreviation" placeholder="Gl" maxlength="2"> \
 		<div class="action-buttons"> \
 			<a type="button" class="btn btn-danger remove"><i class="icon-trash icon-white"></i></a> \
@@ -33,7 +33,7 @@ $(document).ready(function() {
 				var site = sites[i];
 
 				newControlGroup = $(newControlGroup);
-				newControlGroup.find('input.url').val(site.url);
+				newControlGroup.find('span.url').text(site.url);
 				newControlGroup.find('input.abbreviation').val(site.abbreviation);
 
 				$("#sites").prepend(newControlGroup);
@@ -106,9 +106,9 @@ $(document).ready(function() {
 
 		$("button.submit").addClass("disabled").html(SUBMIT_BUTTON_SAVING_TEXT);
 
-		$('input:text.url').each(function(index, element) {
+		$('span.url').each(function(index, element) {
 			var siteControlsCount = $('.site-controls').size();
-			var value = $(this).val();
+			var value = $(this).text();
 
 			if (!value || value.length == 0) {
 				if (siteControlsCount > 1) {
@@ -123,16 +123,16 @@ $(document).ready(function() {
 		var fields = [];
 
 		$('#sites .site-controls').each(function(index, element) {
-			urlField = $(this).children('input:text.url').eq(0);
+			urlField = $(this).children('span.url').eq(0);
 			abbreviationField = $(this).children('input:text.abbreviation').eq(0);
 
-			var url = urlField.val();
+			var url = urlField.text();
 			var abbreviation = abbreviationField.val();
 
 			if (!url.match(/^(http|https):\/\//)) {
 				url = "http://" + url;
 
-				urlField.val(url);
+				urlField.text(url);
 			}
 
 			if (!abbreviation) {
