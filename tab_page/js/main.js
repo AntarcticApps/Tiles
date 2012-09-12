@@ -80,6 +80,8 @@ function layout() {
 	const MAX_WIDTH = window.innerWidth - MARGIN;
 
 	var rows = Math.min(3, sites.length);
+	if (sites.length == 3 || sites.length == 4)
+			rows = 2;
 
 	var cols = Math.ceil(sites.length / rows);
 	var shouldWidth = cols * COL_WIDTH;
@@ -122,6 +124,8 @@ function onTileClick(e) {
 		const CHANGE_LOCATION_DELAY = 300;
 
 		var rows = Math.min(3, sites.length);
+		if (sites.length == 3 || sites.length == 4)
+			rows = 2;
 
 		var scaleX = window.innerWidth / sitesScale / COL_WIDTH;
 		var scaleY = window.innerHeight / sitesScale / ROW_HEIGHT;
