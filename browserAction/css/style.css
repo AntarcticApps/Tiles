@@ -31,7 +31,3 @@ body {
 
 	color: #999;
 }
-
-#form button:focus {
-	outline: none;
-}
