@@ -29,13 +29,17 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 	return true;
 });
 
-function setPopup(save) {
+function setPopup(save, error) {
 	var details = {};
 
-	if (save) {
-		details.popup = 'browserAction/save.html';
+	if (error) {
+		details.popup = 'browserAction/error.html';
 	} else {
-		details.popup = 'browserAction/delete.html';
+		if (save) {
+			details.popup = 'browserAction/save.html';
+		} else {
+			details.popup = 'browserAction/delete.html';
+		}
 	}
 
 	details.tabId = currentTabID;
@@ -47,11 +51,19 @@ function update(tab) {
 	currentTabID = tab.id;
 	currentURL = tab.url;
 
-	siteExists(tab.url, function(exists) {
-		setPopup(!exists);
+	if (isChromeURL(currentURL)) {
+		setPopup(false, true);
+	} else {
+		siteExists(tab.url, function(exists) {
+			setPopup(!exists, false);
 
-		changeIcon(exists, null);
-	});
+			changeIcon(exists, null);
+		});
+	}
+}
+
+function isChromeURL(url) {
+	return url.substring(0, 6) == 'chrome';
 }
 
 function siteExists(url, callback) {
