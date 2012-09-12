@@ -333,6 +333,10 @@ function faviconSearchForDeclared(url, success, error) {
 function isContentImage(jqXHR) {
 	var contentType = jqXHR.getResponseHeader('content-type');
 
+	if (!contentType) {
+		return false;
+	}
+
 	return contentType.indexOf('image') != -1;
 }
 
