@@ -174,6 +174,8 @@ function getMajorityColor(imageData, ignoredColor) {
 }
 
 function getFaviconColor(url, callback) {
+	url = urlRemoveFile(url);
+
 	var image = new Image();
 
 	image.onerror = function() {
@@ -325,6 +327,16 @@ function faviconSearchForDeclared(url, success, error) {
 
 function isContentImage(jqXHR) {
 	return jqXHR.getResponseHeader('content-type') == 'image/x-icon';
+}
+
+function urlRemoveFile(url) {
+	for (var i = url.length; i >= 0; i--) {
+		if (url[i] == '/') {
+			return url.slice(0, i + 1);
+		}
+	}
+
+	return url;
 }
 
 function pixelsAreSimilar(a, b) {
