@@ -55,7 +55,13 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 	} else if (request.message == "delete") {
 		console.log('Deleting....');
 
-		deleteSite(currentURL, function() {
+		var url;
+		if (request.url == undefined)
+			url = currentURL;
+		else
+			url = request.url;
+
+		deleteSite(url, function() {
 			setPopup(true, false);
 			changeIcon(false, null);
 
