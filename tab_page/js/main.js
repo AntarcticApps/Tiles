@@ -63,6 +63,10 @@ function goToOptionsPage(newTab) {
 }
 
 function layout() {
+	if (sites == undefined || sites == null) {
+		return;
+	}
+
 	document.removeEventListener("DOMNodeInserted", layout);
 	
 	var sitesElement = document.getElementById("sites");
@@ -75,16 +79,21 @@ function layout() {
 	const MAX_HEIGHT = window.innerHeight - MARGIN;
 	const MAX_WIDTH = window.innerWidth - MARGIN;
 
-	var cols = Math.ceil(sites.length / 3);
+	var rows = Math.min(3, sites.length);
+
+	var cols = Math.ceil(sites.length / rows);
 	var shouldWidth = cols * COL_WIDTH;
 	sitesElement.style.width = shouldWidth + "px";
 
 	var scale = MAX_WIDTH / (shouldWidth + 20);
-	if (ROW_HEIGHT * 3 * scale > MAX_HEIGHT) {
-		scale = MAX_HEIGHT / (ROW_HEIGHT * 3);
+	if (ROW_HEIGHT * rows * scale > MAX_HEIGHT) {
+		scale = MAX_HEIGHT / (ROW_HEIGHT * rows);
 	}
 	sitesElement.style.webkitTransform = "scale(" + scale + ", " + scale + ")";
 	sitesElement.style.marginLeft = -shouldWidth / 2 + "px";
+
+	sitesElement.style.minHeight = 228 * rows + "px";
+	sitesElement.style.marginTop = (-228 * rows) / 2 + "px";
 }
 
 function createTile(abbreviation, url) {

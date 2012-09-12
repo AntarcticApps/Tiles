@@ -28,9 +28,8 @@ html, body {
 	top: 50%;
 	left: 50%;
 
-	min-height: -webkit-calc(228px * 3);
-
-	margin-top: -webkit-calc((-228px * 3) / 2);
+/*	min-height: -webkit-calc(228px * 3);
+	margin-top: -webkit-calc((-228px * 3) / 2);*/
 
 	text-align: left;
 
