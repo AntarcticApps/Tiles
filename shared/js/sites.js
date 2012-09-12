@@ -169,6 +169,10 @@ function getMajorityColor(imageData, ignoredColor) {
 		}
 	}
 
+	if (majorityCandidate == null) {
+		return null;
+	}
+
 	for (var j = 0; j < sumRGB.length; j++) {
 		sumRGB[j] = Math.round(sumRGB[j] / age);
 	}
@@ -200,6 +204,8 @@ function getFaviconColor(url, callback) {
 		var majorityCandidates = [null, null];
 		majorityCandidates[0] = getMajorityColor(imageData);
 		majorityCandidates[1] = getMajorityColor(imageData, majorityCandidates[0]);
+
+		console.log("Colors generated: " + majorityCandidates);
 
 		if (majorityCandidates[1] == null) {
 			callback(majorityCandidates[0]);
