@@ -18,56 +18,56 @@ const FAVICON_LOAD_FAIL_TITLE = "Failed to retrieve favicon!";
 const FAVICON_LOAD_FAIL_URL_REPLACE = "#{url}";
 const FAVICON_LOAD_FAIL_MESSAGE = "Could not retrieve favicon for #{url}. Check the URL and ensure the site does not redirect.";
 
-chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
-	console.log('Message received: ' + request.message);
-
-	if (request.message == "saved" || request.message == "deleted") {
-		sitesReload();
-	}
-});
-
-function sitesReload() {	
-	getSites(function (data) {
-		$("#sites").html("");
-		
-		if (!data) {
-			$("#sites").prepend(NO_TILES_ADDED_TEXT);
-		} else {
-			sites = data;
-
-			sites = sites.reverse();
-
-			for (var i = 0; i < sites.length; i++) {
-				var newControlGroup = CONTROL_GROUP;
-				var site = sites[i];
-
-				newControlGroup = $(newControlGroup);
-				newControlGroup.find('span.url').text(site.url);
-				newControlGroup.find('input.abbreviation').val(site.abbreviation);
-				newControlGroup.find('a.remove').on('click', function(e) {
-					removeControlGroup(e.target);
-				});
-
-				$("#sites").prepend(newControlGroup);
-			}
-		}
-
-		$("#sites").sortable({
-			handle: '.handle',
-			axis: 'y',
-			update: function(e, ui) {
-				movedControlGroup(ui);
-			}
-		});
-
-		$(".container").removeClass("hidden");
-	});
-}
-
 $(document).ready(function() {
 	var sites = [];
 
 	sitesReload();
+
+	chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+		console.log('Message received: ' + request.message);
+
+		if (request.message == "saved" || request.message == "deleted") {
+			sitesReload();
+		}
+	});
+
+	function sitesReload() {	
+		getSites(function (data) {
+			$("#sites").html("");
+			
+			if (!data) {
+				$("#sites").prepend(NO_TILES_ADDED_TEXT);
+			} else {
+				sites = data;
+
+				sites = sites.reverse();
+
+				for (var i = 0; i < sites.length; i++) {
+					var newControlGroup = CONTROL_GROUP;
+					var site = sites[i];
+
+					newControlGroup = $(newControlGroup);
+					newControlGroup.find('span.url').html(site.url);
+					newControlGroup.find('input.abbreviation').val(site.abbreviation);
+					newControlGroup.find('a.remove').on('click', function(e) {
+						removeControlGroup(e.target);
+					});
+
+					$("#sites").prepend(newControlGroup);
+				}
+			}
+
+			$("#sites").sortable({
+				handle: '.handle',
+				axis: 'y',
+				update: function(e, ui) {
+					movedControlGroup(ui);
+				}
+			});
+
+			$(".container").removeClass("hidden");
+		});
+	}
 
 	function movedControlGroup(ui) {
 		saveSites(makeSites());
@@ -77,9 +77,8 @@ $(document).ready(function() {
 
 	function removeControlGroup(element) {
 		parent = $(element).parents('.control-group');
-		parent.remove();
 
-		chrome.extension.sendMessage({ message: "delete", url:parent.find('span.url').text() }, function(response) { });
+		chrome.extension.sendMessage({ message: "delete", url:parent.find('span.url').html() }, function(response) { });
 	}
 
 	function makeSites() {
@@ -89,13 +88,13 @@ $(document).ready(function() {
 			urlField = $(this).children('span.url').eq(0);
 			abbreviationField = $(this).children('input:text.abbreviation').eq(0);
  
-			var url = urlField.text();
+			var url = urlField.html();
 			var abbreviation = abbreviationField.val();
  
 			if (!url.match(/^(http|https):\/\//)) {
 				url = "http://" + url;
  
-				urlField.text(url);
+				urlField.html(url);
 			}
  
 			if (!abbreviation) {
