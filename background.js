@@ -13,6 +13,21 @@ chrome.tabs.onUpdated.addListener(function(tabID, changeInfo, tab) {
 	}
 });
 
+chrome.windows.onFocusChanged.addListener(function(windowID) {
+	chrome.windows.get(windowID, { populate: true }, function(window) {
+		var tabs = window.tabs;
+
+		if (tabs && window.type == "normal") {
+			for (var i = 0; i < tabs.length; i++) {
+				if (tab.active) {
+					update(tab);
+					break;
+				}
+			}
+		}
+	});
+});
+
 chrome.contextMenus.removeAll(function() {
 	chrome.contextMenus.create({
 	    "title": "Tiles Options",
