@@ -1,8 +1,8 @@
 {
-  "name": "Tiles",
+  "name": "__MSG_extension_name__",
   "version": "1.0",
   "manifest_version": 2,
-  "description": "A tiled new tab page.",
+  "description": "__MSG_extension_description__",
   "options_page": "options/options.html",
   "default_locale": "en",
 

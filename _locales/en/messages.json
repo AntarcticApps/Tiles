@@ -1,4 +1,12 @@
 {
+	"extension_name": {
+		"message": "Tiles",
+		"description": "Name of the extension."
+	},
+	"extension_description": {
+		"message": "A tiled new tab page.",
+		"description": "Description of the extension."
+	},
 	"add_tile": {
 		"message": "Add Tile",
 		"description": "Tile save text in add tile popup."
