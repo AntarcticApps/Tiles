@@ -1,4 +1,4 @@
-var lastFocusedWindowID = null;
+var lastFocusedWindowID = 1;
 
 chrome.tabs.onActivated.addListener(function(info) {
 	chrome.tabs.get(info.tabId, function(tab) {
