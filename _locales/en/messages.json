@@ -11,6 +11,10 @@
 		"message": "Remove?",
 		"description": "Tile delete text in delete tile popup."
 	},
+	"invalid_url": {
+		"message": "This page cannot be added as a tile.",
+		"description": "Invalid URL error text for error tile popup."
+	},
 	"no_tiles_added": {
 		"message": "No Tiles Added",
 		"description": "No tiles added to new tab page."
