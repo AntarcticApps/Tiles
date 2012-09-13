@@ -73,6 +73,24 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 		});
 	}
 
+	chrome.windows.getAll({ populate: true }, function(windows) {
+		for (var i = 0; i < windows.length; i++) {
+			var window = windows[i];
+			var tabs = window.tabs;
+
+			if (tabs && window.type == "normal") {
+				for (var j = 0; j < tabs.length; j++) {
+					var tab = tabs[j];
+
+					if (tab.active) {
+						update(tab);
+						break;
+					}
+				}
+			}
+		}
+	});
+
 	return true;
 });
 
