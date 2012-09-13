@@ -207,7 +207,7 @@ function getFaviconColor(url, callback) {
 
 		if (majorityCandidates[1] == null) {
 			callback(majorityCandidates[0]);
-		} else if (rgbToHsl(majorityCandidates[0])[1] > rgbToHsl(majorityCandidates[1])[1]) {
+		} else if (rgbToHsl(majorityCandidates[0])[1] >= rgbToHsl(majorityCandidates[1])[1]) {
 			callback(majorityCandidates[0]);
 		} else {
 			callback(majorityCandidates[1]);
