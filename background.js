@@ -97,7 +97,7 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 			var window = windows[i];
 			var tabs = window.tabs;
 
-			if (tabs && window.type == "normal") {
+			if (tabs && window.type == "normal" && window.focused) {
 				for (var j = 0; j < tabs.length; j++) {
 					var tab = tabs[j];
 
