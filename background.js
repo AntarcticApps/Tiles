@@ -23,8 +23,8 @@ chrome.windows.onFocusChanged.addListener(function(windowID) {
 
 		if (tabs && window.type == "normal") {
 			for (var i = 0; i < tabs.length; i++) {
-				if (tab.active) {
-					update(tab);
+				if (tabs[i].active) {
+					update(tabs[i]);
 					break;
 				}
 			}
