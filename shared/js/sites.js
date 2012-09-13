@@ -218,28 +218,32 @@ function getFaviconColor(url, callback) {
 		}
 	}
 
+	url = urlRemoveFile(url);
+
+	function faviconNotDeclared() {
+		faviconSearchCurrent(url, function(path) {
+			image.src = path;
+		}, function() {
+			faviconSearchRoot(url, function(path) {
+				image.src = path;
+			}, function() {
+				console.error("Could not find any icons for url - " + url);
+
+				callback(null);
+			})
+		});
+	}
+
 	faviconSearchForDeclared(url, function(path) {
 		if (path) {
 			image.src = path;
 		} else {
-			url = urlRemoveFile(url);
-
-			faviconSearchCurrent(url, function(path) {
-				image.src = path;
-			}, function() {
-				faviconSearchRoot(url, function(path) {
-					image.src = path;
-				}, function() {
-					console.error("Could not find any icons for url - " + url);
-
-					callback(null);
-				})
-			});
+			faviconNotDeclared();
 		}
 	}, function() {
 		console.error("Could not load url – " + url);
 
-		callback(null);
+		faviconNotDeclared();
 	});
 }
 
