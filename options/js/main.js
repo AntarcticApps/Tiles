@@ -22,14 +22,14 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 	console.log('Message received: ' + request.message);
 
 	if (request.message == "saved" || request.message == "deleted") {
-		location.reload();
+		sitesReload();
 	}
 });
 
-$(document).ready(function() {
-	var sites = [];
-
+function sitesReload() {	
 	getSites(function (data) {
+		$("#sites").html("");
+		
 		if (!data) {
 			$("#sites").prepend(NO_TILES_ADDED_TEXT);
 		} else {
@@ -62,6 +62,12 @@ $(document).ready(function() {
 
 		$(".container").removeClass("hidden");
 	});
+}
+
+$(document).ready(function() {
+	var sites = [];
+
+	sitesReload();
 
 	function movedControlGroup(ui) {
 		saveSites(makeSites());
