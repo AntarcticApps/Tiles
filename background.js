@@ -17,9 +17,11 @@ chrome.windows.onFocusChanged.addListener(function(windowID) {
 		return;
 	}
 
-	lastFocusedWindowID = windowID;
-
 	chrome.windows.get(windowID, { populate: true }, function(window) {
+		if (window.type == 'normal') {
+			lastFocusedWindowID = windowID;
+		}
+
 		console.log("Last focused window is now ID " + window.id);
 
 		updateWindow(window);
