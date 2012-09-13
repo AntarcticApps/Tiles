@@ -134,6 +134,8 @@ function setPopup(save, error) {
 }
 
 function update(tab) {
+	console.log("Currently on ID: " + tab.id + " which is at " + tab.url);
+
 	currentTabID = tab.id;
 	currentURL = tab.url;
 
