@@ -1,7 +1,11 @@
 function createSite(url, abbreviation, callback) {
 	var site = {};
 
-	site.url = url;
+	if (url) {
+		site.url = url;
+	} else {
+		site.url = '';
+	}
 
 	if (abbreviation) {
 		site.abbreviation = abbreviation;
