@@ -183,8 +183,6 @@ function getMajorityColor(imageData, ignoredColor) {
 }
 
 function getFaviconColor(url, callback) {
-	url = urlRemoveFile(url);
-
 	var image = new Image();
 
 	image.onerror = function() {
@@ -220,6 +218,8 @@ function getFaviconColor(url, callback) {
 		if (path) {
 			image.src = path;
 		} else {
+			url = urlRemoveFile(url);
+
 			faviconSearchCurrent(url, function(path) {
 				image.src = path;
 			}, function() {
