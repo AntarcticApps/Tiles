@@ -14,6 +14,10 @@ chrome.tabs.onUpdated.addListener(function(tabID, changeInfo, tab) {
 });
 
 chrome.windows.onFocusChanged.addListener(function(windowID) {
+	if (windowID == -1) {
+		return;
+	}
+
 	chrome.windows.get(windowID, { populate: true }, function(window) {
 		var tabs = window.tabs;
 
