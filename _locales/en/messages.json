@@ -27,6 +27,14 @@
 		"message": "No tiles added.",
 		"description": "Message shown on main options page when no tiles exist."
 	},
+	"options_regen_all_tile_colors": {
+		"message": "Regenerate All Tile Colors",
+		"description": "Button description that will recalculate the tile colors using the website's favicon."
+	},
+	"options_regen_all_tile_colors_help": {
+		"message": "The color of each tile will be recalculated using the website\\'s favicon. This will not override the custom color, if one has been set.",
+		"description": "Help text shown below regenerate all tile colors button."
+	},
 	"tab_page_no_tiles_added": {
 		"message": "No Tiles Added",
 		"description": "No tiles added to new tab page."
