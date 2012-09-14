@@ -80,6 +80,8 @@ $(document).ready(function() {
 						newControlGroup.find('input.abbreviation').on("propertychange keyup input paste", function() {
 							if (abbreviationField.data('oldVal') != abbreviationField.val()
 								&& abbreviationField.val() != '') {
+								abbreviationField.val(makeAbbreviation(abbreviationField.val()));
+							
 								abbreviationField.data('oldVal', abbreviationField.val());
 								makeSites();
 						     }
