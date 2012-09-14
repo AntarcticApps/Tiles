@@ -70,7 +70,7 @@ $(document).ready(function() {
 	}
 
 	function movedControlGroup(ui) {
-		saveSites(makeSites());
+		makeSites();
 
 		chrome.extension.sendMessage({ message: "saved" }, function(response) { });
 	}
@@ -112,9 +112,7 @@ $(document).ready(function() {
  
 		const TIME_BEFORE_UPDATE = 1000 * 60 * 60;
  
-		chrome.storage.sync.get('sites', function(items) {
-			sites = items['sites'];
- 
+		getSites(function(sites) {
 			for (var i = 0; i < fields.length; i++) {
 				fields[i].color = null;
 			}
@@ -174,17 +172,5 @@ $(document).ready(function() {
 
 			return sites;
 		});	
-	}
-
-	function saveSites(sites) {
-		console.log("Saving all sites");
-
-		console.log(sites);
-
-		chrome.storage.sync.remove("sites");
-
-		chrome.storage.sync.set({"sites": sites}, function() {
-
-		});
 	}
 });

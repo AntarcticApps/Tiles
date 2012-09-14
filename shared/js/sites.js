@@ -60,23 +60,24 @@ function saveSite(site, callback) {
 }
 
 function saveSites(sites, callback) {
+	if (callback == undefined) {
+		callback = function() { };
+	}
+	
 	chrome.storage.sync.set({'sitesSize': sites.length}, function() {
 		if (sites.length == 0) {
 			return callback();
 		}
 
-		var sitesSet = 0;
+		var pairs = {};
 		for (var i = 0; i < sites.length; i++) {
 			var key = 'site-' + i;
-			var pair = {};
-			pair[key] = sites[i];
-			chrome.storage.sync.set(pair, function() {
-				sitesSet++;
-				if (sites.length == sitesSet) {
-					return callback();
-				}
-			});
+			pairs[key] = sites[i];
 		}
+
+		chrome.storage.sync.set(pairs, function() {
+			return callback();
+		});
 	});
 }
 
