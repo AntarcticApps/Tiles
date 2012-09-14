@@ -21,8 +21,8 @@ const FAVICON_LOAD_FAIL_TITLE = "Failed to retrieve favicon!";
 const FAVICON_LOAD_FAIL_URL_REPLACE = "#{url}";
 const FAVICON_LOAD_FAIL_MESSAGE = "Could not retrieve favicon for #{url}. Check the URL and ensure the site does not redirect.";
 
-var colorChangeTimout;
-const COLOR_CHANGE_TIMOUT_DURATION = 500;
+var makeSitesTimeout;
+const MAKE_SITES_TIMEOUT_DURATION = 500;
 
 $(document).ready(function() {
 	chrome.storage.sync.remove("sites");
@@ -68,32 +68,28 @@ $(document).ready(function() {
 						newControlGroup = $(newControlGroup);
 						newControlGroup.find('span.url').html(site.url);
 						newControlGroup.find('input.abbreviation').val(site.abbreviation);
+
+						// remove button click event
 						newControlGroup.find('a.remove').on('click', function(e) {
 							removeControlGroup(e.target);
 						});
 
-						newControlGroup.find('input.color').on("change", function() {
-							if (colorChangeTimout) {
-								clearTimeout(colorChangeTimout);
-							}
-
-							colorChangeTimout = setTimeout(function() {
-								newControlGroup.find('button.reset').show();
-								newControlGroup.find('input[name="customColorSet"]').val("true");
-
+						// abbreviation change event
+						var abbreviationField = newControlGroup.find('input.abbreviation');
+						abbreviationField.data('oldVal', abbreviationField.val());
+						newControlGroup.find('input.abbreviation').on("propertychange keyup input paste", function() {
+							if (abbreviationField.data('oldVal') != abbreviationField.val()
+								&& abbreviationField.val() != '') {
+								abbreviationField.data('oldVal', abbreviationField.val());
 								makeSites();
-							}, COLOR_CHANGE_TIMOUT_DURATION);
+						     }
+
+						     if (abbreviationField.val() == '') {
+						     	clearTimeout(makeSitesTimeout);
+						     }
 						});
 
-						newControlGroup.find('button.reset').on("click", function(e) {
-							e.preventDefault();
-							$(this).hide();
-							newControlGroup.find('input[name="customColorSet"]').val("false");
-							newControlGroup.find('input.color').val(rgbToHex(site.color["red"], site.color["green"], site.color["blue"]));
-
-							makeSites();
-						});
-
+						// set up custom color, if exists
 						if (site.customColor != undefined) {
 							newControlGroup.find('button.reset').show();
 							newControlGroup.find('input[name="customColorSet"]').val("true");
@@ -103,6 +99,24 @@ $(document).ready(function() {
 							newControlGroup.find('input[name="customColorSet"]').val("false");
 							newControlGroup.find('input.color').val(rgbToHex(site.color["red"], site.color["green"], site.color["blue"]));
 						}
+
+						// color change event
+						newControlGroup.find('input.color').on("change", function() {
+							newControlGroup.find('button.reset').show();
+							newControlGroup.find('input[name="customColorSet"]').val("true");
+
+							makeSites();
+						});
+
+						// color reset click event
+						newControlGroup.find('button.reset').on("click", function(e) {
+							e.preventDefault();
+							$(this).hide();
+							newControlGroup.find('input[name="customColorSet"]').val("false");
+							newControlGroup.find('input.color').val(rgbToHex(site.color["red"], site.color["green"], site.color["blue"]));
+
+							makeSites();
+						});
 
 						$("#sites").prepend(newControlGroup);
 					})();
@@ -131,90 +145,100 @@ $(document).ready(function() {
 			forceColorRegeneration = false;
 		}
 
-		$("#color-regenerate-btn").attr("disabled", "disabled");
+		if (makeSitesTimeout) {
+			clearTimeout(makeSitesTimeout);
+		}
 
-		var fields = [];
- 
-		$('#sites .site-controls').each(function(index, element) {
-			urlField = $(this).children('span.url').eq(0);
-			abbreviationField = $(this).children('input:text.abbreviation').eq(0);
- 
-			var url = urlField.html();
-			var abbreviation = abbreviationField.val();
- 
-			if (!url.match(/^(http|https):\/\//)) {
-				url = "http://" + url;
- 
-				urlField.html(url);
-			}
- 
-			if (!abbreviation) {
-				abbreviation = makeAbbreviation(getHostname(url));
- 
-				abbreviationField.val(abbreviation);
-			}
- 
-			fields[index] = {};
-			fields[index].url = url;
-			fields[index].abbreviation = abbreviation;
-			if ($(this).children('input[name="customColorSet"]').val() == "true") {
-				fields[index].customColor = hexToRgb($(this).children('input[type=color]').val());
-			}
-		});
-   
-		getSites(function(sites) {
-			for (var i = 0; i < fields.length; i++) {
-				fields[i].color = null;
-			}
+		makeSitesTimeout = setTimeout(function() {
+			perform(forceColorRegeneration);
+		}, MAKE_SITES_TIMEOUT_DURATION);
 
-			var numberOfSitesRequiringColor = 0;
- 
-		 	if (!forceColorRegeneration) {
-				if (sites != null && sites.length != 0) {
-					for (var i = 0; i < sites.length; i++) {
-						for (var j = 0; j < fields.length; j++) {
-							if (sites[i].url == fields[j].url) {
-								fields[j].color = sites[i].color;
-								break;
+		function perform(force) {
+			$("#color-regenerate-btn").attr("disabled", "disabled");
+
+			var fields = [];
+	 
+			$('#sites .site-controls').each(function(index, element) {
+				urlField = $(this).children('span.url').eq(0);
+				abbreviationField = $(this).children('input:text.abbreviation').eq(0);
+	 
+				var url = urlField.html();
+				var abbreviation = abbreviationField.val();
+	 
+				if (!url.match(/^(http|https):\/\//)) {
+					url = "http://" + url;
+	 
+					urlField.html(url);
+				}
+	 
+				if (!abbreviation) {
+					abbreviation = makeAbbreviation(getHostname(url));
+	 
+					abbreviationField.val(abbreviation);
+				}
+	 
+				fields[index] = {};
+				fields[index].url = url;
+				fields[index].abbreviation = abbreviation;
+				if ($(this).children('input[name="customColorSet"]').val() == "true") {
+					fields[index].customColor = hexToRgb($(this).children('input[type=color]').val());
+				}
+			});
+	   
+			getSites(function(sites) {
+				for (var i = 0; i < fields.length; i++) {
+					fields[i].color = null;
+				}
+
+				var numberOfSitesRequiringColor = 0;
+	 
+			 	if (!force) {
+					if (sites != null && sites.length != 0) {
+						for (var i = 0; i < sites.length; i++) {
+							for (var j = 0; j < fields.length; j++) {
+								if (sites[i].url == fields[j].url) {
+									fields[j].color = sites[i].color;
+									break;
+								}
 							}
 						}
 					}
+				} else {
+					numberOfSitesRequiringColor = fields.length;
+
+					console.log(Math.min(numberOfSitesRequiringColor, 0) + " sites require a color check");
 				}
-			} else {
-				numberOfSitesRequiringColor = fields.length;
+	  
+				var siteSaved = false;
 
-				console.log(Math.min(numberOfSitesRequiringColor, 0) + " sites require a color check");
-			}
-  
-			var siteSaved = false;
+				function saveIfReady() {
+					if (!siteSaved && numberOfSitesRequiringColor <= 0) {
+						saveSites(fields);
 
-			function saveIfReady() {
-				if (!siteSaved && numberOfSitesRequiringColor <= 0) {
-					saveSites(fields);
+						siteSaved = true;
 
-					siteSaved = true;
-
-					$("#color-regenerate-btn").removeAttr("disabled");
-				}
-			}
- 
-			for (var i = 0; i < fields.length; i++) {
-				(function() {
-					var site = fields[i];
-
-					if (!site.color) {
-						setSiteColor(site, function(site, error) { 
-							numberOfSitesRequiringColor--;
- 
-							console.log((fields.length - numberOfSitesRequiringColor) + " / " + fields.length + " – Got color for " + site.url);
- 
-							saveIfReady();
-						});
-					} else {
-						saveIfReady();
+						$("#color-regenerate-btn").removeAttr("disabled");
 					}
-				})();
-			}
-		});	
+				}
+	 
+				for (var i = 0; i < fields.length; i++) {
+					(function() {
+						var site = fields[i];
+
+						if (!site.color) {
+							setSiteColor(site, function(site, error) { 
+								numberOfSitesRequiringColor--;
+	 
+								console.log((fields.length - numberOfSitesRequiringColor) + " / " + fields.length + " – Got color for " + site.url);
+	 
+								saveIfReady();
+							});
+						} else {
+							saveIfReady();
+						}
+					})();
+				}
+			});
+		}
 	}
 });

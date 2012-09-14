@@ -69,10 +69,6 @@ canvas {
 	float: left;
 }
 
-.primary {
-	margin-left: 20px;
-}
-
 .nav-tabs > .active > a,
 .nav-tabs > .active > a:hover {
 	background-color: #888;
