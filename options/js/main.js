@@ -19,6 +19,12 @@ const FAVICON_LOAD_FAIL_URL_REPLACE = "#{url}";
 const FAVICON_LOAD_FAIL_MESSAGE = "Could not retrieve favicon for #{url}. Check the URL and ensure the site does not redirect.";
 
 $(document).ready(function() {
+	chrome.storage.sync.remove("sites");
+
+	chrome.storage.sync.get(null, function(items) {
+		console.log(items);
+	});
+
 	var sites = [];
 
 	sitesReload();
@@ -32,13 +38,13 @@ $(document).ready(function() {
 	});
 
 	function sitesReload() {	
-		getSites(function (data) {
+		getSites(function (items) {
 			$("#sites").html("");
 			
-			if (!data) {
+			if (!items || items.length == 0) {
 				$("#sites").prepend(NO_TILES_ADDED_TEXT);
 			} else {
-				sites = data;
+				sites = items;
 
 				sites = sites.reverse();
 
