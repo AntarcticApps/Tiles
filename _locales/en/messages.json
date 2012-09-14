@@ -23,6 +23,10 @@
 		"message": "This page cannot be added as a tile.",
 		"description": "Invalid URL error text for error tile popup."
 	},
+	"options_no_tiles_added": {
+		"message": "No tiles added.",
+		"description": "Message shown on main options page when no tiles exist."
+	},
 	"tab_page_no_tiles_added": {
 		"message": "No Tiles Added",
 		"description": "No tiles added to new tab page."
