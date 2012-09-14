@@ -30,7 +30,12 @@ function init() {
 		for (var i = 0; i < sites.length; i++) {
 			var site = sites[i];
 			var tile = createTile(site.abbreviation, site.url);
-			var color = site.color;
+			var color;
+			if (site.customColor) {
+				color = site.customColor;
+			} else {
+				color = site.color;
+			}
 			tile.style.background = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + 1 +')';
 			tile.onclick = onTileClick;
 
