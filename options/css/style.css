@@ -1,5 +1,7 @@
 .container {
 	width: 100%;
+	min-width: 1024px;
+
 	padding: 10px 20px;
 
 	box-sizing: border-box;
@@ -7,6 +9,7 @@
 
 .form-horizontal .controls {
 	margin-left: 0;
+	min-width: 745px;
 }
 
 .controls input,
@@ -65,14 +68,14 @@ canvas {
 }
 
 .primary,
-.secondary {
+.secondary {	
 	float: left;
 }
 
 .nav-tabs > .active > a,
 .nav-tabs > .active > a:hover {
-	background-color: #888;
-	color: #fff;
+	background-color: #E6E6E6;
+	color: #555;
 }
 
 .nav-tabs > li > a,
@@ -80,22 +83,23 @@ canvas {
 	color: #555;
 }
 
+.nav-tabs > li > a:hover {
+	background-color: #F6F6F6;
+}
+
 .nav-tabs > li > a > i.icon-chevron-right {
+	background-image: url("../../shared/images/glyphicons-halflings.png") !important;
 	float: right;
 	margin-top: 2px;
 	opacity: 0.5;
 }
 
 .nav-tabs > li > a:hover > i.icon-chevron-right {
-	opacity: 0.75;
+	opacity: 0.7;
 }
 
 .nav-tabs > li.active > a > i.icon-chevron-right {
-	opacity: 1.0;
-}
-
-.tab-pane {
-	width: 738px;
+	opacity: 0.9;
 }
 
 .tab-pane h2 {
