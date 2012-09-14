@@ -45,18 +45,16 @@
 	height: 28px;
 }
 
+.help-block {
+	margin-top: 10px;
+}
+
 #success.hide {
 	display: inline-block;
 
 	opacity: 0;
 
 	-webkit-transition: opacity 1s linear;
-}
-
-#success.show {
-	display: inline-block;
-
-	opacity: 1;
 }
 
 .hidden {
