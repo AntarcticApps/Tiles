@@ -1,11 +1,14 @@
 const CONTROL_GROUP = '<div class="control-group"> \
 	<div class="controls site-controls"> \
 		<a type="button" class="btn disabled handle"><i class="icon-list"></i></a> \
-		<span class="url input-large uneditable-input"></span> \
+		<span class="url uneditable-input"></span> \
 		<input type="text" class="input-nano abbreviation" placeholder="" maxlength="2"> \
 		<div class="action-buttons"> \
 			<a type="button" class="btn btn-danger remove"><i class="icon-trash icon-white"></i></a> \
 		</div> \
+		<input type="color" class="color"> \
+		<button class="btn reset">Reset Color</button> \
+		<input type="hidden" name="customColorSet" value="false"> \
 	</div> \
 </div>';
 
@@ -65,6 +68,32 @@ $(document).ready(function() {
 						removeControlGroup(e.target);
 					});
 
+					newControlGroup.find('input.color').on("change", function() {
+						newControlGroup.find('button.reset').show();
+						newControlGroup.find('input[name="customColorSet"]').val("true");
+
+						makeSites();
+					});
+
+					newControlGroup.find('button.reset').on("click", function(e) {
+						e.preventDefault();
+						newControlGroup.find('input[name="customColorSet"]').val("false");
+						$(this).hide();
+						newControlGroup.find('input.color').val(rgbToHex(site.color["red"], site.color["green"], site.color["blue"]));
+
+						makeSites();
+					});
+
+					if (site.customColor != undefined) {
+						newControlGroup.find('button.reset').show();
+						newControlGroup.find('input[name="customColorSet"]').val("true");
+						newControlGroup.find('input.color').val(rgbToHex(site.customColor["red"], site.customColor["green"], site.customColor["blue"]));
+					} else {
+						newControlGroup.find('button.reset').hide();
+						newControlGroup.find('input[name="customColorSet"]').val("false");
+						newControlGroup.find('input.color').val(rgbToHex(site.color["red"], site.color["green"], site.color["blue"]));
+					}
+
 					$("#sites").prepend(newControlGroup);
 				}
 			}
@@ -73,7 +102,7 @@ $(document).ready(function() {
 				handle: '.handle',
 				axis: 'y',
 				update: function(e, ui) {
-					movedControlGroup(ui);
+					makeSites();
 				}
 			});
 
@@ -81,13 +110,8 @@ $(document).ready(function() {
 		});
 	}
 
-	function movedControlGroup(ui) {
-		makeSites();
-	}
-
 	function removeControlGroup(element) {
 		parent = $(element).parents('.control-group');
-
 		chrome.extension.sendMessage({ message: "delete", url:parent.find('span.url').html() }, function(response) { });
 	}
 
@@ -122,66 +146,60 @@ $(document).ready(function() {
 			fields[index] = {};
 			fields[index].url = url;
 			fields[index].abbreviation = abbreviation;
+			if ($(this).children('input[name="customColorSet"]').val() == "true") {
+				fields[index].customColor = hexToRgb($(this).children('input[type=color]').val());
+			}
 		});
- 
-		var numberOfSitesRequiringColor = fields.length;
- 
-		const TIME_BEFORE_UPDATE = 1000 * 60 * 60;
- 
+   
 		getSites(function(sites) {
 			for (var i = 0; i < fields.length; i++) {
 				fields[i].color = null;
 			}
+
+			var numberOfSitesRequiringColor = 0;
  
 		 	if (!forceColorRegeneration) {
 				if (sites != null && sites.length != 0) {
 					for (var i = 0; i < sites.length; i++) {
 						for (var j = 0; j < fields.length; j++) {
 							if (sites[i].url == fields[j].url) {
-								if (siteNeedsColorUpdate(sites[i])) {
-									fields[j].color = null;
-								} else {
-									fields[j].color = sites[i].color;
-									fields[j].lastUpdated = sites[i].lastUpdated;
-	 
-									numberOfSitesRequiringColor--;
-								}
+								fields[j].color = sites[i].color;
 							}
 						}
 					}
 				}
+			} else {
+				numberOfSitesRequiringColor = fields.length;
+
+				console.log(Math.min(numberOfSitesRequiringColor, 0) + " sites require a color check");
 			}
- 
-			console.log(Math.min(numberOfSitesRequiringColor, 0) + " sites require a color check");
- 
+  
 			var siteSaved = false;
+
+			function saveIfReady() {
+				if (!siteSaved && numberOfSitesRequiringColor <= 0) {
+					saveSites(fields);
+
+					siteSaved = true;
+
+					$("#color-regenerate-btn").removeAttr("disabled");
+				}
+			}
  
 			for (var i = 0; i < fields.length; i++) {
 				(function() {
 					var site = fields[i];
- 
-					if (site.color != null) {
-						if (!siteSaved && numberOfSitesRequiringColor <= 0) {
-							saveSites(fields);
- 
-							siteSaved = true;
 
-							$("#color-regenerate-btn").removeAttr("disabled");
-						}
-					} else {
+					if (!site.color) {
 						setSiteColor(site, function(site, error) { 
 							numberOfSitesRequiringColor--;
  
 							console.log((fields.length - numberOfSitesRequiringColor) + " / " + fields.length + " – Got color for " + site.url);
  
-							if (!siteSaved && numberOfSitesRequiringColor <= 0) {
-								saveSites(fields);
- 
-								siteSaved = true;
-
-								$("#color-regenerate-btn").removeAttr("disabled");
-							}
+							saveIfReady();
 						});
+					} else {
+						saveIfReady();
 					}
 				})();
 			}

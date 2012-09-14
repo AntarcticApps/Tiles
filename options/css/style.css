@@ -1,6 +1,6 @@
 .container {
-	width: 500px;
-	margin: 0 auto;
+	width: 800px;
+	margin: 10px 20px;
 }
 
 .form-horizontal .controls {
@@ -21,6 +21,16 @@
 
 .controls a.btn.handle {
 	cursor: pointer;
+}
+
+.controls .url {
+	width: 400px;
+}
+
+.controls .color {
+	padding: 0 2px;
+	width: 35px;
+	height: 28px;
 }
 
 #success.hide {

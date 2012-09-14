@@ -488,6 +488,25 @@ function hslToRgb(hsl){
     return [r * 255, g * 255, b * 255];
 }
 
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        red: parseInt(result[1], 16),
+        green: parseInt(result[2], 16),
+        blue: parseInt(result[3], 16),
+        alpha: 255
+    } : null;
+}
+
 function safeAlphaHslToRgb(hsl) {
 	var rgb = hslToRgb(hsl);
 	var safeRgb = [0, 0, 0, 255]
