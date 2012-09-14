@@ -66,6 +66,8 @@ function saveSites(sites, callback) {
 	
 	chrome.storage.sync.set({'sitesSize': sites.length}, function() {
 		if (sites.length == 0) {
+			chrome.extension.sendMessage({ message: "saved" }, function(response) { });
+
 			return callback();
 		}
 
