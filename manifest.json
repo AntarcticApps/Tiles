@@ -38,6 +38,9 @@
     "tab_page/css/style.css",
     "tab_page/js/main.js",
     "shared/js/sites.js",
-    "shared/js/utilities.js"
+    "shared/js/utilities.js",
+    "options/options.html",
+    "options/css/style.css",
+    "options/js/main.js"
   ]
 }
