@@ -58,43 +58,45 @@ $(document).ready(function() {
 				sites = sites.reverse();
 
 				for (var i = 0; i < sites.length; i++) {
-					var newControlGroup = CONTROL_GROUP;
-					var site = sites[i];
+					(function() {
+						var newControlGroup = CONTROL_GROUP;
+						var site = sites[i];
 
-					newControlGroup = $(newControlGroup);
-					newControlGroup.find('span.url').html(site.url);
-					newControlGroup.find('input.abbreviation').val(site.abbreviation);
-					newControlGroup.find('a.remove').on('click', function(e) {
-						removeControlGroup(e.target);
-					});
+						newControlGroup = $(newControlGroup);
+						newControlGroup.find('span.url').html(site.url);
+						newControlGroup.find('input.abbreviation').val(site.abbreviation);
+						newControlGroup.find('a.remove').on('click', function(e) {
+							removeControlGroup(e.target);
+						});
 
-					newControlGroup.find('input.color').on("change", function() {
-						newControlGroup.find('button.reset').show();
-						newControlGroup.find('input[name="customColorSet"]').val("true");
+						newControlGroup.find('input.color').on("change", function() {
+							newControlGroup.find('button.reset').show();
+							newControlGroup.find('input[name="customColorSet"]').val("true");
 
-						makeSites();
-					});
+							makeSites();
+						});
 
-					newControlGroup.find('button.reset').on("click", function(e) {
-						e.preventDefault();
-						newControlGroup.find('input[name="customColorSet"]').val("false");
-						$(this).hide();
-						newControlGroup.find('input.color').val(rgbToHex(site.color["red"], site.color["green"], site.color["blue"]));
+						newControlGroup.find('button.reset').on("click", function(e) {
+							e.preventDefault();
+							$(this).hide();
+							newControlGroup.find('input[name="customColorSet"]').val("false");
+							newControlGroup.find('input.color').val(rgbToHex(site.color["red"], site.color["green"], site.color["blue"]));
 
-						makeSites();
-					});
+							makeSites();
+						});
 
-					if (site.customColor != undefined) {
-						newControlGroup.find('button.reset').show();
-						newControlGroup.find('input[name="customColorSet"]').val("true");
-						newControlGroup.find('input.color').val(rgbToHex(site.customColor["red"], site.customColor["green"], site.customColor["blue"]));
-					} else {
-						newControlGroup.find('button.reset').hide();
-						newControlGroup.find('input[name="customColorSet"]').val("false");
-						newControlGroup.find('input.color').val(rgbToHex(site.color["red"], site.color["green"], site.color["blue"]));
-					}
+						if (site.customColor != undefined) {
+							newControlGroup.find('button.reset').show();
+							newControlGroup.find('input[name="customColorSet"]').val("true");
+							newControlGroup.find('input.color').val(rgbToHex(site.customColor["red"], site.customColor["green"], site.customColor["blue"]));
+						} else {
+							newControlGroup.find('button.reset').hide();
+							newControlGroup.find('input[name="customColorSet"]').val("false");
+							newControlGroup.find('input.color').val(rgbToHex(site.color["red"], site.color["green"], site.color["blue"]));
+						}
 
-					$("#sites").prepend(newControlGroup);
+						$("#sites").prepend(newControlGroup);
+					})();
 				}
 			}
 
@@ -164,6 +166,7 @@ $(document).ready(function() {
 						for (var j = 0; j < fields.length; j++) {
 							if (sites[i].url == fields[j].url) {
 								fields[j].color = sites[i].color;
+								break;
 							}
 						}
 					}
