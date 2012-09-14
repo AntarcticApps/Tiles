@@ -80,26 +80,32 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 	} else if (request.message == "delete") {
 		console.log('Deleting...');
 
-		function deleteSiteCallback() {
-			if (!request.url) {
-				setPopup(true, false, tab.id);
-				changeIcon(false, null, tab.id);
+		getFocusedTab(function(tab) {
+			if (!tab) {
+				return;
 			}
 
-			sendResponse({message: "deleted"});
+			function deleteSiteCallback() {
+				if (!request.url) {
+					setPopup(true, false, tab.id);
+					changeIcon(false, null, tab.id);
+				}
 
-			console.log('Sent deleted');
+				sendResponse({message: "deleted"});
 
-			updateAllWindows();
-		}
+				console.log('Sent deleted');
 
-		if (request.url == undefined) {
-			console.log("Deleting site " + tab.url);
-			deleteSite(tab.url, deleteSiteCallback);
-		} else {
-			console.log("Deleting site " + request.url);
-			deleteSite(request.url, deleteSiteCallback);
-		}
+				updateAllWindows();
+			}
+
+			if (request.url == undefined) {
+				console.log("Deleting site " + tab.url);
+				deleteSite(tab.url, deleteSiteCallback);
+			} else {
+				console.log("Deleting site " + request.url);
+				deleteSite(request.url, deleteSiteCallback);
+			}
+		});
 	}
 
 	return true;
