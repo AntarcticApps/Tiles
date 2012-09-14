@@ -37,6 +37,12 @@ $(document).ready(function() {
 		}
 	});
 
+	$("#color-regenerate-btn").on("click", function(e) {
+		e.preventDefault();
+
+		makeSites(true);
+	});
+
 	function sitesReload() {	
 		getSites(function (items) {
 			$("#sites").html("");
@@ -87,7 +93,13 @@ $(document).ready(function() {
 		chrome.extension.sendMessage({ message: "delete", url:parent.find('span.url').html() }, function(response) { });
 	}
 
-	function makeSites() {
+	function makeSites(forceColorRegeneration) {
+		if (forceColorRegeneration == undefined) {
+			forceColorRegeneration = false;
+		}
+
+		$("#color-regenerate-btn").attr("disabled", "disabled");
+
 		var fields = [];
  
 		$('#sites .site-controls').each(function(index, element) {
@@ -123,17 +135,19 @@ $(document).ready(function() {
 				fields[i].color = null;
 			}
  
-			if (sites != null && sites.length != 0) {
-				for (var i = 0; i < sites.length; i++) {
-					for (var j = 0; j < fields.length; j++) {
-						if (sites[i].url == fields[j].url) {
-							if (siteNeedsColorUpdate(sites[i])) {
-								fields[j].color = null;
-							} else {
-								fields[j].color = sites[i].color;
-								fields[j].lastUpdated = sites[i].lastUpdated;
- 
-								numberOfSitesRequiringColor--;
+		 	if (!forceColorRegeneration) {
+				if (sites != null && sites.length != 0) {
+					for (var i = 0; i < sites.length; i++) {
+						for (var j = 0; j < fields.length; j++) {
+							if (sites[i].url == fields[j].url) {
+								if (siteNeedsColorUpdate(sites[i])) {
+									fields[j].color = null;
+								} else {
+									fields[j].color = sites[i].color;
+									fields[j].lastUpdated = sites[i].lastUpdated;
+	 
+									numberOfSitesRequiringColor--;
+								}
 							}
 						}
 					}
@@ -153,15 +167,11 @@ $(document).ready(function() {
 							saveSites(fields);
  
 							siteSaved = true;
+
+							$("#color-regenerate-btn").removeAttr("disabled");
 						}
 					} else {
-						setSiteColor(site, function(site, error) {
-							if (error) {
-								$(".alert-error").removeClass("hidden");
-								$(".alert-error").children("span").html(FAVICON_LOAD_FAIL_MESSAGE.replace(FAVICON_LOAD_FAIL_URL_REPLACE, site.url));
-								$(".alert-error").children("h4").html(FAVICON_LOAD_FAIL_TITLE);
-							}
- 
+						setSiteColor(site, function(site, error) { 
 							numberOfSitesRequiringColor--;
  
 							console.log((fields.length - numberOfSitesRequiringColor) + " / " + fields.length + " – Got color for " + site.url);
@@ -170,13 +180,13 @@ $(document).ready(function() {
 								saveSites(fields);
  
 								siteSaved = true;
+
+								$("#color-regenerate-btn").removeAttr("disabled");
 							}
 						});
 					}
 				})();
 			}
-
-			return sites;
 		});	
 	}
 });

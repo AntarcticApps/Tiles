@@ -118,7 +118,7 @@ function setSiteColor(site, callback) {
 		if (!color) {
 			error = true;
 
-			color = [0, 0, 0, 0];
+			color = [0, 0, 0, 255];
 		}
 
 		site.color = {
