@@ -45,6 +45,10 @@
 	height: 28px;
 }
 
+.controls .color:active {
+	background: #E6E6E6;
+}
+
 .help-block {
 	margin-top: 10px;
 }
