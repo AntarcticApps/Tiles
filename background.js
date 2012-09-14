@@ -78,7 +78,7 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 			}
 		});
 	} else if (request.message == "delete") {
-		console.log('Deleting....');
+		console.log('Deleting...');
 
 		getFocusedTab(function(tab) {
 			if (!tab) {

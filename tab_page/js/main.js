@@ -16,10 +16,9 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 
 function init() {	
 	var sitesElement = document.getElementById('sites');
-
-	chrome.storage.sync.get('sites', function(items) {
-		sites = items['sites'];
-
+	
+	getSites(function(items) {
+		sites = items;
 		document.addEventListener("DOMNodeInserted", layout, false);
 
 		if (sites == undefined || sites == null || sites.length == 0) {

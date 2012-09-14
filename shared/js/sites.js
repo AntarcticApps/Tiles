@@ -30,7 +30,7 @@ function deleteSite(url, callback) {
 		}
 
 		saveSites(sites, callback);
-	})
+	});
 }
 
 function saveSite(site, callback) {
@@ -60,22 +60,53 @@ function saveSite(site, callback) {
 }
 
 function saveSites(sites, callback) {
-	chrome.storage.sync.set({"sites": sites}, callback);
+	chrome.storage.sync.set({'sitesSize': sites.length}, function() {
+		if (sites.length == 0) {
+			return callback();
+		}
+
+		var sitesSet = 0;
+		for (var i = 0; i < sites.length; i++) {
+			var key = 'site-' + i;
+			var pair = {};
+			pair[key] = sites[i];
+			chrome.storage.sync.set(pair, function() {
+				sitesSet++;
+				if (sites.length == sitesSet) {
+					return callback();
+				}
+			});
+		}
+	});
 }
 
 function getSites(callback) {
-	chrome.storage.sync.get('sites', function(items) {
-		sites = items['sites'];
-
-		if (sites == undefined || sites == null) {
-			return callback(null);
-		} else {
-			if (sites.length == 0) {
+	chrome.storage.sync.get('sitesSize', function(sitesSizeItems) {
+		if (sitesSizeItems == null || sitesSizeItems.sitesSize == 0) {
+			chrome.storage.sync.set({'sitesSize': 0}, function() {
 				return callback(null);
+			});
+		} else {
+			var sitesList = [];
+			for (var i = 0; i < sitesSizeItems.sitesSize; i++) {
+				sitesList[i] = 'site-' + i;
 			}
-		}
 
-		return callback(sites);
+			chrome.storage.sync.get(sitesList, function(sitesItems) {
+				if (sitesItems == null) {
+					chrome.storage.sync.set({'sitesSize': 0}, function() {
+						return callback(null);
+					});
+				} else {
+					var sites = [];
+					for (var j = 0; j < sitesSizeItems.sitesSize; j++) {
+						sites[j] = sitesItems['site-' + j];
+					}
+
+					return callback(sites);
+				}
+			});
+		}
 	});
 }
 
