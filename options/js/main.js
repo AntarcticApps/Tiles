@@ -21,6 +21,9 @@ const FAVICON_LOAD_FAIL_TITLE = "Failed to retrieve favicon!";
 const FAVICON_LOAD_FAIL_URL_REPLACE = "#{url}";
 const FAVICON_LOAD_FAIL_MESSAGE = "Could not retrieve favicon for #{url}. Check the URL and ensure the site does not redirect.";
 
+var colorChangeTimout;
+const COLOR_CHANGE_TIMOUT_DURATION = 500;
+
 $(document).ready(function() {
 	chrome.storage.sync.remove("sites");
 
@@ -70,10 +73,16 @@ $(document).ready(function() {
 						});
 
 						newControlGroup.find('input.color').on("change", function() {
-							newControlGroup.find('button.reset').show();
-							newControlGroup.find('input[name="customColorSet"]').val("true");
+							if (colorChangeTimout) {
+								clearTimeout(colorChangeTimout);
+							}
 
-							makeSites();
+							colorChangeTimout = setTimeout(function() {
+								newControlGroup.find('button.reset').show();
+								newControlGroup.find('input[name="customColorSet"]').val("true");
+
+								makeSites();
+							}, COLOR_CHANGE_TIMOUT_DURATION);
 						});
 
 						newControlGroup.find('button.reset').on("click", function(e) {
