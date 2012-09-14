@@ -32,7 +32,7 @@ $(document).ready(function() {
 	chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 		console.log('Message received: ' + request.message);
 
-		if (request.message == "saved" || request.message == "deleted") {
+		if (request.message == "saved") {
 			sitesReload();
 		}
 	});
@@ -83,8 +83,6 @@ $(document).ready(function() {
 
 	function movedControlGroup(ui) {
 		makeSites();
-
-		chrome.extension.sendMessage({ message: "saved" }, function(response) { });
 	}
 
 	function removeControlGroup(element) {

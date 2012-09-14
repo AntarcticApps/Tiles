@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 	console.log('Message received: ' + request.message);
 
-	if (request.message == "saved" || request.message == "deleted") {
+	if (request.message == "saved") {
 		location.reload();
 	}
 });

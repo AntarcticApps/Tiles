@@ -76,6 +76,8 @@ function saveSites(sites, callback) {
 		}
 
 		chrome.storage.sync.set(pairs, function() {
+			chrome.extension.sendMessage({ message: "saved" }, function(response) { });
+
 			return callback();
 		});
 	});

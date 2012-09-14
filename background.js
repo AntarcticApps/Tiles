@@ -93,8 +93,6 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 
 				sendResponse({message: "deleted"});
 
-				chrome.extension.sendMessage({message: "deleted"}, function(response) { });
-
 				console.log('Sent deleted');
 
 				updateAllWindows();
