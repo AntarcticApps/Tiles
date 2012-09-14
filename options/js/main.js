@@ -55,10 +55,11 @@ $(document).ready(function() {
 			
 			if (!items || items.length == 0) {
 				$("#sites").prepend(NO_TILES_ADDED_TEXT);
+				$("#color-regenerate-btn").attr("disabled", "disabled");
 			} else {
-				sites = items;
+				sites = items.reverse();
 
-				sites = sites.reverse();
+				$("#color-regenerate-btn").removeAttr("disabled");
 
 				for (var i = 0; i < sites.length; i++) {
 					(function() {
