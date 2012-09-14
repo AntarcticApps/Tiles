@@ -1,13 +1,18 @@
 .container {
-	width: 800px;
-	margin: 10px 20px;
+	width: 100%;
+	padding: 10px 20px;
+
+	box-sizing: border-box;
 }
 
 .form-horizontal .controls {
 	margin-left: 0;
 }
 
-.controls > .btn {
+.controls input,
+.controls button,
+.controls .btn,
+.controls .url {
 	margin-right: 4px;
 }
 
@@ -24,12 +29,16 @@
 }
 
 .controls .url {
-	width: 400px;
+	width: 380px;
+}
+
+.controls .abbreviation {
+	width: 34px;
 }
 
 .controls .color {
 	padding: 0 2px;
-	width: 35px;
+	width: 42px;
 	height: 28px;
 }
 
@@ -53,4 +62,47 @@
 
 canvas {
 	display: none;
+}
+
+.primary,
+.secondary {
+	float: left;
+}
+
+.primary {
+	margin-left: 20px;
+}
+
+.nav-tabs > .active > a,
+.nav-tabs > .active > a:hover {
+	background-color: #08C;
+	color: #fff;
+}
+
+.nav-tabs > li > a:hover {
+	color: #005580;
+}
+
+.nav-tabs > li > a > i.icon-chevron-right {
+	float: right;
+	margin-top: 2px;
+	opacity: 0.5;
+}
+
+.nav-tabs > li > a:hover > i.icon-chevron-right {
+	opacity: 0.75;
+}
+
+.nav-tabs > li.active > a > i.icon-chevron-right {
+	opacity: 1.0;
+}
+
+.tab-pane {
+	width: 738px;
+}
+
+.tab-pane h2 {
+	padding-bottom: 5px;
+	margin-bottom: 15px;
+	border-bottom: 1px solid #eee;
 }
