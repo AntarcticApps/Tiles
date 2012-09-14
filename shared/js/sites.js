@@ -316,7 +316,7 @@ function faviconSearchForDeclared(url, success, error) {
 		var results;
 		var regex;
 
-		regex = /<link (.*) ?\/?>/gim;
+		regex = /<link ([^<>]*) ?\/?>/gim;
 		while ((results = regex.exec(data)) !== null) {
 			links.push(results[1]);
 		}
