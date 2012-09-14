@@ -391,7 +391,7 @@ function isContentImage(jqXHR) {
 		return true;
 	}
 
-	return contentType.indexOf('image') != -1;
+	return contentType.indexOf('html') == -1;
 }
 
 function urlRemoveFile(url) {
