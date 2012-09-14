@@ -75,12 +75,13 @@ canvas {
 
 .nav-tabs > .active > a,
 .nav-tabs > .active > a:hover {
-	background-color: #08C;
+	background-color: #888;
 	color: #fff;
 }
 
+.nav-tabs > li > a,
 .nav-tabs > li > a:hover {
-	color: #005580;
+	color: #555;
 }
 
 .nav-tabs > li > a > i.icon-chevron-right {
@@ -102,7 +103,7 @@ canvas {
 }
 
 .tab-pane h2 {
-	padding-bottom: 5px;
+	padding-bottom: 10px;
 	margin-bottom: 15px;
 	border-bottom: 1px solid #eee;
 }
