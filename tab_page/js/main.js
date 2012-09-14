@@ -32,7 +32,6 @@ function init() {
 			var tile = createTile(site.abbreviation, site.url);
 			var color = site.color;
 			tile.style.background = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + 1 +')';
-			tile.dataset.url = site.url;
 			tile.onclick = onTileClick;
 
 			fragment.appendChild(tile);
@@ -90,11 +89,21 @@ function createTile(abbreviation, url) {
 
 function onTileClick(e) {
 	var target = e.target;
-	var url = target.dataset.url;
+	var sitesElement = document.getElementById("sites");
+	var url;
+
+	for (var i = 0; i < sitesElement.children.length; i++) {
+		if (target == sitesElement.children[i]) {
+			url = sites[i].url;
+			break;
+		}
+	}
+
+	if (url == null || url == "") {
+		return false;
+	}
 
 	if (e.metaKey == false) {
-		var sitesElement = document.getElementById("sites");
-
 		target.setAttribute("class", "tile animate");
 		var sitesTransform = sitesElement.style.webkitTransform;
 		var floatRegex = /scale\(([0-9]*\.?[0-9]*), ?([0-9]*\.?[0-9]*)\)/;
