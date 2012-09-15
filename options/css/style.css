@@ -2,7 +2,7 @@
 	-webkit-user-select: none;
 }
 
-input {
+input[type='text'] {
 	-webkit-user-select: text;
 }
 
