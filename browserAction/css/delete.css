@@ -1,6 +1,5 @@
-
 #submit-btn:after {
-	content: ' __MSG_delete_tile__';
+	content: ' __MSG_popup_delete_tile__';
 }
 
 #submit-btn {

@@ -7,27 +7,59 @@
 		"message": "A tiled new tab page.",
 		"description": "Description of the extension."
 	},
-	"add_tile": {
+	"popup_add_tile": {
 		"message": "Add Tile",
 		"description": "Tile save text in add tile popup."
 	},
-	"add_tile_saving": {
+	"popup_add_tile_saving": {
 		"message": "Saving&hellip;",
 		"description": "Tile saving text in add tile popup."
 	},
-	"delete_tile": {
+	"popup_delete_tile": {
 		"message": "Remove Tile",
 		"description": "Tile delete text in delete tile popup."
 	},
-	"invalid_url": {
+	"popup_invalid_url": {
 		"message": "This page cannot be added as a tile.",
 		"description": "Invalid URL error text for error tile popup."
 	},
-	"no_tiles_added": {
+	"options_title": {
+		"message": "Tiles Options",
+		"description": "Title for the options page."
+	},
+	"options_nav_tab_tiles": {
+		"message": "Tiles",
+		"description": "Navigation tab text for the tiles options page."
+	},
+	"options_nav_tab_advanced": {
+		"message": "Advanced",
+		"description": "Navigation tab text for the advanced options page."
+	},
+	"options_nav_tab_about": {
+		"message": "About",
+		"description": "Navigation tab text for the about page."
+	},
+	"options_no_tiles_added": {
+		"message": "No tiles added.",
+		"description": "Message shown on main options page when no tiles exist."
+	},
+	"options_reset_color": {
+		"message": "Reset Color",
+		"description": "Text for button that will remove a custom color."
+	},
+	"options_regen_all_tile_colors": {
+		"message": "Regenerate All Tile Colors",
+		"description": "Button description that will recalculate the tile colors using the website's favicon."
+	},
+	"options_regen_all_tile_colors_help": {
+		"message": "The color of each tile will be recalculated using the website\\'s favicon. This will not override the custom color, if one has been set.",
+		"description": "Help text shown below regenerate all tile colors button."
+	},
+	"tab_page_no_tiles_added": {
 		"message": "No Tiles Added",
 		"description": "No tiles added text for new tab page."
 	},
-	"no_tiles_added_help": {
+	"tab_page_no_tiles_added_help": {
 		"message": "Add a site to this page by clicking the $icon$ button in the Chrome toolbar.",
 		"description": "Help text for new tab page when no tiles added.",
 		"placeholders": {

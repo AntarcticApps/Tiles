@@ -49,6 +49,14 @@
 	background: #E6E6E6;
 }
 
+#color-regenerate-btn:after {
+	content: '__MSG_options_regen_all_tile_colors__';
+}
+
+#color-regenerate-btn + .help-block:after {
+	content: '__MSG_options_regen_all_tile_colors_help__';
+}
+
 .help-block {
 	margin-top: 10px;
 }
@@ -67,6 +75,10 @@
 
 canvas {
 	display: none;
+}
+
+.sidebar > h1:after {
+	content: '__MSG_options_title__';
 }
 
 .primary,
@@ -104,10 +116,34 @@ canvas {
 	opacity: 0.9;
 }
 
+.nav-tabs a[href="#tiles"]:after {
+	content: '__MSG_options_nav_tab_tiles__';
+}
+
+.nav-tabs a[href="#advanced"]:after {
+	content: '__MSG_options_nav_tab_advanced__';
+}
+
+.nav-tabs a[href="#about"]:after {
+	content: '__MSG_options_nav_tab_about__';
+}
+
 .tab-pane h2 {
 	padding-bottom: 10px;
 	margin-bottom: 15px;
 	border-bottom: 1px solid #eee;
+}
+
+.tab-pane#tiles > h2:after {
+	content: '__MSG_options_nav_tab_tiles__';
+}
+
+.tab-pane#advanced > h2:after {
+	content: '__MSG_options_nav_tab_advanced__';
+}
+
+.tab-pane#about > h2:after {
+	content: '__MSG_options_nav_tab_about__';
 }
 
 .tab-content {

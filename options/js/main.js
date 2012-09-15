@@ -7,25 +7,16 @@ const CONTROL_GROUP = '<div class="control-group"> \
 			<a type="button" class="btn btn-danger remove"><i class="icon-trash icon-white"></i></a> \
 		</div> \
 		<input type="color" class="color"> \
-		<button class="btn reset">Reset Color</button> \
+		<button class="btn reset">' + chrome.i18n.getMessage('options_reset_color') + '</button> \
 		<input type="hidden" name="customColorSet" value="false"> \
 	</div> \
 </div>';
-
-const NO_TILES_ADDED_TEXT = "No tiles added.";
-
-const SUBMIT_BUTTON_SAVING_TEXT = "Saving&hellip;";
-const SUBMIT_BUTTON_SUBMIT_TEXT = "Save";
-
-const FAVICON_LOAD_FAIL_TITLE = "Failed to retrieve favicon!";
-const FAVICON_LOAD_FAIL_URL_REPLACE = "#{url}";
-const FAVICON_LOAD_FAIL_MESSAGE = "Could not retrieve favicon for #{url}. Check the URL and ensure the site does not redirect.";
 
 var makeSitesTimeout;
 const MAKE_SITES_TIMEOUT_DURATION = 500;
 
 $(document).ready(function() {
-	chrome.storage.sync.remove("sites");
+	document.title = chrome.i18n.getMessage('options_title');
 
 	chrome.storage.sync.get(null, function(items) {
 		console.log(items);
@@ -54,7 +45,7 @@ $(document).ready(function() {
 			$("#sites").html("");
 			
 			if (!items || items.length == 0) {
-				$("#sites").prepend(NO_TILES_ADDED_TEXT);
+				$("#sites").prepend(chrome.i18n.getMessage('options_no_tiles_added'));
 				$("#color-regenerate-btn").attr("disabled", "disabled");
 			} else {
 				sites = items.reverse();
