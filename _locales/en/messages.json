@@ -43,6 +43,10 @@
 		"message": "No tiles added.",
 		"description": "Message shown on main options page when no tiles exist."
 	},
+	"options_reset_color": {
+		"message": "Reset Color",
+		"description": "Text for button that will remove a custom color."
+	},
 	"options_regen_all_tile_colors": {
 		"message": "Regenerate All Tile Colors",
 		"description": "Button description that will recalculate the tile colors using the website's favicon."

@@ -7,7 +7,7 @@ const CONTROL_GROUP = '<div class="control-group"> \
 			<a type="button" class="btn btn-danger remove"><i class="icon-trash icon-white"></i></a> \
 		</div> \
 		<input type="color" class="color"> \
-		<button class="btn reset">Reset Color</button> \
+		<button class="btn reset">' + chrome.i18n.getMessage('options_reset_color') + '</button> \
 		<input type="hidden" name="customColorSet" value="false"> \
 	</div> \
 </div>';
@@ -17,8 +17,6 @@ const MAKE_SITES_TIMEOUT_DURATION = 500;
 
 $(document).ready(function() {
 	document.title = chrome.i18n.getMessage('options_title');
-
-	chrome.storage.sync.remove("sites");
 
 	chrome.storage.sync.get(null, function(items) {
 		console.log(items);
