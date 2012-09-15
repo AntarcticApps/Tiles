@@ -48,6 +48,10 @@
 .hidden {
 	display: none;
 }
+	
+.message img {
+	vertical-align: text-bottom;
+}
 
 canvas {
 	display: none;

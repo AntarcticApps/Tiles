@@ -43,7 +43,7 @@ $(document).ready(function() {
 			$("#sites").html("");
 			
 			if (!items || items.length == 0) {
-				$("#sites").prepend(chrome.i18n.getMessage('options_no_tiles_added'));
+				$("#sites").prepend("<p class='message'>" + chrome.i18n.getMessage('options_no_tiles_added', ["<img src='../../icons/icon-bitty-gray.png'>"]) + "</p>");
 				$("#color-regenerate-btn").attr("disabled", "disabled");
 			} else {
 				sites = items.reverse();

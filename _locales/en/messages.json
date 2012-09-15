@@ -40,8 +40,14 @@
 		"description": "Navigation tab text for the about page."
 	},
 	"options_no_tiles_added": {
-		"message": "No tiles added.",
-		"description": "Message shown on main options page when no tiles exist."
+		"message": "No tiles added. To add a tile to the new tab page, go to a site you want to add and click the $icon$ button in the Chrome toolbar.",
+		"description": "Message shown on main options page when no tiles exist.",
+		"placeholders": {
+			"icon": {
+				"content": "$1",
+				"example": "<img src='../../icons/icon-bitty-gray.png'>"
+			}
+		}
 	},
 	"options_reset_color": {
 		"message": "Reset Color",
@@ -60,12 +66,12 @@
 		"description": "No tiles added text for new tab page."
 	},
 	"tab_page_no_tiles_added_help": {
-		"message": "Add a site to this page by clicking the $icon$ button in the Chrome toolbar.",
+		"message": "Add tiles to this page by clicking the $icon$ button in the Chrome toolbar when you are on a page you want to add.",
 		"description": "Help text for new tab page when no tiles added.",
 		"placeholders": {
 			"icon": {
 				"content": "$1",
-				"example": "<img src='../../icons/icon-bitty-gray.png>"
+				"example": "<img src='../../icons/icon-bitty-gray.png'>"
 			}
 		}
 	}
