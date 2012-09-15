@@ -1,4 +1,12 @@
 
+* {
+	-webkit-user-select: none;
+}
+
+input[type='text'] {
+	-webkit-user-select: text;
+}
+
 body {
 	font-family: sans-serif;
 
