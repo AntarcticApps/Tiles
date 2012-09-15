@@ -1,5 +1,19 @@
 var lastFocusedWindowID = 1;
 
+function init() {
+	console.log("Tiles background page started");
+
+	chrome.windows.get(chrome.windows.WINDOW_ID_CURRENT, { populate: true }, function(window) {
+		if (window.type == 'normal') {
+			lastFocusedWindowID = chrome.windows.WINDOW_ID_CURRENT;
+		}
+
+		console.log("Last focused window is now ID " + window.id);
+
+		updateWindow(window);
+	});
+}
+
 chrome.tabs.onActivated.addListener(function(info) {
 	chrome.tabs.get(info.tabId, function(tab) {
 		updateTab(tab);
@@ -224,3 +238,5 @@ function changeIcon(colors, callback, tabID) {
 
 	chrome.browserAction.setIcon(details, callback);
 }
+
+init();

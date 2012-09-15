@@ -30,7 +30,7 @@
   },
 
   "background": {
-    "scripts": ["shared/js/sites.js", "background.js"]
+    "page": "background.html"
   },
 
   "web_accessible_resources": [
