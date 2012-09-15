@@ -88,11 +88,23 @@ function layout() {
 function createTile(abbreviation, url) {
 	var site = document.createElement('a');
 	site.setAttribute("class", "tile");
+	site.setAttribute("href", url);
 	site.innerHTML = abbreviation + '<span class="url">' + getHostname(url) + '</span>';
 	return site;
 }
 
+function isMac() {
+	if (navigator.appVersion.toLowerCase().indexOf("mac") != -1)
+		return true;
+
+	return false;
+}
+
 function onTileClick(e) {
+	console.log(e);
+
+	e.preventDefault();
+
 	var target = e.target;
 	var sitesElement = document.getElementById("sites");
 	var url;
@@ -108,7 +120,36 @@ function onTileClick(e) {
 		return false;
 	}
 
-	if (e.metaKey == false) {
+	var newTab = false;
+	var newWindow = false;
+	var activeWhenOpened = false;
+	if (isMac()) {
+		if (e.metaKey || e.button == 1) {
+			newTab = true;
+			if (e.shiftKey) {
+				activeWhenOpened = true;
+			}
+		} else if (e.shiftKey) {
+			newWindow = true;
+			activeWhenOpened = true;
+		}
+	} else {
+		if (e.ctrlKey || e.button == 1) {
+			newTab = true;
+			if (e.shiftKey) {
+				activeWhenOpened = true;
+			}
+		} else if (e.shiftKey) {
+			newWindow = true;
+			activeWhenOpened = true;
+		}
+	}
+
+	if (newTab) {
+		chrome.tabs.create({ 'url': url, 'active': activeWhenOpened });
+	} else if (newWindow) {
+		chrome.windows.create({ 'url': url, 'focused': activeWhenOpened, 'type': 'normal' });
+	} else {
 		target.setAttribute("class", "tile animate");
 		var sitesTransform = sitesElement.style.webkitTransform;
 		var floatRegex = /scale\(([0-9]*\.?[0-9]*), ?([0-9]*\.?[0-9]*)\)/;
@@ -141,8 +182,6 @@ function onTileClick(e) {
 		setTimeout(function() {
 			window.location = url;
 		}, CHANGE_LOCATION_DELAY);
-	} else {
-		chrome.tabs.create({ 'url': url, active: false });
 	}
 }
 
