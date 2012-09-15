@@ -14,20 +14,12 @@
 .controls a.btn.handle {
 	cursor: pointer;
 }
-/*
-.controls .url {
-	width: 380px;
-}
-
-.controls .abbreviation {
-	width: 34px;
-}
 
 .controls .color {
 	padding: 0 2px;
 	width: 42px;
 	height: 28px;
-}*/
+}
 
 .controls .color:active {
 	background: #E6E6E6;
