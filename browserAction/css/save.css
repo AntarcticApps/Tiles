@@ -1,6 +1,3 @@
-#submit-btn:after {
-	content: ' __MSG_popup_add_tile__';
-}
 
 canvas {
 	display: none;
