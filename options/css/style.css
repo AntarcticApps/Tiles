@@ -77,6 +77,10 @@ canvas {
 	display: none;
 }
 
+.sidebar > h1:after {
+	content: '__MSG_options_title__';
+}
+
 .primary,
 .secondary {	
 	float: left;

@@ -16,6 +16,8 @@ var makeSitesTimeout;
 const MAKE_SITES_TIMEOUT_DURATION = 500;
 
 $(document).ready(function() {
+	document.title = chrome.i18n.getMessage('options_title');
+
 	chrome.storage.sync.remove("sites");
 
 	chrome.storage.sync.get(null, function(items) {

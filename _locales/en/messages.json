@@ -23,6 +23,10 @@
 		"message": "This page cannot be added as a tile.",
 		"description": "Invalid URL error text for error tile popup."
 	},
+	"options_title": {
+		"message": "Tiles Options",
+		"description": "Title for the options page."
+	},
 	"options_nav_tab_tiles": {
 		"message": "Tiles",
 		"description": "Navigation tab text for the tiles options page."
