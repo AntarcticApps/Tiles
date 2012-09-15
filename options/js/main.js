@@ -1,12 +1,10 @@
 const CONTROL_GROUP = '<div class="control-group"> \
 	<div class="controls site-controls"> \
 		<a type="button" class="btn disabled handle"><i class="icon-list"></i></a> \
-		<span class="url uneditable-input"></span> \
-		<input type="text" class="input-nano abbreviation" placeholder="" maxlength="2"> \
-		<div class="action-buttons"> \
-			<a type="button" class="btn btn-danger remove"><i class="icon-trash icon-white"></i></a> \
-		</div> \
-		<input type="color" class="color"> \
+		<span class="url uneditable-input input-xlarge"></span> \
+		<input type="text" class="abbreviation input-nano" placeholder="" maxlength="2"> \
+		<a type="button" class="btn btn-danger remove"><i class="icon-trash icon-white"></i></a> \
+		<input type="color" class="color input-nano"> \
 		<button class="btn reset">' + chrome.i18n.getMessage('options_reset_color') + '</button> \
 		<input type="hidden" name="customColorSet" value="false"> \
 	</div> \

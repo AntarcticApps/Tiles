@@ -1,36 +1,20 @@
-.container {
-	width: 100%;
-	min-width: 1024px;
-
-	padding: 10px 20px;
-
-	box-sizing: border-box;
-}
-
 .form-horizontal .controls {
 	margin-left: 0;
 	min-width: 745px;
-}
-
-.controls input,
-.controls button,
-.controls .btn,
-.controls .url {
-	margin-right: 4px;
 }
 
 .controls .action-buttons {
 	display: inline-block;
 }
 
-.controls .input-nano {
+.input-nano {
 	width: 25px;
 }
 
 .controls a.btn.handle {
 	cursor: pointer;
 }
-
+/*
 .controls .url {
 	width: 380px;
 }
@@ -43,7 +27,7 @@
 	padding: 0 2px;
 	width: 42px;
 	height: 28px;
-}
+}*/
 
 .controls .color:active {
 	background: #E6E6E6;
