@@ -16,7 +16,7 @@
 		"description": "Tile saving text in add tile popup."
 	},
 	"delete_tile": {
-		"message": "Remove?",
+		"message": "Remove Tile",
 		"description": "Tile delete text in delete tile popup."
 	},
 	"invalid_url": {
