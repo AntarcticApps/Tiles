@@ -151,7 +151,9 @@ function showNoSitesMessage() {
 
 	var tile = document.createElement('div');
 	tile.setAttribute("class", "message");
-	tile.innerHTML = "<span>" + chrome.i18n.getMessage("no_tiles_added") + "</span>";
+	tile.innerHTML = "<p>" + chrome.i18n.getMessage("no_tiles_added")
+	 + "<span class='help'>" + chrome.i18n.getMessage("no_tiles_added_help", ["<img src='../../icons/icon-bitty-gray.png'>"]) + "</span>";
+	 + "</p>";
 
 	document.getElementsByTagName('body')[0].appendChild(tile);
 }

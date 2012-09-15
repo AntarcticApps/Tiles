@@ -64,10 +64,23 @@ html, body {
 	cursor: default;
 }
 
-.message span {
+.message p {
 	display: table-cell;
 
 	vertical-align: middle;
+}
+
+.message .help {
+	display: block;
+	margin: 0;
+	font-size: 12px;
+	line-height: 12px;
+	font-weight: normal;
+}
+
+.message .help img {
+	vertical-align: text-bottom;
+	margin: 0 1px;
 }
 
 .tile {

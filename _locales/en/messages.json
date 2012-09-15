@@ -25,6 +25,16 @@
 	},
 	"no_tiles_added": {
 		"message": "No Tiles Added",
-		"description": "No tiles added to new tab page."
+		"description": "No tiles added text for new tab page."
+	},
+	"no_tiles_added_help": {
+		"message": "Add a site to this page by clicking the $icon$ button in the Chrome toolbar.",
+		"description": "Help text for new tab page when no tiles added.",
+		"placeholders": {
+			"icon": {
+				"content": "$1",
+				"example": "<img src='../../icons/icon-bitty-gray.png>"
+			}
+		}
 	}
 }
