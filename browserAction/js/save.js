@@ -5,8 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false );
 
 function init() {
-	document.getElementById('submit-btn').innerHTML = chrome.i18n.getMessage('popup_add_tile');
-
 	chrome.extension.sendMessage({ message: "getUrl" }, function(response) {
 		document.getElementById('abbreviation').value = makeAbbreviation(getHostname(response.url));
 	});
