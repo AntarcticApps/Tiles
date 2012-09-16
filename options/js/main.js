@@ -14,6 +14,8 @@ var makeSitesTimeout;
 const MAKE_SITES_TIMEOUT_DURATION = 500;
 
 $(document).ready(function() {
+	_gaq.push(['_trackPageview']);
+
 	document.title = chrome.i18n.getMessage('options_title');
 
 	chrome.storage.sync.get(null, function(items) {
@@ -34,6 +36,8 @@ $(document).ready(function() {
 
 	$("#color-regenerate-btn").on("click", function(e) {
 		e.preventDefault();
+
+		_gaq.push(['_trackEvent', 'Options Regenerate All Tile Colors', 'clicked']);
 
 		makeSites(true);
 	});
@@ -61,6 +65,8 @@ $(document).ready(function() {
 
 						// remove button click event
 						newControlGroup.find('a.remove').on('click', function(e) {
+							_gaq.push(['_trackEvent', 'Options Delete Button', 'clicked']);
+
 							removeControlGroup(e.target);
 						});
 
@@ -94,6 +100,8 @@ $(document).ready(function() {
 
 						// color change event
 						newControlGroup.find('input.color').on("change", function() {
+							_gaq.push(['_trackEvent', 'Options Custom Color', 'changed']);
+
 							newControlGroup.find('button.reset').show();
 							newControlGroup.find('input[name="customColorSet"]').val("true");
 
@@ -103,6 +111,9 @@ $(document).ready(function() {
 						// color reset click event
 						newControlGroup.find('button.reset').on("click", function(e) {
 							e.preventDefault();
+
+							_gaq.push(['_trackEvent', 'Options Reset Color', 'clicked']);
+
 							$(this).hide();
 							newControlGroup.find('input[name="customColorSet"]').val("false");
 							newControlGroup.find('input.color').val(rgbToHex(site.color["red"], site.color["green"], site.color["blue"]));

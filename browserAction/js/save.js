@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false );
 
 function init() {
+	_gaq.push(['_trackPageview']);
+
 	chrome.extension.sendMessage({ message: "getUrl" }, function(response) {
 		document.getElementById('abbreviation').value = makeAbbreviation(getHostname(response.url));
 	});
@@ -22,6 +24,8 @@ function init() {
 	submitButton.innerHTML = chrome.i18n.getMessage('popup_add_tile');
 
 	document.getElementById('form').onsubmit = function() {
+		_gaq.push(['_trackEvent', 'Popup Add Tiles Button', 'clicked']);
+
 		submitButton.setAttribute('class', submitButton.getAttribute('class') + ' disabled');
 		submitButton.setAttribute('disabled', 'disabled');
 		submitButton.innerHTML = chrome.i18n.getMessage('popup_add_tile_saving');
