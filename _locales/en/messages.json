@@ -39,8 +39,8 @@
 		"message": "About",
 		"description": "Navigation tab text for the about page."
 	},
-	"options_no_tiles_added": {
-		"message": "No tiles added. To add a tile to the new tab page, go to a site you want to add and click the $icon$ button in the Chrome toolbar.",
+	"options_no_tiles_added_help": {
+		"message": "To add a tile to the new tab page, go to a site you want to add and click the $icon$ button in the Chrome toolbar.",
 		"description": "Message shown on main options page when no tiles exist.",
 		"placeholders": {
 			"icon": {
@@ -61,7 +61,7 @@
 		"message": "The color of each tile will be recalculated using the website\\'s favicon. This will not override the custom color, if one has been set.",
 		"description": "Help text shown below regenerate all tile colors button."
 	},
-	"tab_page_no_tiles_added": {
+	"no_tiles_added": {
 		"message": "No Tiles Added",
 		"description": "No tiles added text for new tab page."
 	},
