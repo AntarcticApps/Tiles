@@ -60,7 +60,7 @@ $(document).ready(function() {
 						var site = sites[i];
 
 						newControlGroup = $(newControlGroup);
-						newControlGroup.find('span.url').html(site.url);
+						newControlGroup.find('span.url').text(site.url);
 						newControlGroup.find('input.abbreviation').val(site.abbreviation);
 
 						// remove button click event
@@ -140,7 +140,8 @@ $(document).ready(function() {
 
 	function removeControlGroup(element) {
 		parent = $(element).parents('.control-group');
-		chrome.extension.sendMessage({ message: "delete", url:parent.find('span.url').html() }, function(response) { });
+		var url = parent.find('span.url').text();
+		chrome.extension.sendMessage({ message: "delete", url: url }, function(response) { });
 	}
 
 	function makeSites(forceColorRegeneration) {
