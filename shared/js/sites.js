@@ -340,6 +340,8 @@ function faviconSearchForDeclared(url, success, error) {
 				var href = hrefRegex[1];
 
 				for (var j = 0; j < relations.length; j++) {
+					relations[j] = relations[j].toLowerCase();
+					
 					if (relations[j] != 'icon') { // && relations[j] != 'apple-touch-icon') {
 						continue;
 					}
