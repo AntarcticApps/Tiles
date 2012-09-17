@@ -217,11 +217,11 @@ $(document).ready(function() {
 
 				function saveIfReady() {
 					if (!siteSaved && numberOfSitesRequiringColor <= 0) {
-						saveSites(fields);
+						chrome.extension.sendMessage({ message:"saveSites", sites:fields },  function() {
+							siteSaved = true;
 
-						siteSaved = true;
-
-						$("#color-regenerate-btn").removeAttr("disabled");
+							$("#color-regenerate-btn").removeAttr("disabled");
+						});
 					}
 				}
 	 

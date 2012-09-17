@@ -141,6 +141,16 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 				});
 			});
 		});
+	} else if (request.message == "saveSites") {
+		console.log('Saving all sites...');
+
+		saveSites(request.sites, function() {
+			sendResponse({ message: "saved" });
+
+			console.log('Send saved');
+
+			updateAllWindows();
+		});
 	}
 
 	return true;
@@ -187,23 +197,39 @@ function update() {
 		if (tab) {
 			setPopup(false, false, tab.id);
 			changeIcon(true, null, tab.id);
+		}
 
-			updateAllWindows("update");
+		sendMessageToExtensionTabs("update");
+	});
+}
+
+function sendMessageToExtensionTabs(message) {
+	chrome.windows.getAll({ populate: true }, function(windows) {
+		for (i = 0; i < windows.length; i++) {
+			(function() {
+				var tabs = windows[i].tabs;
+
+				for (var j = 0; j < tabs.length; j++) {
+					if (isExtensionURL(tabs[j].url)) {
+						chrome.tabs.sendMessage(tabs[j].id, { "message": message });
+					}
+				}
+			})();
 		}
 	});
 }
 
-function updateAllWindows(message) {
+function updateAllWindows() {
 	chrome.windows.getAll({ populate: true }, function(windows) {
 		console.log('Updating all windows...');
 
 		for (var i = 0; i < windows.length; i++) {
-			updateWindow(windows[i], message);
+			updateWindow(windows[i]);
 		}
 	});
 }
 
-function updateWindow(window, message) {
+function updateWindow(window) {
 	if (window && window.type == 'normal') {
 		var tabs = window.tabs;
 
@@ -215,7 +241,7 @@ function updateWindow(window, message) {
 					console.log("Window ID " + window.id + " is has active tab ID: " + tabs[i].id + " which is at " + tabs[i].url);
 				}
 
-				updateTab(tabs[i], message);
+				updateTab(tabs[i]);
 
 				break;
 			}
@@ -223,15 +249,11 @@ function updateWindow(window, message) {
 	}
 }
 
-function updateTab(tab, message) {
+function updateTab(tab) {
 	console.log("Updating tab ID: " + tab.id + " which is at " + tab.url);
 
 	if (isChromeURL(tab.url)) {
 		setPopup(false, true, tab.id);
-
-		if (message) {
-			chrome.tabs.sendMessage(tab.id, { message: message });
-		}
 	} else {
 		siteExists(tab.url, function(exists) {
 			setPopup(!exists, false, tab.id);
@@ -243,6 +265,17 @@ function updateTab(tab, message) {
 
 function isChromeURL(url) {
 	return url.substring(0, 6) == 'chrome';
+}
+
+function isExtensionURL(url) {
+	var baseURL = chrome.extension.getURL("/");
+	var newTabURL = "chrome://newtab";
+
+	if (url.substring(0, newTabURL.length) == newTabURL) {
+		return true;
+	}
+
+	return url.substring(0, baseURL.length) == baseURL;
 }
 
 function siteExists(url, callback) {
