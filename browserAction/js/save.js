@@ -30,14 +30,9 @@ function init() {
 		submitButton.setAttribute('disabled', 'disabled');
 		submitButton.innerHTML = chrome.i18n.getMessage('popup_add_tile_saving');
 
-		chrome.extension.sendMessage({ message: "getUrl" }, function(response) {
-			createSite(response.url, document.getElementById('abbreviation').value, function(site) {
-				saveSite(site, function() {
-					chrome.extension.sendMessage({ message: "saved" }, function(response) {
-						window.close();
-					});
-				});
-			});
+		var abbreviation = document.getElementById('abbreviation').value;
+		chrome.extension.sendMessage({ message: "save", abbreviation: abbreviation }, function(response) {
+			window.close();
 		});
 
 		return false;

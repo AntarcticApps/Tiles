@@ -75,20 +75,27 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 			if (tab) {
 				sendResponse({ url: tab.url });
 
-				console.log('Sent URL – ' + tab.url);
+				console.log('Sent URL - ' + tab.url);
 			}
 		});
-	} else if (request.message == "saved") {
+	} else if (request.message == "getAbbreviation") {
 		getFocusedTab(function(tab) {
 			if (tab) {
-				setPopup(false, false, tab.id);
-				changeIcon(true, null, tab.id);
+				getStoredSiteAbbreviation(tab.url, function(abbreviation) {
+					sendResponse({ abbreviation: abbreviation });
 
-				sendResponse({message: "success"});
+					console.log('Sent abbreviation - ' + abbreviation);
+				});
+			}
+		});
+	} else if (request.message == "setAbbreviation") {
+		getFocusedTab(function(tab) {
+			if (tab) {
+				setStoredSiteAbbreviation(tab.url, request.abbreviation, function(response) {
+					sendResponse({ message: "success" });
 
-				console.log('Sent success');
-
-				updateAllWindows();
+					console.log('Setting abbreviation of ' + tab.url + ' to ' + request.abbreviation);
+				});
 			}
 		});
 	} else if (request.message == "delete") {
@@ -105,7 +112,7 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 					changeIcon(false, null, tab.id);
 				}
 
-				sendResponse({message: "deleted"});
+				sendResponse({ message: "deleted" });
 
 				console.log('Sent deleted');
 
@@ -119,6 +126,20 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 				console.log("Deleting site " + request.url);
 				deleteSite(request.url, deleteSiteCallback);
 			}
+		});
+	} else if (request.message == "save") {
+		console.log('Saving...');
+
+		getFocusedTab(function(tab) {
+			createSite(tab.url, request.abbreviation, function(site) {
+				saveSite(site, function() {
+					sendResponse({ message: "saved" });
+
+					console.log('Sent saved');
+
+					updateAllWindows();
+				});
+			});
 		});
 	}
 
@@ -161,7 +182,28 @@ function setPopup(save, error, tabID) {
 	// console.log('Popup is set to ' + details.popup);
 }
 
-function updateWindow(window) {
+function update() {
+	getFocusedTab(function(tab) {
+		if (tab) {
+			setPopup(false, false, tab.id);
+			changeIcon(true, null, tab.id);
+
+			updateAllWindows("update");
+		}
+	});
+}
+
+function updateAllWindows(message) {
+	chrome.windows.getAll({ populate: true }, function(windows) {
+		console.log('Updating all windows...');
+
+		for (var i = 0; i < windows.length; i++) {
+			updateWindow(windows[i], message);
+		}
+	});
+}
+
+function updateWindow(window, message) {
 	if (window && window.type == 'normal') {
 		var tabs = window.tabs;
 
@@ -173,7 +215,7 @@ function updateWindow(window) {
 					console.log("Window ID " + window.id + " is has active tab ID: " + tabs[i].id + " which is at " + tabs[i].url);
 				}
 
-				updateTab(tabs[i]);
+				updateTab(tabs[i], message);
 
 				break;
 			}
@@ -181,21 +223,14 @@ function updateWindow(window) {
 	}
 }
 
-function updateAllWindows() {
-	chrome.windows.getAll({ populate: true }, function(windows) {
-		console.log('Updating all windows...');
-
-		for (var i = 0; i < windows.length; i++) {
-			updateWindow(windows[i]);
-		}
-	});
-}
-
-function updateTab(tab) {
+function updateTab(tab, message) {
 	console.log("Updating tab ID: " + tab.id + " which is at " + tab.url);
 
 	if (isChromeURL(tab.url)) {
 		setPopup(false, true, tab.id);
+
+		if (message)
+			chrome.tabs.sendMessage(tab.id, { message: message });
 	} else {
 		siteExists(tab.url, function(exists) {
 			setPopup(!exists, false, tab.id);

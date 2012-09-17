@@ -66,7 +66,7 @@ function saveSites(sites, callback) {
 	
 	chrome.storage.sync.set({'sitesSize': sites.length}, function() {
 		if (sites.length == 0) {
-			chrome.extension.sendMessage({ message: "saved" }, function(response) { });
+			update();
 
 			return callback();
 		}
@@ -78,7 +78,7 @@ function saveSites(sites, callback) {
 		}
 
 		chrome.storage.sync.set(pairs, function() {
-			chrome.extension.sendMessage({ message: "saved" }, function(response) { });
+			update();
 
 			return callback();
 		});
@@ -111,6 +111,36 @@ function getSites(callback) {
 					return callback(sites);
 				}
 			});
+		}
+	});
+}
+
+function getStoredSiteAbbreviation(url, callback) {
+	getSites(function(sites) {
+		if (sites) {
+			for (var i = 0; i < sites.length; i++) {
+				if (sites[i].url == url) {
+					return callback(sites[i].abbreviation);
+				}
+			}
+		} else {
+			return callback(null);
+		}
+	});
+}
+
+function setStoredSiteAbbreviation(url, abbreviation, callback) {
+	getSites(function(sites) {
+		if (sites) {
+			for (var i = 0; i < sites.length; i++) {
+				if (sites[i].url == url) {
+					sites[i].abbreviation = abbreviation;
+					saveSite(sites[i], callback);
+					return;
+				}
+			}
+		} else {
+			return callback(null);
 		}
 	});
 }

@@ -1,7 +1,20 @@
-#submit-btn:after {
-	content: ' __MSG_popup_delete_tile__';
+#rename-btn:after {
+	content: ' __MSG_popup_rename_tile__';
 }
 
-#submit-btn {
-	width: 140px;
+#remove-btn:after {
+	content: ' __MSG_popup_remove_tile__';
+}
+
+button.btn {
+	width: 100px;
+}
+
+input.abbrev {
+	width: 100px;
+	height: 54px;
+	box-sizing: border-box;
+
+	font-size: 36px;
+	text-align: center;
 }

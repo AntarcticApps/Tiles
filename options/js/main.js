@@ -29,7 +29,7 @@ $(document).ready(function() {
 	chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 		console.log('Message received: ' + request.message);
 
-		if (request.message == "saved") {
+		if (request.message == "update") {
 			sitesReload();
 		}
 	});
