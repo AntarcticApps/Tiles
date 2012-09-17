@@ -123,7 +123,7 @@ html, body {
 
 .url {
 	font-size: 16px;
-	line-height: 20px;
+	line-height: 32px;
 
 	display: inline-block;
 
@@ -139,7 +139,7 @@ html, body {
 	text-align: center;
 
 	left: 0;
-	bottom: 20px;
+	bottom: 10px;
 
 	opacity: 1.0;
 	-webkit-transition: opacity 0.2s linear;
