@@ -229,8 +229,9 @@ function updateTab(tab, message) {
 	if (isChromeURL(tab.url)) {
 		setPopup(false, true, tab.id);
 
-		if (message)
+		if (message) {
 			chrome.tabs.sendMessage(tab.id, { message: message });
+		}
 	} else {
 		siteExists(tab.url, function(exists) {
 			setPopup(!exists, false, tab.id);
