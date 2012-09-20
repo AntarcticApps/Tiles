@@ -74,7 +74,10 @@ function saveSites(sites, callback) {
 		var pairs = {};
 		for (var i = 0; i < sites.length; i++) {
 			var key = 'site-' + i;
-			pairs[key] = sites[i];
+
+			if (isValidSite(sites[i])) {
+				pairs[key] = sites[i];
+			}
 		}
 
 		chrome.storage.sync.set(pairs, function() {
@@ -83,6 +86,18 @@ function saveSites(sites, callback) {
 			return callback();
 		});
 	});
+}
+
+function isValidSite(site) {
+	if (!site.url || !site.abbreviation || !site.color) {
+		return false;
+	}
+
+	return isValidColor(site.color);
+}
+
+function isValidColor(color) {
+	return (color.red && color.green && color.blue && color.alpha);
 }
 
 function getSites(callback) {
