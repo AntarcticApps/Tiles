@@ -72,11 +72,13 @@ function saveSites(sites, callback) {
 		}
 
 		var pairs = {};
+		var validSitesCount = 0;
 		for (var i = 0; i < sites.length; i++) {
-			var key = 'site-' + i;
+			var key = 'site-' + validSitesCount;
 
 			if (isValidSite(sites[i])) {
 				pairs[key] = sites[i];
+				validSitesCount++;
 			}
 		}
 
