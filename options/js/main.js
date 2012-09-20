@@ -216,10 +216,14 @@ $(document).ready(function() {
 				var siteSaved = false;
 
 				function saveIfReady() {
-					if (!siteSaved && numberOfSitesRequiringColor <= 0) {
-						chrome.extension.sendMessage({ message:"saveSites", sites:fields },  function() {
-							siteSaved = true;
+					if (!siteSaved) {
+						siteSaved = true;
+					} else {
+						return;
+					}
 
+					if (numberOfSitesRequiringColor <= 0) {
+						chrome.extension.sendMessage({ message:"saveSites", sites:fields },  function() {
 							$("#color-regenerate-btn").removeAttr("disabled");
 						});
 					}
