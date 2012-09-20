@@ -63,6 +63,13 @@ function saveSites(sites, callback) {
 	if (callback == undefined) {
 		callback = function() { };
 	}
+
+	for (var i = 0; i < sites.length; i++) {
+		if (!isValidSite(sites[i])) {
+			console.error("Site is not valid on save: " + sites[i]);
+			delete sites[i];
+		}
+	}
 	
 	chrome.storage.sync.set({'sitesSize': sites.length}, function() {
 		if (sites.length == 0) {
@@ -72,14 +79,9 @@ function saveSites(sites, callback) {
 		}
 
 		var pairs = {};
-		var validSitesCount = 0;
 		for (var i = 0; i < sites.length; i++) {
-			var key = 'site-' + validSitesCount;
-
-			if (isValidSite(sites[i])) {
-				pairs[key] = sites[i];
-				validSitesCount++;
-			}
+			var key = 'site-' + i;
+			pairs[key] = sites[i];
 		}
 
 		chrome.storage.sync.set(pairs, function() {
