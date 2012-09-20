@@ -101,7 +101,21 @@ function isValidSite(site) {
 }
 
 function isValidColor(color) {
-	return (color.red && color.green && color.blue && color.alpha);
+	if (color.red == undefined
+		|| color.green == undefined
+		|| color.blue == undefined
+		|| color.alpha == undefined) {
+		return false;
+	}
+
+	if (color.red == null
+		|| color.green == null
+		|| color.blue == null
+		|| color.alpha == null) {
+		return false;
+	}
+
+	return true;
 }
 
 function getSites(callback) {
