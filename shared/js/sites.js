@@ -1,3 +1,10 @@
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
+
 function createSite(url, abbreviation, callback) {
 	var site = {};
 
@@ -66,8 +73,9 @@ function saveSites(sites, callback) {
 
 	for (var i = 0; i < sites.length; i++) {
 		if (!isValidSite(sites[i])) {
-			console.error("Site is not valid on save: " + sites[i]);
-			delete sites[i];
+			console.error("Site is not valid on save: " + sites[i].url);
+			console.log(sites[i]);
+			sites.remove(i);
 		}
 	}
 	
