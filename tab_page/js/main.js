@@ -66,9 +66,12 @@ function layout() {
 	const MAX_HEIGHT = window.innerHeight - MARGIN;
 	const MAX_WIDTH = window.innerWidth - MARGIN;
 
-	var rows = Math.max(Math.floor(Math.sqrt(sites.length)), 1);
-
+	var rows = Math.max(Math.ceil(Math.sqrt(sites.length * MAX_HEIGHT / MAX_WIDTH)), 1);
 	var cols = Math.ceil(sites.length / rows);
+	if ((rows - 1) * cols >= sites.length && sites.length < rows * cols) {
+		rows--;
+	}
+
 	var shouldWidth = cols * COL_WIDTH;
 	sitesElement.style.width = shouldWidth + "px";
 
@@ -153,14 +156,21 @@ function onTileClick(e) {
 		var floatRegex = /scale\(([0-9]*\.?[0-9]*), ?([0-9]*\.?[0-9]*)\)/;
 		var sitesScale = floatRegex.exec(sitesTransform)[1];
 
+		const MARGIN = 8;
 		const ROW_HEIGHT = 220;
 		const COL_WIDTH = 220;
 		const ROW_OUTER_HEIGHT = 228;
 		const COL_OUTER_WIDTH = 228;
 		const CHANGE_LOCATION_DELAY = 300;
+		const MAX_HEIGHT = window.innerHeight - MARGIN;
+		const MAX_WIDTH = window.innerWidth - MARGIN;
 
-		var rows = Math.max(Math.floor(Math.sqrt(sites.length)), 1);
-
+		var rows = Math.max(Math.ceil(Math.sqrt(sites.length * MAX_HEIGHT / MAX_WIDTH)), 1);
+		var cols = Math.ceil(sites.length / rows);
+		if ((rows - 1) * cols >= sites.length && sites.length < rows * cols) {
+			rows--;
+		}
+		
 		var scaleX = window.innerWidth / sitesScale / COL_WIDTH;
 		var scaleY = window.innerHeight / sitesScale / ROW_HEIGHT;
 
