@@ -66,7 +66,7 @@ function layout() {
 	const MAX_HEIGHT = window.innerHeight - MARGIN;
 	const MAX_WIDTH = window.innerWidth - MARGIN;
 
-	var rows = Math.max(Math.floor(Math.sqrt(sites.length * 2 / 3)), 1);
+	var rows = Math.max(Math.floor(Math.sqrt(sites.length)), 1);
 
 	var cols = Math.ceil(sites.length / rows);
 	var shouldWidth = cols * COL_WIDTH;
@@ -159,7 +159,7 @@ function onTileClick(e) {
 		const COL_OUTER_WIDTH = 228;
 		const CHANGE_LOCATION_DELAY = 300;
 
-		var rows = Math.max(Math.floor(Math.sqrt(sites.length * 2 / 3)), 1);
+		var rows = Math.max(Math.floor(Math.sqrt(sites.length)), 1);
 
 		var scaleX = window.innerWidth / sitesScale / COL_WIDTH;
 		var scaleY = window.innerHeight / sitesScale / ROW_HEIGHT;
