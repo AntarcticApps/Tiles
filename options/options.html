@@ -21,7 +21,7 @@
 			<h1></h1>
 			<ul class="nav nav-tabs nav-stacked">
 				<li class="active"><a href="#tiles" data-toggle="tab"><i class="icon-chevron-right"></i> </a></li>
-				<li><a href="#advanced" data-toggle="tab"><i class="icon-chevron-right"></i> </a></li>
+				<li><a href="#background" data-toggle="tab"><i class="icon-chevron-right"></i> </a></li>
 				<li><a href="#about" data-toggle="tab"><i class="icon-chevron-right"></i> </a></li>
 			</ul>
 		</div>
@@ -31,10 +31,15 @@
 				<form class="form-horizontal">
 					<div id="sites"></div>
 				</form>
-			</div>
-			<div class="tab-pane" id="advanced">
-				<h2></h2>
 				<button class="btn" id="color-regenerate-btn"></button><span class="help-block"></span>
+			</div>
+			<div class="tab-pane" id="background">
+				<h2></h2>
+				<form class="form-horizontal">
+					<div class="controls site-controls">
+						<input type="color" class="color input-nano" id="background-color"> <button class="btn reset" id="background-color-reset"></button>
+					</div>
+				</form>
 			</div>
 			<div class="tab-pane" id="about">
 				<h2></h2>

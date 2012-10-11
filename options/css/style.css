@@ -108,8 +108,8 @@ canvas {
 	content: '__MSG_options_nav_tab_tiles__';
 }
 
-.nav-tabs a[href="#advanced"]:after {
-	content: '__MSG_options_nav_tab_advanced__';
+.nav-tabs a[href="#background"]:after {
+	content: '__MSG_options_nav_tab_background__';
 }
 
 .nav-tabs a[href="#about"]:after {
@@ -126,8 +126,8 @@ canvas {
 	content: '__MSG_options_nav_tab_tiles__';
 }
 
-.tab-pane#advanced > h2:after {
-	content: '__MSG_options_nav_tab_advanced__';
+.tab-pane#background > h2:after {
+	content: '__MSG_options_nav_tab_background__';
 }
 
 .tab-pane#about > h2:after {
@@ -136,4 +136,8 @@ canvas {
 
 .tab-content {
 	overflow: inherit;
+}
+
+#background-color-reset:after {
+	content: '__MSG_options_reset_color__';
 }

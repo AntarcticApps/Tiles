@@ -35,9 +35,9 @@
 		"message": "Tiles",
 		"description": "Navigation tab text for the tiles options page."
 	},
-	"options_nav_tab_advanced": {
-		"message": "Advanced",
-		"description": "Navigation tab text for the advanced options page."
+	"options_nav_tab_background": {
+		"message": "Background",
+		"description": "Navigation tab text for the background options page."
 	},
 	"options_nav_tab_about": {
 		"message": "About",

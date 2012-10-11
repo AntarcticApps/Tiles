@@ -147,11 +147,30 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 		saveSites(request.sites, function() {
 			sendResponse({ message: "saved" });
 
-			console.log('Send saved');
+			console.log('Sent saved');
 
 			updateAllWindows();
 		});
+	} else if (request.message == "setBackgroundColor") {
+		console.log('Setting background color...');
+
+		setBackgroundColor(request.color, function() {
+			sendResponse({ message: "saved" });
+
+			console.log('Sent saved');
+
+			update();
+		});
+	} else if (request.message == "getBackgroundColor") {
+		console.log('Getting background color...');
+
+		getBackgroundColor(function(backgroundColor) {
+			sendResponse({ color: backgroundColor });
+
+			console.log('Sent color');
+		});
 	}
+
 
 	return true;
 });

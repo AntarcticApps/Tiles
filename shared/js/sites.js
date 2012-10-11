@@ -240,6 +240,30 @@ function setSiteColor(site, callback) {
 	});
 }
 
+function setBackgroundColor(color, callback) {
+	if (!color) {
+		chrome.storage.sync.remove('backgroundColor', function() {
+			callback(null);
+		});
+
+		return;
+	}
+
+	chrome.storage.sync.set({ 'backgroundColor': color }, function() {
+		return callback(null);
+	});	
+}
+
+function getBackgroundColor(callback) {
+	chrome.storage.sync.get('backgroundColor', function(backgroundColorItems) {
+		if (!backgroundColorItems || !backgroundColorItems.backgroundColor) {
+			return callback(null);
+		}
+
+		return callback(backgroundColorItems.backgroundColor);
+	});
+}
+
 // Determine if the site needs a color update
 function siteNeedsColorUpdate(site) {
 	// 3600000 seconds = 60 hours

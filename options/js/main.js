@@ -11,7 +11,8 @@ const CONTROL_GROUP = '<div class="control-group"> \
 </div>';
 
 var makeSitesTimeout;
-const MAKE_SITES_TIMEOUT_DURATION = 500;
+const UPDATE_TIMEOUT_DURATION = 500;
+const DEFAULT_COLOR = "#000000";
 
 $(document).ready(function() {
 	_gaq.push(['_trackPageview']);
@@ -40,6 +41,45 @@ $(document).ready(function() {
 		_gaq.push(['_trackEvent', 'Options Regenerate All Tile Colors', 'clicked']);
 
 		makeSites(true);
+	});
+
+	// set background color input value to default color
+	$("#background-color").val(DEFAULT_COLOR);
+
+	chrome.extension.sendMessage({ message: "getBackgroundColor" }, function(response) {
+		if (!response || !response.color) {
+			return;
+		}
+
+		var color = response.color;
+		$("#background-color").val(rgbToHex(color["red"], color["green"], color["blue"]));
+	});
+
+	$("#background-color").on("change", function() {
+		function perform() {
+			_gaq.push(['_trackEvent', 'Options Custom Background Color', 'changed']);
+
+			var c = hexToRgb($("#background-color").parent().children('input[type=color]').val());
+			chrome.extension.sendMessage({ message: "setBackgroundColor", color: c }, function(response) { });
+		}
+
+		if (makeSitesTimeout) {
+			clearTimeout(makeSitesTimeout);
+		}
+
+		makeSitesTimeout = setTimeout(function() {
+			perform();
+		}, UPDATE_TIMEOUT_DURATION);
+	});
+
+	$("#background-color-reset").on("click", function(e) {
+		e.preventDefault();
+
+		_gaq.push(['_trackEvent', 'Options Reset Background Color', 'clicked']);
+
+		chrome.extension.sendMessage({ message: "setBackgroundColor", color: null }, function(response) { });
+
+		$("#background-color").val(DEFAULT_COLOR);
 	});
 
 	function sitesReload() {	
@@ -155,7 +195,7 @@ $(document).ready(function() {
 
 		makeSitesTimeout = setTimeout(function() {
 			perform(forceColorRegeneration);
-		}, MAKE_SITES_TIMEOUT_DURATION);
+		}, UPDATE_TIMEOUT_DURATION);
 
 		function perform(force) {
 			$("#color-regenerate-btn").attr("disabled", "disabled");
