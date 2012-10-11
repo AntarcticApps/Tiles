@@ -341,8 +341,10 @@ function getFaviconColor(url, callback) {
 	image.onload = function() {
 		console.log("Using favicon url " + image.src + " for " + url);
 
-		var context = $("canvas")[0].getContext('2d');
-		context.clearRect(0, 0, $("canvas")[0].width, $("canvas")[0].height);
+		var canvas = document.getElementsByTagName("canvas")[0];
+
+		var context = canvas.getContext('2d');
+		context.clearRect(0, 0, canvas.getAttribute('width'), canvas.getAttribute('height'));
 		context.drawImage(image, 0, 0);
 		var imageData = context.getImageData(0, 0, image.width, image.height);
 
