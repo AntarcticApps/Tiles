@@ -5,6 +5,9 @@ Array.prototype.remove = function(from, to) {
   return this.push.apply(this, rest);
 };
 
+// Create a site given the url, abbreviation, and a callback.
+//
+// Callback is required due to getting the site color requiring an async HTTP request
 function createSite(url, abbreviation, callback) {
 	var site = {};
 
@@ -27,6 +30,7 @@ function createSite(url, abbreviation, callback) {
 	});
 }
 
+// Delete the site from all of the sites, given the url.
 function deleteSite(url, callback) {
 	getSites(function(sites) {
 		for (var i = 0; i < sites.length; i++) {
@@ -40,9 +44,11 @@ function deleteSite(url, callback) {
 	});
 }
 
+// Save the given site object. Replace if URL is found in existing sites.
 function saveSite(site, callback) {
 	getSites(function(sites) {
 		if (sites) {
+			// If sites exists, ensure we don't make a duplicate.
 			var found = false;
 
 			for (var i = 0; i < sites.length; i++) {
@@ -55,9 +61,11 @@ function saveSite(site, callback) {
 			}
 
 			if (!found) {
+				// We didn't find it, so just add a new site
 				sites.push(site);
 			}
 		} else {
+			// Create a new sites array.
 			sites = [];
 			sites.push(site);
 		}
@@ -66,11 +74,13 @@ function saveSite(site, callback) {
 	});
 }
 
+// Save the sites array to Chrome storage
 function saveSites(sites, callback) {
 	if (callback == undefined) {
 		callback = function() { };
 	}
 
+	// Ensure the site is a valid so we don't corrupt the database
 	for (var i = 0; i < sites.length; i++) {
 		if (!isValidSite(sites[i])) {
 			console.error("Site is not valid on save: " + sites[i].url);
@@ -79,19 +89,23 @@ function saveSites(sites, callback) {
 		}
 	}
 	
+	// Update the sites size entry
 	chrome.storage.sync.set({'sitesSize': sites.length}, function() {
 		if (sites.length == 0) {
+			// If we have no sites anymore, just update any pages that are currently showing sites
 			update();
 
 			return callback();
 		}
 
+		// Create the key/value pairs in the database for site/data
 		var pairs = {};
 		for (var i = 0; i < sites.length; i++) {
 			var key = 'site-' + i;
 			pairs[key] = sites[i];
 		}
 
+		// Save and update pages currently showing sites
 		chrome.storage.sync.set(pairs, function() {
 			update();
 
@@ -100,6 +114,7 @@ function saveSites(sites, callback) {
 	});
 }
 
+// Ensure a site contains a url, abbreviation, and color and that the color is valid.
 function isValidSite(site) {
 	if (!site.url || !site.abbreviation || !site.color) {
 		return false;
@@ -108,6 +123,7 @@ function isValidSite(site) {
 	return isValidColor(site.color);
 }
 
+// Ensures the color does not have undefined or null properties.
 function isValidColor(color) {
 	if (color.red == undefined
 		|| color.green == undefined
@@ -126,24 +142,36 @@ function isValidColor(color) {
 	return true;
 }
 
+// Get all the sites currently in the database
 function getSites(callback) {
 	chrome.storage.sync.get('sitesSize', function(sitesSizeItems) {
 		if (sitesSizeItems == null || sitesSizeItems.sitesSize == 0) {
+			// Something is wrong, save the sites size as zero and callback with null
+			
 			chrome.storage.sync.set({'sitesSize': 0}, function() {
 				return callback(null);
 			});
 		} else {
+			// Ok, we have sites to get...
+			// Determine the key for each site, and get the data for that key from the database
+
 			var sitesList = [];
 			for (var i = 0; i < sitesSizeItems.sitesSize; i++) {
 				sitesList[i] = 'site-' + i;
 			}
 
+			// Get the values for the keys from the database
 			chrome.storage.sync.get(sitesList, function(sitesItems) {
 				if (sitesItems == null) {
+					// No items exist for some reason
+					// Save sites size as zero and callback with null
+					
 					chrome.storage.sync.set({'sitesSize': 0}, function() {
 						return callback(null);
 					});
 				} else {
+					// Put all the sites in a array indexed by id
+
 					var sites = [];
 					for (var j = 0; j < sitesSizeItems.sitesSize; j++) {
 						sites[j] = sitesItems['site-' + j];
@@ -156,6 +184,7 @@ function getSites(callback) {
 	});
 }
 
+// Get the abbreviation for a site in the database
 function getStoredSiteAbbreviation(url, callback) {
 	getSites(function(sites) {
 		if (sites) {
@@ -170,6 +199,7 @@ function getStoredSiteAbbreviation(url, callback) {
 	});
 }
 
+// Set the abbreviation for a site in the database
 function setStoredSiteAbbreviation(url, abbreviation, callback) {
 	getSites(function(sites) {
 		if (sites) {
@@ -186,6 +216,7 @@ function setStoredSiteAbbreviation(url, abbreviation, callback) {
 	});
 }
 
+// Set the site color for a given site object
 function setSiteColor(site, callback) {
 	getFaviconColor(site.url, function(color) {
 		var error = false;
@@ -209,7 +240,9 @@ function setSiteColor(site, callback) {
 	});
 }
 
+// Determine if the site needs a color update
 function siteNeedsColorUpdate(site) {
+	// 3600000 seconds = 60 hours
 	const TIME_BEFORE_UPDATE = 1000 * 60 * 60;
 
 	var elapsedTime = Date.now() - site.lastUpdated;
@@ -217,10 +250,12 @@ function siteNeedsColorUpdate(site) {
 	return (!site.lastUpdated || elapsedTime >= TIME_BEFORE_UPDATE);
 }
 
+// Get the first two letters our of a string, make uppercase
 function makeAbbreviation(string) {
 	return string.substring(0, 1).toUpperCase() + string.substring(1, 2).toLowerCase();
 }
 
+// Determine if a color is white or transparent
 function isWhiteOrTransparent(color) {
 	const TOLERANCE = 20;
 
@@ -232,6 +267,7 @@ function isWhiteOrTransparent(color) {
 		&& 255 - color[2] <= TOLERANCE;
 }
 
+// Get the majority color from image data; ignore a certain color
 function getMajorityColor(imageData, ignoredColor) {
 	var majorityCandidate = null;
 	var retainCount = 1;
