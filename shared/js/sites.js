@@ -397,30 +397,34 @@ function faviconSearchRoot(url, success, error) {
 	var domain = getDomain(url);
 	var path = domain + '/favicon.ico';
 
-	$.get(path).success(function(data, textStatus, jqXHR) {
-		if (isContentImage(jqXHR)) {
+	makeHTTPRequest(path, function(data, contentType) {
+		if (isContentImage(contentType)) {
 			return success(path);
 		} else {
 			return error();
-		}	
-	}).error(error);
+		}
+	}, function(status) {
+		return error();
+	});
 }
 
 function faviconSearchCurrent(url, success, error) {
 	var path = url + '/favicon.ico';
 
-	$.get(path).success(function(data, textStatus, jqXHR) {
+	makeHTTPRequest(path, function(data, contentType) {
 		// Search the existing directory
-		if (isContentImage(jqXHR)) {
+		if (isContentImage(contentType)) {
 			return success(path);
 		} else {
 			return error();
 		}
-	}).error(error);
+	}, function(status) {
+		return error();
+	});
 }
 
 function faviconSearchForDeclared(url, success, error) {
-	$.get(url).success(function(data) {
+	makeHTTPRequest(url, function(data, contentType) {
 		// Search for explicitly declared icon hrefs
 		var links = [];
 
@@ -484,22 +488,40 @@ function faviconSearchForDeclared(url, success, error) {
 				}
 			}
 
-			$.get(iconPath).success(function(data, textStatus, jqXHR) {
-				if (isContentImage(jqXHR)) {
+			makeHTTPRequest(iconPath, function(data, contentType) {
+				if (isContentImage(contentType)) {
 					return success(iconPath);
 				} else {
 					return error();
 				}
-			}).error(error);
+			}, function(status) {
+				return error();
+			});
 		} else {
 			return success(null);
 		}
-	}).error(error);
+	}, function(status) {
+		return error();
+	});
 }
 
-function isContentImage(jqXHR) {
-	var contentType = jqXHR.getResponseHeader('content-type');
+function makeHTTPRequest(url, successCallback, errorCallback) {
+	http = new XMLHttpRequest();
+	http.open('GET', url, true);
+	http.send(null);
 
+	http.onreadystatechange = function() {
+		if (http.readyState == 4) {
+			if (http.status == 200) {
+				return successCallback(http.responseText, http.getResponseHeader('content-type'));
+			} else {
+				return error(http.status);
+			}
+		}
+	}
+}
+
+function isContentImage(contentType) {
 	if (!contentType) {
 		return true;
 	}
