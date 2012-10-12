@@ -7,13 +7,14 @@
   "default_locale": "en",
   "minimum_chrome_version": "21.0.0.0",
 
-  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'; style-src 'self' data: chrome-extension-resource: 'unsafe-inline';",
 
   "permissions": [
     "tabs",
     "storage",
     "contextMenus",
-    "<all_urls>"
+    "<all_urls>",
+    "unlimitedStorage"
   ],
 
   "icons": {
@@ -43,6 +44,7 @@
     "shared/js/utilities.js",
     "options/options.html",
     "options/css/style.css",
-    "options/js/main.js"
+    "options/js/main.js",
+    "persistent/user.css"
   ]
 }
