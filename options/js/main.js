@@ -46,6 +46,7 @@ $(document).ready(function() {
 	// set background color input value to default color
 	$("#background-color").val(DEFAULT_COLOR);
 
+	// set background color input value to custom color, if exists
 	chrome.extension.sendMessage({ message: "getBackgroundColor" }, function(response) {
 		if (!response || !response.color) {
 			return;
@@ -55,10 +56,9 @@ $(document).ready(function() {
 		$("#background-color").val(rgbToHex(color["red"], color["green"], color["blue"]));
 	});
 
+	// set custom background color on click event
 	$("#background-color").on("change", function() {
 		function perform() {
-			_gaq.push(['_trackEvent', 'Options Custom Background Color', 'changed']);
-
 			var c = hexToRgb($("#background-color").parent().children('input[type=color]').val());
 			chrome.extension.sendMessage({ message: "setBackgroundColor", color: c }, function(response) { });
 		}
@@ -72,6 +72,11 @@ $(document).ready(function() {
 		}, UPDATE_TIMEOUT_DURATION);
 	});
 
+	$("#background-color").on("click", function() {
+		_gaq.push(['_trackEvent', 'Options Custom Background Color Mouse Down', 'changed']);
+	});
+
+	// reset background color event
 	$("#background-color-reset").on("click", function(e) {
 		e.preventDefault();
 
@@ -140,19 +145,21 @@ $(document).ready(function() {
 
 						// color change event
 						newControlGroup.find('input.color').on("change", function() {
-							_gaq.push(['_trackEvent', 'Options Custom Color', 'changed']);
-
 							newControlGroup.find('button.reset').show();
 							newControlGroup.find('input[name="customColorSet"]').val("true");
 
 							makeSites();
 						});
 
+						newControlGroup.find('input.color').on("mousedown", function() {
+							_gaq.push(['_trackEvent', 'Options Custom Tile Color Mouse Down', 'changed']);
+						});
+
 						// color reset click event
 						newControlGroup.find('button.reset').on("click", function(e) {
 							e.preventDefault();
 
-							_gaq.push(['_trackEvent', 'Options Reset Color', 'clicked']);
+							_gaq.push(['_trackEvent', 'Options Reset Tile Color', 'clicked']);
 
 							$(this).hide();
 							newControlGroup.find('input[name="customColorSet"]').val("false");
