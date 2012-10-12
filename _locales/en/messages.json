@@ -65,6 +65,10 @@
 		"message": "The color of each tile will be recalculated using the website\\'s favicon. This will not override the custom color, if one has been set.",
 		"description": "Help text shown below regenerate all tile colors button."
 	},
+	"options_background_color_help": {
+		"message": "Change the color of the background of the new tab page.",
+		"description": "Help text show below background color chooser."
+	},
 	"no_tiles_added": {
 		"message": "No Tiles Added",
 		"description": "No tiles added text for new tab page."

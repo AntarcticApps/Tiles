@@ -141,3 +141,7 @@ canvas {
 #background-color-reset:after {
 	content: '__MSG_options_reset_color__';
 }
+
+#background-color-reset + .help-block:after {
+	content: '__MSG_options_background_color_help__';
+}
