@@ -243,7 +243,7 @@ function setSiteColor(site, callback) {
 function setBackgroundColor(color, callback) {
 	if (!color) {
 		getFileSystem(function(fs) {
-			writeToFile(fs, "user.css", "");
+			writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0); }");
 		});
 
 		chrome.storage.sync.remove('backgroundColor', function() {
@@ -254,7 +254,7 @@ function setBackgroundColor(color, callback) {
 	}
 
 	getFileSystem(function(fs) {
-		writeToFile(fs, "user.css", "body { background: rgb(" + color['red'] + ", " + color['green'] + ", " + color['blue'] + ") }");
+		writeToFile(fs, "user.css", "body { background: rgb(" + color['red'] + ", " + color['green'] + ", " + color['blue'] + "); }");
 	});
 
 	chrome.storage.sync.set({ 'backgroundColor': color }, function() {
