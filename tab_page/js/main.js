@@ -110,20 +110,11 @@ function isMac() {
 }
 
 function onTileClick(e) {
-	console.log(e);
-
 	e.preventDefault();
 
 	var target = e.target;
 	var sitesElement = document.getElementById("sites");
-	var url;
-
-	for (var i = 0; i < sitesElement.children.length; i++) {
-		if (target == sitesElement.children[i]) {
-			url = sites[i].url;
-			break;
-		}
-	}
+	var url = target.href;
 
 	if (url == null || url == "") {
 		return false;
