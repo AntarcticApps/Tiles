@@ -263,12 +263,18 @@ function setBackgroundColor(color, callback) {
 }
 
 function getBackgroundColor(callback) {
-	chrome.storage.sync.get('backgroundColor', function(backgroundColorItems) {
-		if (!backgroundColorItems || !backgroundColorItems.backgroundColor) {
+	getSites(function(sites) {
+		if (!sites || sites.length <= 0) {
 			return callback(null);
 		}
 
-		return callback(backgroundColorItems.backgroundColor);
+		chrome.storage.sync.get('backgroundColor', function(backgroundColorItems) {
+			if (!backgroundColorItems || !backgroundColorItems.backgroundColor) {
+				return callback(null);
+			}
+
+			return callback(backgroundColorItems.backgroundColor);
+		});
 	});
 }
 
