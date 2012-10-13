@@ -7,7 +7,7 @@
   "default_locale": "en",
   "minimum_chrome_version": "21.0.0.0",
 
-  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'; style-src 'self' data: chrome-extension-resource: 'unsafe-inline';",
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'; style-src 'self' data: chrome-extension: filesystem: 'unsafe-inline';",
 
   "permissions": [
     "tabs",
