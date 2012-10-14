@@ -205,7 +205,7 @@ $(document).ready(function() {
 		}, UPDATE_TIMEOUT_DURATION);
 
 		function perform(force) {
-			$("#color-regenerate-btn").attr("disabled", "disabled");
+			$("#color-regenerate-btn").attr("disabled", "disabled").html("&hellip;");
 
 			var fields = [];
 	 
@@ -261,25 +261,18 @@ $(document).ready(function() {
 				}
 	  
 				var siteSaved = false;
-
 				function saveIfReady() {
-					if (!siteSaved) {
+					if (numberOfSitesRequiringColor <= 0 && !siteSaved) {
 						siteSaved = true;
-					} else {
-						return;
-					}
 
-					if (numberOfSitesRequiringColor <= 0) {
 						chrome.extension.sendMessage({ message:"saveSites", sites:fields },  function() {
-							$("#color-regenerate-btn").removeAttr("disabled");
+							$("#color-regenerate-btn").removeAttr("disabled").html("");
 						});
 					}
 				}
 	 
 				for (var i = 0; i < fields.length; i++) {
-					(function() {
-						var site = fields[i];
-
+					(function(site) {
 						if (!site.color) {
 							setSiteColor(site, function(site, error) { 
 								numberOfSitesRequiringColor--;
@@ -291,7 +284,7 @@ $(document).ready(function() {
 						} else {
 							saveIfReady();
 						}
-					})();
+					})(fields[i]);
 				}
 			});
 		}

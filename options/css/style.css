@@ -33,7 +33,7 @@ input[type='text'] {
 	background: #E6E6E6;
 }
 
-#color-regenerate-btn:after {
+#color-regenerate-btn:before {
 	content: '__MSG_options_regen_all_tile_colors__';
 }
 
