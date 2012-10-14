@@ -242,6 +242,10 @@ function setSiteColor(site, callback) {
 
 function setBackgroundColor(color, callback) {
 	if (!color) {
+		getFileSystem(function(fs) {
+			writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0); }");
+		});
+
 		chrome.storage.sync.remove('backgroundColor', function() {
 			callback(null);
 		});
@@ -249,18 +253,28 @@ function setBackgroundColor(color, callback) {
 		return;
 	}
 
+	getFileSystem(function(fs) {
+		writeToFile(fs, "user.css", "body { background: rgb(" + color['red'] + ", " + color['green'] + ", " + color['blue'] + "); }");
+	});
+
 	chrome.storage.sync.set({ 'backgroundColor': color }, function() {
-		return callback(null);
+		return callback(color);
 	});	
 }
 
 function getBackgroundColor(callback) {
-	chrome.storage.sync.get('backgroundColor', function(backgroundColorItems) {
-		if (!backgroundColorItems || !backgroundColorItems.backgroundColor) {
+	getSites(function(sites) {
+		if (!sites || sites.length <= 0) {
 			return callback(null);
 		}
 
-		return callback(backgroundColorItems.backgroundColor);
+		chrome.storage.sync.get('backgroundColor', function(backgroundColorItems) {
+			if (!backgroundColorItems || !backgroundColorItems.backgroundColor) {
+				return callback(null);
+			}
+
+			return callback(backgroundColorItems.backgroundColor);
+		});
 	});
 }
 
