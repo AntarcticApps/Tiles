@@ -1,13 +1,5 @@
 var sites;
 
-getBackgroundColor(function(color) {
-	if (!color) {
-		return;
-	}
-
-	document.body.style.background = 'rgba(' + color.red +', ' + color.green + ', ' + color.blue + ', ' + 1 +')';
-});
-
 document.addEventListener('DOMContentLoaded', function() {
 	document.removeEventListener('DOMContentLoaded', arguments.callee, false);
 	init();
