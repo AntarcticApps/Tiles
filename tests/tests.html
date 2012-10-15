@@ -16,34 +16,8 @@
 	<script type="text/javascript" src="src/Player.js"></script>
 	<script type="text/javascript" src="src/Song.js"></script>
 
-	<script type="text/javascript">
-	(function() {
-		var jasmineEnv = jasmine.getEnv();
-		jasmineEnv.updateInterval = 1000;
 
-		var htmlReporter = new jasmine.HtmlReporter();
-
-		jasmineEnv.addReporter(htmlReporter);
-
-		jasmineEnv.specFilter = function(spec) {
-			return htmlReporter.specFilter(spec);
-		};
-
-		var currentWindowOnload = window.onload;
-
-		window.onload = function() {
-			if (currentWindowOnload) {
-				currentWindowOnload();
-			}
-			execJasmine();
-		};
-
-		function execJasmine() {
-			jasmineEnv.execute();
-		}
-	})();
-	</script>
-
+	<script type="text/javascript" src="tests.js"></script>
 </head>
 
 <body>
