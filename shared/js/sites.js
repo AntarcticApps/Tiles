@@ -553,7 +553,7 @@ function makeHTTPRequest(url, successCallback, errorCallback) {
 			if (http.status == 200) {
 				return successCallback(http.responseText, http.getResponseHeader('content-type'));
 			} else {
-				return error(http.status);
+				return errorCallback(http.status);
 			}
 		}
 	}
