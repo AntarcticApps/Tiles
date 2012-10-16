@@ -63,21 +63,11 @@ $(document).ready(function() {
 
 	// set custom background color on click event
 	$("#background-color").on("change", function() {
-		function perform() {
-			var color = hexToRgb($("#background-color").parent().children('input[type=color]').val());
+		var color = hexToRgb($("#background-color").parent().children('input[type=color]').val());
 
-			setBackgroundColor(color, function() {
-				chrome.extension.sendMessage({ message: "update" }, function() {});
-			});
-		}
-
-		if (makeSitesTimeout) {
-			clearTimeout(makeSitesTimeout);
-		}
-
-		makeSitesTimeout = setTimeout(function() {
-			perform();
-		}, UPDATE_TIMEOUT_DURATION);
+		setBackgroundColor(color, function() {
+			chrome.extension.sendMessage({ message: "update" }, function() {});
+		});
 	});
 
 	$("#background-color").on("click", function() {
