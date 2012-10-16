@@ -153,16 +153,6 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 				});
 			});
 		});
-	} else if (request.message == "setBackgroundColor") {
-		console.log('Setting background color...');
-
-		setBackgroundColor(request.color, function() {
-			sendResponse({ message: "saved" });
-
-			console.log('Sent saved');
-
-			update();
-		});
 	} else if (request.message == "getBackgroundColor") {
 		console.log('Getting background color...');
 

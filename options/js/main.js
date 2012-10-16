@@ -59,8 +59,11 @@ $(document).ready(function() {
 	// set custom background color on click event
 	$("#background-color").on("change", function() {
 		function perform() {
-			var c = hexToRgb($("#background-color").parent().children('input[type=color]').val());
-			chrome.extension.sendMessage({ message: "setBackgroundColor", color: c }, function(response) { });
+			var color = hexToRgb($("#background-color").parent().children('input[type=color]').val());
+
+			setBackgroundColor(color, function() {
+				chrome.extension.sendMessage({ message: "update" }, function() {});
+			});
 		}
 
 		if (makeSitesTimeout) {
@@ -82,7 +85,9 @@ $(document).ready(function() {
 
 		_gaq.push(['_trackEvent', 'Options Reset Background Color', 'clicked']);
 
-		chrome.extension.sendMessage({ message: "setBackgroundColor", color: null }, function(response) { });
+		setBackgroundColor(null, function() {
+			chrome.extension.sendMessage({ message: "update" }, function() {});
+		});
 
 		$("#background-color").val(DEFAULT_COLOR);
 	});
