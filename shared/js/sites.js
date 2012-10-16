@@ -218,6 +218,23 @@ function setStoredSiteAbbreviation(url, abbreviation, callback) {
 	});
 }
 
+// Set the custom color for a site in the database
+function setStoredSiteCustomColor(url, customColor, callback) {
+	getSites(function(sites) {
+		if (sites) {
+			for (var i = 0; i < sites.length; i++) {
+				if (sites[i].url == url) {
+					sites[i].customColor = customColor;
+					saveSite(sites[i], callback);
+					return;
+				}
+			}
+		} else {
+			return callback(null);
+		}
+	});
+}
+
 // Set the site color for a given site object
 function setSiteColor(site, color) {
 	if (!color) {
