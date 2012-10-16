@@ -153,14 +153,6 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 				});
 			});
 		});
-	} else if (request.message == "getBackgroundColor") {
-		console.log('Getting background color...');
-
-		getBackgroundColor(function(backgroundColor) {
-			sendResponse({ color: backgroundColor });
-
-			console.log('Sent color');
-		});
 	} else if (request.message == "updateAllWindows") {
 		updateAllWindows();
 	} else if (request.message == "update") {

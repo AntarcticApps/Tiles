@@ -47,12 +47,11 @@ $(document).ready(function() {
 	$("#background-color").val(DEFAULT_COLOR);
 
 	// set background color input value to custom color, if exists
-	chrome.extension.sendMessage({ message: "getBackgroundColor" }, function(response) {
-		if (!response || !response.color) {
+	getBackgroundColor(function(color) {
+		if (!color) {
 			return;
 		}
 
-		var color = response.color;
 		$("#background-color").val(rgbToHex(color["red"], color["green"], color["blue"]));
 	});
 
