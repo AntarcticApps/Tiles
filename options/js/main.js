@@ -158,7 +158,7 @@ $(document).ready(function() {
 							newControlGroup.find('button.reset').show();
 							newControlGroup.find('input[name="customColorSet"]').val("true");
 
-							makeSites();
+							setStoredSiteCustomColor(site.url, hexToRgb($(this).val()), function() {});
 						});
 
 						newControlGroup.find('input.color').on("mousedown", function() {
