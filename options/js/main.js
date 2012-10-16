@@ -204,7 +204,7 @@ $(document).ready(function() {
 			perform(forceColorRegeneration);
 		}, UPDATE_TIMEOUT_DURATION);
 
-		function perform(force) {
+		function perform(colorRegeneration) {
 			$("#color-regenerate-btn").attr("disabled", "disabled").html("&hellip;");
 
 			var fields = [];
@@ -237,24 +237,20 @@ $(document).ready(function() {
 			});
 	   
 			getSites(function(sites) {
-				for (var i = 0; i < fields.length; i++) {
-					fields[i].color = null;
-				}
-
 				var numberOfSitesRequiringColor = 0;
 	 
-			 	if (!force) {
-					if (sites != null && sites.length != 0) {
-						for (var i = 0; i < sites.length; i++) {
-							for (var j = 0; j < fields.length; j++) {
-								if (sites[i].url == fields[j].url) {
-									fields[j].color = sites[i].color;
-									break;
-								}
+				if (sites != null && sites.length != 0) {
+					for (var i = 0; i < sites.length; i++) {
+						for (var j = 0; j < fields.length; j++) {
+							if (sites[i].url == fields[j].url) {
+								fields[j].color = sites[i].color;
+								break;
 							}
 						}
 					}
-				} else {
+				}
+
+			 	if (colorRegeneration) {
 					numberOfSitesRequiringColor = fields.length;
 
 					console.log(Math.min(numberOfSitesRequiringColor, 0) + " sites require a color check");
@@ -265,7 +261,7 @@ $(document).ready(function() {
 					if (numberOfSitesRequiringColor <= 0 && !siteSaved) {
 						siteSaved = true;
 
-						chrome.extension.sendMessage({ message:"saveSites", sites:fields },  function() {
+						chrome.extension.sendMessage({ message:"saveSites", sites:fields }, function() {
 							$("#color-regenerate-btn").removeAttr("disabled").html("");
 						});
 					}
@@ -273,7 +269,7 @@ $(document).ready(function() {
 	 
 				for (var i = 0; i < fields.length; i++) {
 					(function(site) {
-						if (!site.color) {
+						if (colorRegeneration) {
 							setSiteColor(site, function(site, error) { 
 								numberOfSitesRequiringColor--;
 	 
