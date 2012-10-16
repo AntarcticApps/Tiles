@@ -261,8 +261,10 @@ $(document).ready(function() {
 					if (numberOfSitesRequiringColor <= 0 && !siteSaved) {
 						siteSaved = true;
 
-						chrome.extension.sendMessage({ message:"saveSites", sites:fields }, function() {
+						saveSites(fields, function() {
 							$("#color-regenerate-btn").removeAttr("disabled").html("");
+
+							chrome.extension.sendMessage({ message:"updateAllWindows" }, function() {});
 						});
 					}
 				}

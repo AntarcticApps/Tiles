@@ -153,16 +153,6 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 				});
 			});
 		});
-	} else if (request.message == "saveSites") {
-		console.log('Saving all sites...');
-
-		saveSites(request.sites, function() {
-			sendResponse({ message: "saved" });
-
-			console.log('Sent saved');
-
-			updateAllWindows();
-		});
 	} else if (request.message == "setBackgroundColor") {
 		console.log('Setting background color...');
 
@@ -181,6 +171,8 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 
 			console.log('Sent color');
 		});
+	} else if (request.message == "updateAllWindows") {
+		updateAllWindows();
 	}
 
 
