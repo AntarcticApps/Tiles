@@ -289,7 +289,7 @@ describe("Sites", function() {
 							runs(function() {
 								expect(done).toBe(true);
 								expect(error).toBe(false);
-								expect(path).toMatch("http://kitty.com/meow/favicon.ico");
+								expect(path).toMatch("http://www.kitty.com/meow/favicon.ico");
 							});
 						});
 					});
