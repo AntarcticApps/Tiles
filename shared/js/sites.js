@@ -234,8 +234,6 @@ function setSiteColor(site, callback) {
 			'alpha': color[3]
 		};
 
-		site.lastUpdated = Date.now();
-
 		return callback(site, error);
 	});
 }
@@ -276,16 +274,6 @@ function getBackgroundColor(callback) {
 			return callback(backgroundColorItems.backgroundColor);
 		});
 	});
-}
-
-// Determine if the site needs a color update
-function siteNeedsColorUpdate(site) {
-	// 3600000 seconds = 60 hours
-	const TIME_BEFORE_UPDATE = 1000 * 60 * 60;
-
-	var elapsedTime = Date.now() - site.lastUpdated;
-
-	return (!site.lastUpdated || elapsedTime >= TIME_BEFORE_UPDATE);
 }
 
 // Get the first two letters our of a string, make uppercase
