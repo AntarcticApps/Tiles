@@ -236,6 +236,39 @@ function setSiteColor(site, color) {
 	};
 }
 
+function updateFaviconColorForAllSites(callback) {
+	getSites(function(sites) {
+		if (!sites) {
+			callback();
+		}
+
+		var saved = false;
+		var numberOfSites = sites.length;
+
+		function saveIfReady() {
+			if (numberOfSites <= 0 && !saved) {
+				saved = true;
+
+				saveSites(sites, function() {
+					callback();
+				});
+			}
+		}
+
+		for (var i = 0; i < sites.length; i++) {
+			(function(site) {
+				getFaviconColor(site.url, function(color) {
+					setSiteColor(site, color);
+
+					numberOfSites--;
+
+					saveIfReady();
+				});
+			})(sites[i]);
+		}
+	});
+}
+
 function setBackgroundColor(color, callback) {
 	if (!color) {
 		getFileSystem(function(fs) {

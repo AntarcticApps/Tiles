@@ -40,7 +40,13 @@ $(document).ready(function() {
 
 		_gaq.push(['_trackEvent', 'Options Regenerate All Tile Colors', 'clicked']);
 
-		makeSites(true);
+		$("#color-regenerate-btn").attr("disabled", "disabled").html("&hellip;");
+
+		updateFaviconColorForAllSites(function() {
+			$("#color-regenerate-btn").removeAttr("disabled").html("");
+
+			chrome.extension.sendMessage({ message:"updateAllWindows" }, function() {});
+		});
 	});
 
 	// set background color input value to default color
@@ -195,22 +201,16 @@ $(document).ready(function() {
 		chrome.extension.sendMessage({ message: "delete", url: url }, function(response) { });
 	}
 
-	function makeSites(forceColorRegeneration) {
-		if (forceColorRegeneration == undefined) {
-			forceColorRegeneration = false;
-		}
-
+	function makeSites() {
 		if (makeSitesTimeout) {
 			clearTimeout(makeSitesTimeout);
 		}
 
 		makeSitesTimeout = setTimeout(function() {
-			perform(forceColorRegeneration);
+			perform();
 		}, UPDATE_TIMEOUT_DURATION);
 
-		function perform(colorRegeneration) {
-			$("#color-regenerate-btn").attr("disabled", "disabled").html("&hellip;");
-
+		function perform() {
 			var fields = [];
 	 
 			$('#sites .site-controls').each(function(index, element) {
@@ -237,56 +237,6 @@ $(document).ready(function() {
 				fields[index].abbreviation = abbreviation;
 				if ($(this).children('input[name="customColorSet"]').val() == "true") {
 					fields[index].customColor = hexToRgb($(this).children('input[type=color]').val());
-				}
-			});
-	   
-			getSites(function(sites) {
-				var numberOfSitesRequiringColor = 0;
-	 
-				if (sites != null && sites.length != 0) {
-					for (var i = 0; i < sites.length; i++) {
-						for (var j = 0; j < fields.length; j++) {
-							if (sites[i].url == fields[j].url) {
-								fields[j].color = sites[i].color;
-								break;
-							}
-						}
-					}
-				}
-
-			 	if (colorRegeneration) {
-					numberOfSitesRequiringColor = fields.length;
-
-					console.log(Math.min(numberOfSitesRequiringColor, 0) + " sites require a color check");
-				}
-	  
-				var siteSaved = false;
-				function saveIfReady() {
-					if (numberOfSitesRequiringColor <= 0 && !siteSaved) {
-						siteSaved = true;
-
-						saveSites(fields, function() {
-							$("#color-regenerate-btn").removeAttr("disabled").html("");
-
-							chrome.extension.sendMessage({ message:"updateAllWindows" }, function() {});
-						});
-					}
-				}
-	 
-				for (var i = 0; i < fields.length; i++) {
-					(function(site) {
-						if (colorRegeneration) {
-							setSiteColor(site, function(site, error) { 
-								numberOfSitesRequiringColor--;
-	 
-								console.log((fields.length - numberOfSitesRequiringColor) + " / " + fields.length + " – Got color for " + site.url);
-	 
-								saveIfReady();
-							});
-						} else {
-							saveIfReady();
-						}
-					})(fields[i]);
 				}
 			});
 		}
