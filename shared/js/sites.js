@@ -95,7 +95,7 @@ function saveSites(sites, callback) {
 	chrome.storage.sync.set({'sitesSize': sites.length}, function() {
 		if (sites.length == 0) {
 			// If we have no sites anymore, just update any pages that are currently showing sites
-			update();
+			chrome.extension.sendMessage({ message:"update" }, function() {});
 
 			return callback();
 		}
@@ -109,7 +109,7 @@ function saveSites(sites, callback) {
 
 		// Save and update pages currently showing sites
 		chrome.storage.sync.set(pairs, function() {
-			update();
+			chrome.extension.sendMessage({ message:"update" }, function() {});
 
 			return callback();
 		});

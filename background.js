@@ -173,6 +173,8 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 		});
 	} else if (request.message == "updateAllWindows") {
 		updateAllWindows();
+	} else if (request.message == "update") {
+		update();
 	}
 
 
