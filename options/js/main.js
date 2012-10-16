@@ -128,18 +128,18 @@ $(document).ready(function() {
 						// abbreviation change event
 						var abbreviationField = newControlGroup.find('input.abbreviation');
 						abbreviationField.data('oldVal', abbreviationField.val());
-						newControlGroup.find('input.abbreviation').on("propertychange keyup input paste", function() {
-							if (abbreviationField.data('oldVal') != abbreviationField.val()
-								&& abbreviationField.val() != '') {
-								abbreviationField.val(makeAbbreviation(abbreviationField.val()));
-							
-								abbreviationField.data('oldVal', abbreviationField.val());
-								makeSites();
-						     }
 
-						     if (abbreviationField.val() == '') {
-						     	clearTimeout(makeSitesTimeout);
-						     }
+						newControlGroup.find('input.abbreviation').on("propertychange keyup input paste", function() {
+							var value = abbreviationField.val();
+
+							if (abbreviationField.data('oldVal') != value && value != '') {
+								value = makeAbbreviation(value);
+
+								abbreviationField.val(value);
+								abbreviationField.data('oldVal', value);
+
+								setStoredSiteAbbreviation(site.url, value, function() {});
+							}
 						});
 
 						// set up custom color, if exists
