@@ -520,7 +520,9 @@ function faviconSearchForDeclared(url, success, error) {
 				iconPath = 'http://' + getHostname(url) + iconPath;
 			} else if (iconPath.substring(0, 4) != 'http') {
 				if (url.substring(url.length - 1) != '/') {
-					iconPath = url + '/' + iconPath;
+					var domainResults = domainRegex(url);
+
+					iconPath = domainResults[1] + domainResults[3] + '/' + iconPath;
 				} else {
 					iconPath = url + iconPath;
 				}
