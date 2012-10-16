@@ -25,8 +25,10 @@ function createSite(url, abbreviation, callback) {
 
 	site.abbreviation = makeAbbreviation(site.abbreviation);
 
-	setSiteColor(site, function(site, error) {
-		callback(site, error);
+	getFaviconColor(site.url, function(color) {
+		setSiteColor(site, color);
+
+		callback(site);
 	});
 }
 
@@ -217,25 +219,21 @@ function setStoredSiteAbbreviation(url, abbreviation, callback) {
 }
 
 // Set the site color for a given site object
-function setSiteColor(site, callback) {
-	getFaviconColor(site.url, function(color) {
-		var error = false;
-
-		if (!color) {
-			error = true;
-
-			color = [0, 0, 0, 255];
+function setSiteColor(site, color) {
+	if (!color) {
+		color = [0, 0, 0, 255];
+	} else {
+		if (color.length != 4) {
+			return;
 		}
+	}
 
-		site.color = {
-			'red': color[0],
-			'green': color[1],
-			'blue': color[2],
-			'alpha': color[3]
-		};
-
-		return callback(site, error);
-	});
+	site.color = {
+		'red': color[0],
+		'green': color[1],
+		'blue': color[2],
+		'alpha': color[3]
+	};
 }
 
 function setBackgroundColor(color, callback) {
