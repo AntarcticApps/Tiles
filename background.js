@@ -234,6 +234,10 @@ function update() {
 	});
 }
 
+/**
+ * Sends a Chrome message to all tabs that are Tiles tabs.
+ * @param  {String} message The message to send to each tab.
+ */
 function sendMessageToExtensionTabs(message) {
 	chrome.windows.getAll({ populate: true }, function(windows) {
 		for (i = 0; i < windows.length; i++) {
@@ -250,6 +254,9 @@ function sendMessageToExtensionTabs(message) {
 	});
 }
 
+/**
+ * Updates all of the windows.
+ */
 function updateAllWindows() {
 	chrome.windows.getAll({ populate: true }, function(windows) {
 		console.log('Updating all windows...');
@@ -260,6 +267,10 @@ function updateAllWindows() {
 	});
 }
 
+/**
+ * Updates all of the tabs in a window.
+ * @param  {Window} window The window to update all of its tabs.
+ */
 function updateWindow(window) {
 	if (window && window.type == 'normal') {
 		var tabs = window.tabs;
@@ -269,7 +280,7 @@ function updateWindow(window) {
 				if (window.focused) {
 					console.log("Window ID " + window.id + " is focused on active tab on ID: " + tabs[i].id + " which is at " + tabs[i].url);
 				} else {
-					console.log("Window ID " + window.id + " is has active tab ID: " + tabs[i].id + " which is at " + tabs[i].url);
+					console.log("Window ID " + window.id + " has active tab ID: " + tabs[i].id + " which is at " + tabs[i].url);
 				}
 
 				updateTab(tabs[i]);
@@ -280,6 +291,10 @@ function updateWindow(window) {
 	}
 }
 
+/**
+ * Sets the appropriate popup and icon for the tab.
+ * @param  {Tab} tab The tab to update its popup and icon.
+ */
 function updateTab(tab) {
 	console.log("Updating tab ID: " + tab.id + " which is at " + tab.url);
 
@@ -294,10 +309,22 @@ function updateTab(tab) {
 	}
 }
 
+/**
+ * Returns {true} if the URL is a Chrome URL.
+ * @param  {[type]}  url The URL to check it it's a Chrome URL.
+ * @return {Boolean} Returns {true} if the URL is a Chrome URL.
+ */
 function isChromeURL(url) {
 	return url.substring(0, 6) == 'chrome';
 }
 
+/**
+ * Returns {true} if the URL is a Chrome extension URL.
+ * @param  {String}  url The URL to check if it's a Chrome Extension
+ *     URL.
+ * @return {Boolean} Returns {true} if the URL is a Chrome Extension
+ *     URL.
+ */
 function isExtensionURL(url) {
 	var baseURL = chrome.extension.getURL("/");
 	var newTabURL = "chrome://newtab";
@@ -309,6 +336,12 @@ function isExtensionURL(url) {
 	return url.substring(0, baseURL.length) == baseURL;
 }
 
+
+/**
+ * Returns {true} if a tile exists with the URL.
+ * @param  {String}   url      The URL to check if it exists.
+ * @param  {Function} callback The callback to call with result.
+ */
 function siteExists(url, callback) {
 	getSites(function(sites) {
 		if (sites) {
@@ -323,10 +356,18 @@ function siteExists(url, callback) {
 	});
 }
 
-function changeIcon(colors, callback, tabID) {
+/**
+ * Sets the icon for the browser action in the chrome toolbar.
+ * @param {boolean} color If {true}, icon will be set to color
+ *     version, else icon will be set to grayscale version.
+ * @param callback The callback to call after the icon has
+ *     been set.
+ * @param tabID The related tab ID.
+ */
+function changeIcon(color, callback, tabID) {
 	var details = {};
 
-	if (colors) {
+	if (color) {
 		details.path = '../icons/icon-bitty.png';
 	} else {
 		details.path = '../icons/icon-bitty-gray.png';
