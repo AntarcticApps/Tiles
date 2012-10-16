@@ -546,9 +546,11 @@ function faviconSearchForDeclared(url, success, error) {
 }
 
 function makeHTTPRequest(url, successCallback, errorCallback) {
-	http = new XMLHttpRequest();
-	http.open('GET', url, true);
-	http.send(null);
+	var http = new XMLHttpRequest();
+
+	http.ontimeout = function() {
+		return errorCallback(null);
+	}
 
 	http.onreadystatechange = function() {
 		if (http.readyState == 4) {
@@ -559,6 +561,10 @@ function makeHTTPRequest(url, successCallback, errorCallback) {
 			}
 		}
 	}
+
+	http.open('GET', url, true);
+	http.timeout = 500;
+	http.send(null);
 }
 
 function isContentImage(contentType) {
