@@ -175,7 +175,7 @@ $(document).ready(function() {
 							newControlGroup.find('input[name="customColorSet"]').val("false");
 							newControlGroup.find('input.color').val(rgbToHex(site.color["red"], site.color["green"], site.color["blue"]));
 
-							makeSites();
+							setStoredSiteCustomColor(site.url, null, function() {});
 						});
 
 						$("#sites").prepend(newControlGroup);
