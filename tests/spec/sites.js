@@ -295,6 +295,33 @@ describe("Sites", function() {
 					});
 				});
 			});
+
+			it("with failures", function() {
+				runs(function() {
+					faviconSearchForDeclared("/index.html", function(favicon_path) {
+						path = favicon_path;
+						error = false;
+
+						done = true;
+					}, function() {
+						error = true;
+
+						done = true;
+					});
+
+					server.respond();
+				});
+
+				waitsFor(function() {
+					return done;
+				}, "The favicon path should be found.", 500);
+
+				runs(function() {
+					expect(done).toBe(true);
+					expect(error).toBe(true);
+					expect(path).toMatch("");
+				});
+			})
 		});
 	});
 });
