@@ -10,8 +10,6 @@ const CONTROL_GROUP = '<div class="control-group"> \
 	</div> \
 </div>';
 
-var makeSitesTimeout;
-const UPDATE_TIMEOUT_DURATION = 500;
 const DEFAULT_COLOR = "#000000";
 
 $(document).ready(function() {
@@ -87,7 +85,7 @@ $(document).ready(function() {
 		$("#background-color").val(DEFAULT_COLOR);
 	});
 
-	function sitesReload() {	
+	function sitesReload() {
 		getSites(function (items) {
 			$("#sites").html("");
 			
@@ -188,47 +186,32 @@ $(document).ready(function() {
 	function removeControlGroup(element) {
 		parent = $(element).parents('.control-group');
 		var url = parent.find('span.url').text();
+
 		chrome.extension.sendMessage({ message: "delete", url: url }, function(response) { });
 	}
 
 	function makeSites() {
-		if (makeSitesTimeout) {
-			clearTimeout(makeSitesTimeout);
-		}
+		var fields = [];
 
-		makeSitesTimeout = setTimeout(function() {
-			perform();
-		}, UPDATE_TIMEOUT_DURATION);
+		$('#sites .site-controls').each(function(index, element) {
+			urlField = $(this).children('span.url').eq(0);
+			abbreviationField = $(this).children('input:text.abbreviation').eq(0);
 
-		function perform() {
-			var fields = [];
-	 
-			$('#sites .site-controls').each(function(index, element) {
-				urlField = $(this).children('span.url').eq(0);
-				abbreviationField = $(this).children('input:text.abbreviation').eq(0);
-	 
-				var url = urlField.html();
-				var abbreviation = abbreviationField.val();
-	 
-				if (!url.match(/^(http|https):\/\//)) {
-					url = "http://" + url;
-	 
-					urlField.html(url);
-				}
-	 
-				if (!abbreviation) {
-					abbreviation = makeAbbreviation(getHostname(url));
-	 
-					abbreviationField.val(abbreviation);
-				}
-	 
-				fields[index] = {};
-				fields[index].url = url;
-				fields[index].abbreviation = abbreviation;
-				if ($(this).children('input[name="customColorSet"]').val() == "true") {
-					fields[index].customColor = hexToRgb($(this).children('input[type=color]').val());
-				}
-			});
-		}
+			var url = urlField.html();
+			var abbreviation = abbreviationField.val();
+
+			if (!abbreviation) {
+				abbreviation = makeAbbreviation(getHostname(url));
+
+				abbreviationField.val(abbreviation);
+			}
+
+			fields[index] = {};
+			fields[index].url = url;
+			fields[index].abbreviation = abbreviation;
+			if ($(this).children('input[name="customColorSet"]').val() == "true") {
+				fields[index].customColor = hexToRgb($(this).children('input[type=color]').val());
+			}
+		});
 	}
 });
