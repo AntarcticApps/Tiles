@@ -153,10 +153,8 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 				});
 			});
 		});
-	} else if (request.message == "updateAllWindows") {
+	} else if (request.message == "sitesChanged") {
 		updateAllWindows();
-	} else if (request.message == "update") {
-		update();
 	}
 
 
@@ -197,17 +195,6 @@ function setPopup(save, error, tabID) {
 	chrome.browserAction.setPopup(details);
 
 	// console.log('Popup is set to ' + details.popup);
-}
-
-function update() {
-	getFocusedTab(function(tab) {
-		if (tab) {
-			setPopup(false, false, tab.id);
-			changeIcon(true, null, tab.id);
-		}
-
-		sendMessageToExtensionTabs("update");
-	});
 }
 
 /**

@@ -28,7 +28,7 @@ $(document).ready(function() {
 	chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 		console.log('Message received: ' + request.message);
 
-		if (request.message == "update") {
+		if (request.message == "sitesChanged") {
 			sitesReload();
 		}
 	});
@@ -43,7 +43,7 @@ $(document).ready(function() {
 		updateFaviconColorForAllSites(function() {
 			$("#color-regenerate-btn").removeAttr("disabled").html("");
 
-			chrome.extension.sendMessage({ message:"updateAllWindows" }, function() {});
+			chrome.extension.sendMessage({ message:"sitesChanged" }, function() {});
 		});
 	});
 
@@ -64,7 +64,7 @@ $(document).ready(function() {
 		var color = hexToRgb($("#background-color").parent().children('input[type=color]').val());
 
 		setBackgroundColor(color, function() {
-			chrome.extension.sendMessage({ message: "update" }, function() {});
+			chrome.extension.sendMessage({ message: "backgroundColorChanged" }, function() {});
 		});
 	});
 
@@ -79,7 +79,7 @@ $(document).ready(function() {
 		_gaq.push(['_trackEvent', 'Options Reset Background Color', 'clicked']);
 
 		setBackgroundColor(null, function() {
-			chrome.extension.sendMessage({ message: "update" }, function() {});
+			chrome.extension.sendMessage({ message: "backgroundColorChanged" }, function() {});
 		});
 
 		$("#background-color").val(DEFAULT_COLOR);
