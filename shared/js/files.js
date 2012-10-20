@@ -5,8 +5,6 @@ window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFile
 function onInitFileSystem(fs, callback) {
 	filesystem = fs;
 
-	console.log('Opened file system: ' + fs.name);
-
 	return callback(fs);
 }
 
@@ -34,7 +32,7 @@ function errorHandler(e) {
       break;
   };
 
-  console.log('Error: ' + msg);
+  console.error("Error: " + msg);
 }
 
 function initFileSystem(callback) {
@@ -43,7 +41,7 @@ function initFileSystem(callback) {
 			return onInitFileSystem(fs, callback);
 		}, errorHandler);
 	}, function(e) {
-		console.log('Error', e);
+		console.error("Error: " + e);
 	});
 }
 
@@ -57,16 +55,9 @@ function getFileSystem(callback) {
 
 function writeToFile(fs, file, text) {
 	fs.root.getFile(file, { create: true }, function(fileEntry) {
-		console.log("Writing to" + fileEntry.toURL());
-
 		fileEntry.createWriter(function(fileWriter) {
-			fileWriter.onwriteend = function(e) {
-				console.log(e);
-				console.log('Write completed');
-			};
-
 			fileWriter.onerror = function(e) {
-				console.log('Write failed: ' + e.toString());
+				console.error("Write failed: " + e.toString());
 			};
 
 			if (text == "") { text = " " };

@@ -8,8 +8,6 @@ function init() {
 			lastFocusedWindowID = chrome.windows.WINDOW_ID_CURRENT;
 		}
 
-		console.log("Last focused window is now ID " + window.id);
-
 		updateWindow(window);
 	});
 
@@ -47,8 +45,6 @@ chrome.windows.onFocusChanged.addListener(function(windowID) {
 		if (window.type == 'normal') {
 			lastFocusedWindowID = windowID;
 		}
-
-		console.log("Last focused window is now ID " + window.id);
 
 		updateWindow(window);
 	});
@@ -193,8 +189,6 @@ function setPopup(save, error, tabID) {
 	details.tabId = tabID;
 
 	chrome.browserAction.setPopup(details);
-
-	// console.log('Popup is set to ' + details.popup);
 }
 
 /**
@@ -240,12 +234,6 @@ function updateWindow(window) {
 
 		for (var i = 0; i < tabs.length; i++) {
 			if (tabs[i].active) {
-				if (window.focused) {
-					console.log("Window ID " + window.id + " is focused on active tab on ID: " + tabs[i].id + " which is at " + tabs[i].url);
-				} else {
-					console.log("Window ID " + window.id + " has active tab ID: " + tabs[i].id + " which is at " + tabs[i].url);
-				}
-
 				updateTab(tabs[i]);
 
 				break;
@@ -259,8 +247,6 @@ function updateWindow(window) {
  * @param  {Tab} tab The tab to update its popup and icon.
  */
 function updateTab(tab) {
-	console.log("Updating tab ID: " + tab.id + " which is at " + tab.url);
-
 	if (isChromeURL(tab.url)) {
 		setPopup(false, true, tab.id);
 
@@ -337,8 +323,6 @@ function changeIcon(color, callback, tabID) {
 	} else {
 		details.path = '../icons/icon-bitty-gray.png';
 	}
-
-	console.log("Changing icon for " + tabID + " to " + details.path);
 
 	details.tabId = tabID;
 
