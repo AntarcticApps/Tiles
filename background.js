@@ -263,6 +263,8 @@ function updateTab(tab) {
 
 	if (isChromeURL(tab.url)) {
 		setPopup(false, true, tab.id);
+
+		changeIcon(false, null, tab.id);
 	} else {
 		siteExists(tab.url, function(exists) {
 			setPopup(!exists, false, tab.id);
