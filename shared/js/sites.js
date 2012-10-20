@@ -319,8 +319,8 @@ function setBackgroundColor(color, callback) {
 }
 
 function getBackgroundColor(callback) {
-	getSites(function(sites) {
-		if (!sites || sites.length <= 0) {
+	getSitesSize(function (sitesSize) {
+		if (sitesSize == 0) {
 			return callback(null);
 		}
 
