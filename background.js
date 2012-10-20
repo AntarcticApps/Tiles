@@ -16,11 +16,11 @@ function init() {
 			getFileSystem(function(fs) {
 				writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0); }");
 			});
+		} else {
+			getFileSystem(function(fs) {
+				writeToFile(fs, "user.css", "body { background: rgb(" + color['red'] + ", " + color['green'] + ", " + color['blue'] + "); }");
+			});
 		}
-
-		getFileSystem(function(fs) {
-			writeToFile(fs, "user.css", "body { background: rgb(" + color['red'] + ", " + color['green'] + ", " + color['blue'] + "); }");
-		});
 	});
 }
 
