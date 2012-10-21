@@ -83,6 +83,20 @@ function saveSite(site, callback) {
 	});
 }
 
+function getNextID(callback) {
+	storage.get('nextID', function(items) {
+		if (!items || !items.nextID) {
+			storage.set({ 'nextID': 1 }, function() {
+				return callback(0);
+			});
+		} else {
+			storage.set({ 'nextID': items.nextID + 1 }, function() {
+				return callback(items.nextID);
+			});
+		}
+	});
+}
+
 // Save the sites array to Chrome storage
 function saveSites(sites, callback) {
 	if (callback == undefined) {
@@ -97,6 +111,8 @@ function saveSites(sites, callback) {
 			sites.remove(i);
 		}
 	}
+
+
 	
 	// Update the sites size entry
 	storage.set({'sitesSize': sites.length}, function() {
