@@ -12,6 +12,10 @@ const CONTROL_GROUP = '<div class="control-group"> \
 
 const DEFAULT_COLOR = "#000000";
 
+const COLOR_TIMEOUT = 500;
+
+var colorTimer = null;
+
 $(document).ready(function() {
 	_gaq.push(['_trackPageview']);
 
@@ -63,9 +67,17 @@ $(document).ready(function() {
 	$("#background-color").on("change", function() {
 		var color = hexToRgb($("#background-color").parent().children('input[type=color]').val());
 
-		setBackgroundColor(color, function() {
-			chrome.extension.sendMessage({ message: "backgroundColorChanged" }, function() {});
-		});
+		if (colorTimer) {
+			clearTimeout(colorTimer);
+		}
+
+		colorTimer = setTimeout(function() {
+			colorTimer = null;
+
+			setBackgroundColor(color, function() {
+				chrome.extension.sendMessage({ message: "backgroundColorChanged" }, function() {});
+			});
+		}, COLOR_TIMEOUT);
 	});
 
 	$("#background-color").on("click", function() {
@@ -146,7 +158,18 @@ $(document).ready(function() {
 							newControlGroup.find('button.reset').show();
 							newControlGroup.find('input[name="customColorSet"]').val("true");
 
-							setStoredSiteCustomColor(site.url, hexToRgb($(this).val()), function() {});
+							
+							if (colorTimer) {
+								clearTimeout(colorTimer);
+							}
+
+							var input = $(this);
+
+							colorTimer = setTimeout(function() {
+								colorTimer = null;
+
+								setStoredSiteCustomColor(site.url, hexToRgb(input.val()), function() {});
+							}, COLOR_TIMEOUT);
 						});
 
 						newControlGroup.find('input.color').on("mousedown", function() {
