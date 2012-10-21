@@ -1,10 +1,10 @@
 function migrate_1_to_2(callback) {
 	function getSitesSize(callback) {
-		chrome.storage.sync.get('sitesSize', function(sitesSizeItems) {
+		storage.get('sitesSize', function(sitesSizeItems) {
 			if (sitesSizeItems == null || sitesSizeItems.sitesSize == 0) {
 				// Something is wrong, save the sites size as zero and callback with null
 				
-				chrome.storage.sync.set({'sitesSize': 0}, function() {
+				storage.set({'sitesSize': 0}, function() {
 					return callback(0);
 				});
 			} else {
@@ -15,7 +15,7 @@ function migrate_1_to_2(callback) {
 
 	// Get all the sites currently in the database
 	function getSites(callback) {
-		getSitesSize(function (sitesSize) {
+		getSitesSize(function(sitesSize) {
 			// Ok, we have sites to get...
 			// Determine the key for each site, and get the data for that key from the database
 			
@@ -29,12 +29,12 @@ function migrate_1_to_2(callback) {
 			}
 
 			// Get the values for the keys from the database
-			chrome.storage.sync.get(sitesList, function(sitesItems) {
+			storage.get(sitesList, function(sitesItems) {
 				if (sitesItems == null) {
 					// No items exist for some reason
 					// Save sites size as zero and callback with null
 					
-					chrome.storage.sync.set({'sitesSize': 0}, function() {
+					storage.set({'sitesSize': 0}, function() {
 						return callback(null);
 					});
 				} else {
@@ -54,5 +54,9 @@ function migrate_1_to_2(callback) {
 	// Get all the data currently in the database
 	getSites(function(sites) {
 		console.log(sites);
+
+		clearStorage(function() {
+
+		});
 	});
 }

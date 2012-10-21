@@ -99,7 +99,7 @@ function saveSites(sites, callback) {
 	}
 	
 	// Update the sites size entry
-	chrome.storage.sync.set({'sitesSize': sites.length}, function() {
+	storage.set({'sitesSize': sites.length}, function() {
 		if (sites.length == 0) {
 			// If we have no sites anymore, just update any pages that are currently showing sites
 			chrome.extension.sendMessage({ message:"sitesChanged" }, function() {});
@@ -115,7 +115,7 @@ function saveSites(sites, callback) {
 		}
 
 		// Save and update pages currently showing sites
-		chrome.storage.sync.set(pairs, function() {
+		storage.set(pairs, function() {
 			chrome.extension.sendMessage({ message:"sitesChanged" }, function() {});
 
 			return callback();
@@ -167,12 +167,12 @@ function getSites(callback) {
 		}
 
 		// Get the values for the keys from the database
-		chrome.storage.sync.get(sitesList, function(sitesItems) {
+		storage.get(sitesList, function(sitesItems) {
 			if (sitesItems == null) {
 				// No items exist for some reason
 				// Save sites size as zero and callback with null
 				
-				chrome.storage.sync.set({'sitesSize': 0}, function() {
+				storage.set({'sitesSize': 0}, function() {
 					return callback(null);
 				});
 			} else {
@@ -190,11 +190,11 @@ function getSites(callback) {
 }
 
 function getSitesSize(callback) {
-	chrome.storage.sync.get('sitesSize', function(sitesSizeItems) {
+	storage.get('sitesSize', function(sitesSizeItems) {
 		if (sitesSizeItems == null || sitesSizeItems.sitesSize == 0) {
 			// Something is wrong, save the sites size as zero and callback with null
 			
-			chrome.storage.sync.set({'sitesSize': 0}, function() {
+			storage.set({'sitesSize': 0}, function() {
 				return callback(0);
 			});
 		} else {
@@ -309,7 +309,7 @@ function setBackgroundColor(color, callback) {
 			writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0); }");
 		});
 
-		chrome.storage.sync.remove('backgroundColor', function() {
+		storage.remove('backgroundColor', function() {
 			callback(null);
 		});
 
@@ -320,7 +320,7 @@ function setBackgroundColor(color, callback) {
 		writeToFile(fs, "user.css", "body { background: rgb(" + color['red'] + ", " + color['green'] + ", " + color['blue'] + "); }");
 	});
 
-	chrome.storage.sync.set({ 'backgroundColor': color }, function() {
+	storage.set({ 'backgroundColor': color }, function() {
 		return callback(color);
 	});	
 }
@@ -331,7 +331,7 @@ function getBackgroundColor(callback) {
 			return callback(null);
 		}
 
-		chrome.storage.sync.get('backgroundColor', function(backgroundColorItems) {
+		storage.get('backgroundColor', function(backgroundColorItems) {
 			if (!backgroundColorItems || !backgroundColorItems.backgroundColor) {
 				return callback(null);
 			}

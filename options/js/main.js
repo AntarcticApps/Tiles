@@ -19,11 +19,7 @@ var colorTimer = null;
 $(document).ready(function() {
 	_gaq.push(['_trackPageview']);
 
-	document.title = chrome.i18n.getMessage('options_title');
-
-	chrome.storage.sync.get(null, function(items) {
-		console.log(items);
-	});
+	document.title = chrome.i18n.getMessage('options_title');	
 
 	var sites = [];
 

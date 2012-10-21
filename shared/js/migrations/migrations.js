@@ -21,7 +21,7 @@ function migrateDatabase() {
  * @param  {Function} callback Function taking in a version
  */
 function getStorageVersion(callback) {
-	chrome.storage.sync.get('version', function(items) {
+	storage.get('version', function(items) {
 		if (!items || !items.version) {
 			return callback(1);
 		}
