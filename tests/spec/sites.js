@@ -357,4 +357,75 @@ describe("Sites", function() {
 			})
 		});
 	});
+
+	describe("storage", function() {
+		var oldStorage = null;
+		var oldStorageItems = null;
+		var ready = false;
+
+		beforeEach(function() {
+			oldStorage = storage;
+			storage = TEST_STORAGE;
+
+			storage.get(null, function(items) {
+				oldStorageItems = items;
+
+				console.log(items);
+
+				storage.clear(function() {
+					ready = true;
+				});
+			});
+
+			waitsFor(function() {
+				return ready;
+			}, "The storage should be ready.", 500);
+		});
+
+		afterEach(function() {
+			storage.set(oldStorageItems);
+
+			storage = oldStorage;
+		});
+
+		describe("next ID", function() {
+			it("should default to 0", function() {
+				var id = null;
+
+				runs(function() {
+					getNextID(function(i) {
+						id = i;
+					});
+				});
+				
+				waitsFor(function() {
+					return id != null;
+				}, "The ID should be set.", 500);
+
+				runs(function() {
+					expect(id).toBe(0);
+				});
+			});
+
+			it("should increment after multiple calls", function() {
+				var id = null;
+
+				runs(function() {
+					getNextID(function(i) {
+						getNextID(function(j) {
+							id = j;
+						});
+					});
+				});
+				
+				waitsFor(function() {
+					return id != null;
+				}, "The ID should be set.", 500);
+
+				runs(function() {
+					expect(id).toBe(1);
+				});
+			});
+		});
+	});
 });
