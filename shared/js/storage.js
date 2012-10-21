@@ -1,5 +1,2 @@
 var storage = chrome.storage.sync;
-
-function clearStorage(callback) {
-	storage.clear(callback);
-}
+const TEST_STORAGE = chrome.storage.local;
