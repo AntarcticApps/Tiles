@@ -151,6 +151,8 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 		});
 	} else if (request.message == "sitesChanged") {
 		updateAllWindows();
+		
+		sendMessageToExtensionTabs("refresh");
 	}
 
 
