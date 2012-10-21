@@ -1,18 +1,57 @@
 describe("Sites", function() {
+	var server;
+
+	beforeEach(function() {
+		server = sinon.fakeServer.create();
+	});
+
+	afterEach(function() {
+		server.restore();
+	});
+
+	it("can be created", function() {
+		var site = null;
+		var url = "/";
+		var abbreviation = "Ab";
+
+		server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
+
+		runs(function() {
+			createSite(url, abbreviation, function(s) {
+				site = s;
+			});
+
+			console.log(server.requests);
+
+			server.respond();
+		});
+
+		waitsFor(function() {
+			return site != null;
+		}, "The site should be created.", 500);
+
+		runs(function() {
+			expect(site).toEqual({
+				url: url,
+				abbreviation: abbreviation,
+				color: {
+					red: 0,
+					blue: 0,
+					green: 0,
+					alpha: 255
+				}
+			})
+		});
+	});
+
 	describe("should find the favicon in the", function() {
-		var path, error, server;
+		var path, error;
 
 		beforeEach(function() {
 			path = '';
 			error = false;
 
 			done = false;
-
-			server = sinon.fakeServer.create();
-		});
-
-		afterEach(function() {
-			server.restore();
 		});
 
 		describe("root directory", function() {
