@@ -7,6 +7,8 @@ describe("Sites", function() {
 
 	afterEach(function() {
 		server.restore();
+
+		writeUserStylesheet();
 	});
 
 	describe("can be created", function() {
