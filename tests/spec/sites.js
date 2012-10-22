@@ -596,6 +596,38 @@ describe("Sites", function() {
 					expect(ids).toEqual([0,1]);
 				});
 			});
+
+			it("should reorder", function() {
+				var sites = [];
+				var ids = null;
+
+				runs(function() {
+					loop(0, 2, function(iteration, callback) {
+						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
+							sites.push(site);
+							callback();
+						});
+					}, function() {
+						addSites(sites, function() {
+							reorderSite(1, 0, function() {
+								getSortedSiteIDs(function(i) {
+									ids = i;
+								});
+							});
+						});
+					});
+				});
+
+				waitsFor(function() {
+					return ids != null;
+				}, "the sorted site IDs to be set", 500);
+
+				runs(function() {
+					expect(ids.length).toBe(2);
+					expect(ids[0]).toBe(1);
+					expect(ids[1]).toBe(0);
+				});
+			});
 		});
 
 		describe("stored sites", function() {
