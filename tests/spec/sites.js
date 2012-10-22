@@ -794,7 +794,7 @@ describe("Sites", function() {
 				runs(function() {
 					createSite("/", "Ab", [255, 255, 255, 255], function(created) {
 						addSites([created], function() {
-							updateSiteAbbreviation(created.id, "Re", function() {
+							setSiteAbbreviation(created.id, "Re", function() {
 								getSite(created.id, function(s) {
 									site = s;
 								});
@@ -824,6 +824,7 @@ describe("Sites", function() {
 				});
 			});
 
+<<<<<<< HEAD
 			it("should be able to change its color", function() {
 				runs(function() {
 					createSite("/", "Ab", [255, 255, 255, 255], function(created) {
@@ -858,6 +859,8 @@ describe("Sites", function() {
 				});
 			});
 
+=======
+>>>>>>> Minor cleanup on some tests.
 			it("should be accessible by its URL", function() {
 				runs(function() {
 					createSite("/", "Ab", [255, 255, 255, 255], function(created) {
