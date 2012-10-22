@@ -546,7 +546,7 @@ describe("Sites", function() {
 			});
 		});
 
-		describe("sites", function() {
+		describe("stored sites", function() {
 			it("should contain a site after it has been added", function() {
 				var sites = null;
 
@@ -711,6 +711,47 @@ describe("Sites", function() {
 					expect(sites.length).toBe(0);
 					expect(sites[0]).toBeUndefined();
 					expect(sites[1]).toBeUndefined();
+				});
+			});
+		});
+
+		describe("a site", function() {
+			it("should be able to change its abbreviation", function() {
+				var sites = null;
+
+				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
+
+				runs(function() {
+					createSite("/", "Ab", [255, 255, 255, 255], function(site) {
+						addSites([site], function() {
+							setSiteAbbreviation(site.id, "Re", function() {
+								getAllSites(function(s) {
+									sites = s;
+								});
+							});
+						});
+					});
+
+					server.respond();
+				});
+				
+				waitsFor(function() {
+					return sites != null;
+				}, "the sites to be returned", 500);
+
+				runs(function() {
+					expect(sites.length).toBe(1);
+					expect(sites[0]).toEqual({
+						url: "/",
+						abbreviation: "Re",
+						color: {
+							red: 255,
+							green: 255,
+							blue: 255,
+							alpha: 255
+						},
+						id: 0
+					});
 				});
 			});
 		});
