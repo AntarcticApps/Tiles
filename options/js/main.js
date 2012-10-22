@@ -112,6 +112,9 @@ $(document).ready(function() {
 						newControlGroup.find('span.url').text(site.url);
 						newControlGroup.find('input.abbreviation').val(site.abbreviation);
 
+						// set id for control group
+						newControlGroup.attr("data-id", site.id);
+
 						// remove button click event
 						newControlGroup.find('a.remove').on('click', function(e) {
 							_gaq.push(['_trackEvent', 'Options Delete Button', 'clicked']);
@@ -132,10 +135,8 @@ $(document).ready(function() {
 								abbreviationField.val(value);
 								abbreviationField.data('oldVal', value);
 
-								getIDForURL(site.url, function(id) {
-									updateSiteAbbreviation(id, value, function() {
-										sendMessageToExtensionTabs("refresh");
-									});
+								updateSiteAbbreviation(site.id, value, function() {
+									sendMessageToExtensionTabs("refresh");
 								});
 							}
 						});
@@ -165,10 +166,8 @@ $(document).ready(function() {
 							colorTimer = setTimeout(function() {
 								colorTimer = null;
 
-								getIDForURL(site.url, function(id) {
-									updateSiteCustomColor(id, hexToRgb(input.val()), function() {
-										sendMessageToExtensionTabs("refresh");
-									});
+								updateSiteCustomColor(site.id, hexToRgb(input.val()), function() {
+									sendMessageToExtensionTabs("refresh");
 								});
 							}, COLOR_TIMEOUT);
 						});
@@ -187,10 +186,8 @@ $(document).ready(function() {
 							newControlGroup.find('input[name="customColorSet"]').val("false");
 							newControlGroup.find('input.color').val(rgbToHex(site.color["red"], site.color["green"], site.color["blue"]));
 
-							getIDForURL(site.url, function(id) {
-								updateSiteCustomColor(id, null, function() {
-									sendMessageToExtensionTabs("refresh");
-								});
+							updateSiteCustomColor(site.id, null, function() {
+								sendMessageToExtensionTabs("refresh");
 							});
 						});
 
