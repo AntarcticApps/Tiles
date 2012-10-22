@@ -511,6 +511,39 @@ describe("Sites", function() {
 					expect(ids).toEqual([0]);
 				});
 			});
+
+			it("should change when two sites are added", function() {
+				var ids = null;
+
+				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
+
+				runs(function() {
+					var sites = [];
+
+					loop(0, 2, function(iteration, callback) {
+						createSite("/", "" + iteration, function(site) {
+							sites.push(site);
+							callback();
+						});
+
+						server.respond();
+					}, function() {
+						addSites(sites, function() {
+							getSortedSiteIDs(function(i) {
+								ids = i;
+							});
+						});
+					});
+				});
+
+				waitsFor(function() {
+					return ids != null;
+				}, "the sorted site IDs to be set", 500);
+
+				runs(function() {
+					expect(ids).toEqual([0,1]);
+				});
+			});
 		});
 	});
 });
