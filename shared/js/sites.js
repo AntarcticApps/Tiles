@@ -66,11 +66,7 @@ function setSortedSiteIDs(ids, callback) {
 }
 
 function getSite(id, callback) {
-	storage.get(null, function(items) {
-		console.log(items);
-	});
 	storage.get(storageKeyForID(id), function(items) {
-		console.log(items);
 		if (!items || !items[storageKeyForID(id)]) {
 			return callback(null);
 		} else {
