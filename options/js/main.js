@@ -41,7 +41,7 @@ $(document).ready(function() {
 		updateFaviconColorForAllSites(function() {
 			$("#color-regenerate-btn").removeAttr("disabled").html("");
 
-			sendMessageToExtensionTabs("refresh");
+			sendMessageToExtensionTabs("refresh", false);
 		});
 	});
 
@@ -187,7 +187,7 @@ $(document).ready(function() {
 							newControlGroup.find('input.color').val(rgbToHex(site.color["red"], site.color["green"], site.color["blue"]));
 
 							updateSiteCustomColor(site.id, null, function() {
-								sendMessageToExtensionTabs("refresh", false);
+								sendMessageToExtensionTabs("refresh");
 							});
 						});
 

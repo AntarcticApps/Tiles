@@ -3,7 +3,7 @@
  * @param  {String} message The message to send to each tab.
  */
 function sendMessageToExtensionTabs(message, ignoreCurrent) {
-	if (!ignoreCurrent) {
+	if (ignoreCurrent == undefined) {
 		ignoreCurrent = true;
 	}
 
