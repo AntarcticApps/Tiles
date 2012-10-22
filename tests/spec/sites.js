@@ -749,6 +749,34 @@ describe("Sites", function() {
 					expect(sites[1]).toBeUndefined();
 				});
 			});
+
+			it("should update all colors", function() {
+				var success = null;
+
+				server.restore();
+
+				runs(function() {
+					loop(0, 2, function(iteration, callback) {
+						createSite("http://antarcticapps.com/", "" + iteration, [255, 255, 255, 255], function(site) {
+							addSites([site], function() {
+								callback();
+							});
+						});
+					}, function() {
+						updateFaviconColorForAllSites(function(s) {
+							success = s;
+						});
+					});
+				});
+				
+				waitsFor(function() {
+					return success != null;
+				}, "the update operation to complete", 2000);
+
+				runs(function() {
+					expect(success).toBe(true);
+				});
+			});
 		});
 
 		describe("a site", function() {
