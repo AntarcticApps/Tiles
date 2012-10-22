@@ -23,7 +23,7 @@ describe("Utilities", function() {
 describe("An array", function() {
 	it("should remove an element at an arbitrary index", function() {
 		var arr = [100, 200, 300, 400];
-		var removed = arr.remove(0);
+		var removed = arr.removeAtIndex(0);
 		expect(removed).toEqual(100);
 		expect(arr).toEqual([200, 300, 400]);
 	});
@@ -36,7 +36,7 @@ describe("An array", function() {
 
 	it("should swap elements", function() {
 		var arr = [100, 200, 300, 400];
-		var removed = arr.remove(-1);
+		var removed = arr.removeAtIndex(-1);
 		arr.insertAtIndex(removed, 2);
 		expect(removed).toEqual(400);
 		expect(arr).toEqual([100, 200, 400, 300]);

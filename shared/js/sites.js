@@ -136,7 +136,7 @@ function setSortedSiteIDs(ids, callback) {
 
 function reorderSite(oldIndex, newIndex, callback) {
 	getSortedSiteIDs(function(ids) {
-		var removed = ids.remove(oldIndex);
+		var removed = ids.removeAtIndex(oldIndex);
 		ids.insertAtIndex(removed, newIndex);
 		setSortedSiteIDs(ids, function() {
 			return callback();

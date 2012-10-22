@@ -79,12 +79,12 @@ Array.prototype.firstIndexOfElementEqualTo = function(element) {
 Array.prototype.removeElementEqualTo = function(element) {
 	for (var i = 0; i < this.length; i++) {
 		if (this[i] == element) {
-			return this.remove(i);
+			return this.removeAtIndex(i);
 		}
 	}
 }
 
-Array.prototype.remove = function(index) {
+Array.prototype.removeAtIndex = function(index) {
 	return this.splice(index, 1)[0];
 };
 
