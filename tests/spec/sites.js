@@ -701,7 +701,7 @@ describe("Sites", function() {
 				
 				waitsFor(function() {
 					return sites != null;
-				}, "the sites to be returned", 500);
+				}, "the sites to be returned", 1000);
 
 				runs(function() {
 					expect(sites.length).toBe(1);
