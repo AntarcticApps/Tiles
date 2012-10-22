@@ -459,7 +459,7 @@ describe("Sites", function() {
 				
 				waitsFor(function() {
 					return id != null;
-				}, "The ID should be set.", 500);
+				}, "the ID to be set", 500);
 
 				runs(function() {
 					expect(id).toBe(0);
@@ -479,7 +479,7 @@ describe("Sites", function() {
 
 				waitsFor(function() {
 					return ids != null;
-				}, "The sorted site IDs should be set.", 500);
+				}, "the sorted site IDs to be set.", 500);
 
 				runs(function() {
 					expect(ids).toEqual([]);
