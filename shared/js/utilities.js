@@ -67,3 +67,27 @@ function isExtensionURL(url) {
 
 	return url.substring(0, baseURL.length) == baseURL;
 }
+
+Array.prototype.firstIndexOfElementEqualTo = function(element) {
+	for (var i = 0; i < this.length; i++) {
+		if (this[i] == element) {
+			return i;
+		}
+	}
+}
+
+Array.prototype.removeElementEqualTo = function(element) {
+	for (var i = 0; i < this.length; i++) {
+		if (this[i] == element) {
+			this.remove(i);
+		}
+	}
+	return this;
+}
+
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
