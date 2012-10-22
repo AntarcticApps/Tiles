@@ -944,5 +944,29 @@ describe("Sites", function() {
 				});
 			});
 		});
+
+		describe("stored sites count", function() {
+			it("should equal 1 when a single site is added", function() {
+				var sitesCount = null;
+
+				runs(function() {
+					createSite("/", "Ab", [255, 255, 255, 255], function(site) {
+						addSites([site], function() {
+							getSitesCount(function(s) {
+								sitesCount = s;
+							});
+						});
+					});
+				});
+				
+				waitsFor(function() {
+					return sitesCount != null;
+				}, "the sites to be returned", 500);
+
+				runs(function() {
+					expect(sitesCount).toBe(1);
+				});
+			});
+		});
 	});
 });
