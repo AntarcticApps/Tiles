@@ -448,7 +448,7 @@ describe("Sites", function() {
 				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
 
 				runs(function() {
-					createSite("/", "Ab", function(site) {
+					createSite("/", "Ab", null, function(site) {
 						storeNewSite(site, function(i) {
 							id = i;
 						});
@@ -492,7 +492,7 @@ describe("Sites", function() {
 				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
 
 				runs(function() {
-					createSite("/", "1", function(site) {
+					createSite("/", "1", null, function(site) {
 						addSites([site], function() {
 							getSortedSiteIDs(function(i) {
 								ids = i;
@@ -521,7 +521,7 @@ describe("Sites", function() {
 					var sites = [];
 
 					loop(0, 2, function(iteration, callback) {
-						createSite("/", "" + iteration, function(site) {
+						createSite("/", "" + iteration, null, function(site) {
 							sites.push(site);
 							callback();
 						});
