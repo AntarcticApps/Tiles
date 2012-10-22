@@ -131,6 +131,27 @@ function updateSiteAbbreviation(id, abbreviation, callback) {
 	});
 }
 
+function updateSiteColor(id, color, callback) {
+	if (color instanceof Array) {
+		color = colorArrayToObject(color);
+	}
+
+	if (!isValidColor(color)) {
+		console.error("Invalid color in setSiteColor", id, color);
+		return callback();
+	}
+
+	getSortedSiteIDs(function(ids) {
+		var i = ids.firstIndexOfElementEqualTo(id);
+		getSite(ids[i], function(site) {
+			site.color = color;
+			updateSite(id, site, function() {
+				return callback();
+			});
+		});
+	});
+}
+
 function getSiteForURL(url, callback) {
 	getAllSites(function(sites) {
 		if (!sites || sites.length == 0) {
