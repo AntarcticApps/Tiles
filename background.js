@@ -89,7 +89,7 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 	} else if (request.message == "getAbbreviation") {
 		getFocusedTab(function(tab) {
 			if (tab) {
-				getStoredSiteAbbreviation(tab.url, function(abbreviation) {
+				getSiteAbbreviationForURL(tab.url, function(abbreviation) {
 					sendResponse({ abbreviation: abbreviation });
 
 					console.log('Sent abbreviation - ' + abbreviation);
@@ -99,12 +99,14 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 	} else if (request.message == "setAbbreviation") {
 		getFocusedTab(function(tab) {
 			if (tab) {
-				setStoredSiteAbbreviation(tab.url, request.abbreviation, function(response) {
-					sendResponse({ message: "success" });
+				getIDForURL(tab.url, function(id) {
+					updateSiteAbbreviation(id, request.abbreviation, function(response) {
+						sendResponse({ message: "success" });
 
-					console.log('Setting abbreviation of ' + tab.url + ' to ' + request.abbreviation);
+						console.log('Setting abbreviation of ' + tab.url + ' to ' + request.abbreviation);
 
-					updateAllWindows();
+						updateAllWindows();
+					});
 				});
 			}
 		});
@@ -131,10 +133,14 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 
 			if (request.url == undefined) {
 				console.log("Deleting site " + tab.url);
-				deleteSite(tab.url, deleteSiteCallback);
+				getIDForURL(tab.url, function(id) {
+					removeSites([id], deleteSiteCallback);
+				});
 			} else {
 				console.log("Deleting site " + request.url);
-				deleteSite(request.url, deleteSiteCallback);
+				getIDForURL(request.url, function(id) {
+					removeSites([id], deleteSiteCallback);
+				});
 			}
 		});
 	} else if (request.message == "save") {
@@ -142,7 +148,7 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 
 		getFocusedTab(function(tab) {
 			createSite(tab.url, request.abbreviation, null, function(site) {
-				saveSite(site, function() {
+				addSites([site], function() {
 					updateAllWindows();
 
 					sendResponse({ message: "saved" });
@@ -188,26 +194,6 @@ function setPopup(save, error, tabID) {
 	details.tabId = tabID;
 
 	chrome.browserAction.setPopup(details);
-}
-
-/**
- * Sends a Chrome message to all tabs that are Tiles tabs.
- * @param  {String} message The message to send to each tab.
- */
-function sendMessageToExtensionTabs(message) {
-	chrome.windows.getAll({ populate: true }, function(windows) {
-		for (i = 0; i < windows.length; i++) {
-			(function() {
-				var tabs = windows[i].tabs;
-
-				for (var j = 0; j < tabs.length; j++) {
-					if (isExtensionURL(tabs[j].url)) {
-						chrome.tabs.sendMessage(tabs[j].id, { "message": message });
-					}
-				}
-			})();
-		}
-	});
 }
 
 /**
@@ -262,40 +248,12 @@ function updateTab(tab) {
 }
 
 /**
- * Returns {true} if the URL is a Chrome URL.
- * @param  {[type]}  url The URL to check it it's a Chrome URL.
- * @return {Boolean} Returns {true} if the URL is a Chrome URL.
- */
-function isChromeURL(url) {
-	return url.substring(0, 6) == 'chrome';
-}
-
-/**
- * Returns {true} if the URL is a Chrome extension URL.
- * @param  {String}  url The URL to check if it's a Chrome Extension
- *     URL.
- * @return {Boolean} Returns {true} if the URL is a Chrome Extension
- *     URL.
- */
-function isExtensionURL(url) {
-	var baseURL = chrome.extension.getURL("/");
-	var newTabURL = "chrome://newtab";
-
-	if (url.substring(0, newTabURL.length) == newTabURL) {
-		return true;
-	}
-
-	return url.substring(0, baseURL.length) == baseURL;
-}
-
-
-/**
  * Returns {true} if a tile exists with the URL.
  * @param  {String}   url      The URL to check if it exists.
  * @param  {Function} callback The callback to call with result.
  */
 function siteExists(url, callback) {
-	getSites(function(sites) {
+	getAllSites(function(sites) {
 		if (sites) {
 			for (var i = 0; i < sites.length; i++) {
 				if (sites[i].url == url) {

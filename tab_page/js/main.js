@@ -14,10 +14,12 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 	}
 });
 
-function init() {	
+function init() {
+	resetStorageToDefault();
+	
 	var sitesElement = document.getElementById('sites');
 	
-	getSites(function(items) {
+	getAllSites(function(items) {
 		sites = items;
 		document.addEventListener("DOMNodeInserted", layout, false);
 

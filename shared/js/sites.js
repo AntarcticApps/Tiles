@@ -103,6 +103,9 @@ function addSites(sites, callback) {
 			}
 
 			setSortedSiteIDs(ids, function() {
+				// background color in user CSS
+				writeUserStylesheet();
+
 				return callback();
 			});
 		});
@@ -166,6 +169,8 @@ function removeSites(sites, callback) {
 			});
 		}, function() {
 			setSortedSiteIDs(newIDs, function() {
+				writeUserStylesheet();
+
 				return callback();
 			});
 		});
@@ -206,11 +211,11 @@ function updateSiteColor(id, color, callback) {
 }
 
 function updateSiteCustomColor(id, color, callback) {
-	if (color instanceof Array) {
+	if (color && color instanceof Array) {
 		color = colorArrayToObject(color);
 	}
-
-	if (!isValidColor(color)) {
+	
+	if (color && !isValidColor(color)) {
 		console.error("Invalid color in setSiteCustomColor", id, color);
 		return callback();
 	}
@@ -218,7 +223,11 @@ function updateSiteCustomColor(id, color, callback) {
 	getSortedSiteIDs(function(ids) {
 		var i = ids.firstIndexOfElementEqualTo(id);
 		getSite(ids[i], function(site) {
-			site.customColor = color;
+			if (!color) {
+				delete site.customColor;
+			} else {
+				site.customColor = color;
+			}
 			updateSite(id, site, function() {
 				return callback();
 			});
@@ -255,6 +264,14 @@ function getSiteForURL(url, callback) {
 				return callback(sites[i]);
 			}
 		}
+
+		return callback(null);
+	});
+}
+
+function getIDForURL(url, callback) {
+	getSiteForURL(url, function(site) {
+		return callback(site.id);
 	});
 }
 
@@ -327,29 +344,35 @@ function setBackgroundColor(color, callback) {
 		});
 
 		return;
-	}
-
-	getFileSystem(function(fs) {
-		writeToFile(fs, "user.css", "body { background: rgb(" + color['red'] + ", " + color['green'] + ", " + color['blue'] + "); }");
-	});
+	}	
 
 	storage.set({ 'backgroundColor': color }, function() {
 		return callback(color);
-	});	
+	});
+
+	writeUserStylesheet();
 }
 
 function getBackgroundColor(callback) {
-	getSitesCount(function (count) {
-		if (count == 0) {
+	storage.get('backgroundColor', function(backgroundColorItems) {
+		if (!backgroundColorItems || !backgroundColorItems.backgroundColor) {
 			return callback(null);
 		}
 
-		storage.get('backgroundColor', function(backgroundColorItems) {
-			if (!backgroundColorItems || !backgroundColorItems.backgroundColor) {
-				return callback(null);
-			}
+		return callback(backgroundColorItems.backgroundColor);
+	});
+}
 
-			return callback(backgroundColorItems.backgroundColor);
+function writeUserStylesheet() {
+	getFileSystem(function(fs) {
+		getSitesCount(function(sitesCount) {
+			if (sitesCount > 0) {
+				getBackgroundColor(function(color) {
+					writeToFile(fs, "user.css", "body { background: rgb(" + color['red'] + ", " + color['green'] + ", " + color['blue'] + "); }");
+				});
+			} else {
+				writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0); }");
+			}
 		});
 	});
 }

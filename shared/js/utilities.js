@@ -40,3 +40,30 @@ function async_loop(start, end, operation, finishCallback) {
 		});
 	}
 }
+
+/**
+ * Returns {true} if the URL is a Chrome URL.
+ * @param  {[type]}  url The URL to check it it's a Chrome URL.
+ * @return {Boolean} Returns {true} if the URL is a Chrome URL.
+ */
+function isChromeURL(url) {
+	return url.substring(0, 6) == 'chrome';
+}
+
+/**
+ * Returns {true} if the URL is a Chrome extension URL.
+ * @param  {String}  url The URL to check if it's a Chrome Extension
+ *     URL.
+ * @return {Boolean} Returns {true} if the URL is a Chrome Extension
+ *     URL.
+ */
+function isExtensionURL(url) {
+	var baseURL = chrome.extension.getURL("/");
+	var newTabURL = "chrome://newtab";
+
+	if (url.substring(0, newTabURL.length) == newTabURL) {
+		return true;
+	}
+
+	return url.substring(0, baseURL.length) == baseURL;
+}

@@ -21,8 +21,6 @@ $(document).ready(function() {
 
 	document.title = chrome.i18n.getMessage('options_title');	
 
-	var sites = [];
-
 	sitesReload();
 
 	chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
@@ -43,7 +41,7 @@ $(document).ready(function() {
 		updateFaviconColorForAllSites(function() {
 			$("#color-regenerate-btn").removeAttr("disabled").html("");
 
-			chrome.extension.sendMessage({ message:"sitesChanged" }, function() {});
+			sendMessageToExtensionTabs("refresh");
 		});
 	});
 
@@ -71,7 +69,7 @@ $(document).ready(function() {
 			colorTimer = null;
 
 			setBackgroundColor(color, function() {
-				chrome.extension.sendMessage({ message: "backgroundColorChanged" }, function() {});
+				sendMessageToExtensionTabs("refresh");
 			});
 		}, COLOR_TIMEOUT);
 	});
@@ -87,21 +85,21 @@ $(document).ready(function() {
 		_gaq.push(['_trackEvent', 'Options Reset Background Color', 'clicked']);
 
 		setBackgroundColor(null, function() {
-			chrome.extension.sendMessage({ message: "backgroundColorChanged" }, function() {});
+			sendMessageToExtensionTabs("refresh");
 		});
 
 		$("#background-color").val(DEFAULT_COLOR);
 	});
 
 	function sitesReload() {
-		getSites(function (items) {
+		getAllSites(function (items) {
 			$("#sites").html("");
 			
 			if (!items || items.length == 0) {
 				$("#sites").prepend("<h4>" + chrome.i18n.getMessage('no_tiles_added') + "</h4><p class='message'>" + chrome.i18n.getMessage('options_no_tiles_added_help', ["<img src='../../icons/icon-bitty-gray.png'>"]) + "</p>");
 				$("#color-regenerate-btn").attr("disabled", "disabled");
 			} else {
-				sites = items.reverse();
+				var sites = items.reverse();
 
 				$("#color-regenerate-btn").removeAttr("disabled");
 
@@ -134,7 +132,11 @@ $(document).ready(function() {
 								abbreviationField.val(value);
 								abbreviationField.data('oldVal', value);
 
-								setStoredSiteAbbreviation(site.url, value, function() {});
+								getIDForURL(site.url, function(id) {
+									updateSiteAbbreviation(id, value, function() {
+										sendMessageToExtensionTabs("refresh");
+									});
+								});
 							}
 						});
 
@@ -153,7 +155,6 @@ $(document).ready(function() {
 						newControlGroup.find('input.color').on("change", function() {
 							newControlGroup.find('button.reset').show();
 							newControlGroup.find('input[name="customColorSet"]').val("true");
-
 							
 							if (colorTimer) {
 								clearTimeout(colorTimer);
@@ -164,7 +165,11 @@ $(document).ready(function() {
 							colorTimer = setTimeout(function() {
 								colorTimer = null;
 
-								setStoredSiteCustomColor(site.url, hexToRgb(input.val()), function() {});
+								getIDForURL(site.url, function(id) {
+									updateSiteCustomColor(id, hexToRgb(input.val()), function() {
+										sendMessageToExtensionTabs("refresh");
+									});
+								});
 							}, COLOR_TIMEOUT);
 						});
 
@@ -182,7 +187,11 @@ $(document).ready(function() {
 							newControlGroup.find('input[name="customColorSet"]').val("false");
 							newControlGroup.find('input.color').val(rgbToHex(site.color["red"], site.color["green"], site.color["blue"]));
 
-							setStoredSiteCustomColor(site.url, null, function() {});
+							getIDForURL(site.url, function(id) {
+								updateSiteCustomColor(id, null, function() {
+									sendMessageToExtensionTabs("refresh");
+								});
+							});
 						});
 
 						$("#sites").prepend(newControlGroup);
@@ -206,7 +215,16 @@ $(document).ready(function() {
 		parent = $(element).parents('.control-group');
 		var url = parent.find('span.url').text();
 
-		chrome.extension.sendMessage({ message: "delete", url: url }, function(response) { });
+		chrome.extension.sendMessage({ message: "delete", url: url }, function(response) {
+			parent.remove();
+
+			getSitesCount(function(sitesCount) {
+				if (sitesCount == 0) {
+					$("#sites").prepend("<h4>" + chrome.i18n.getMessage('no_tiles_added') + "</h4><p class='message'>" + chrome.i18n.getMessage('options_no_tiles_added_help', ["<img src='../../icons/icon-bitty-gray.png'>"]) + "</p>");
+					$("#color-regenerate-btn").attr("disabled", "disabled");
+				}
+			});
+		});
 	}
 
 	function makeSites() {
