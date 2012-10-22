@@ -139,7 +139,7 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 		console.log('Saving...');
 
 		getFocusedTab(function(tab) {
-			createSite(tab.url, request.abbreviation, function(site) {
+			createSite(tab.url, request.abbreviation, null, function(site) {
 				saveSite(site, function() {
 					sendResponse({ message: "saved" });
 

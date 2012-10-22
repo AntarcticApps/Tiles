@@ -5,10 +5,11 @@ Array.prototype.remove = function(from, to) {
   return this.push.apply(this, rest);
 };
 
-// Create a site given the url, abbreviation, and a callback.
+// Create a site given the url, abbreviation, color, and a callback.
 //
 // Callback is required due to getting the site color requiring an async HTTP request
-function createSite(url, abbreviation, callback) {
+// (only if color is no null)
+function createSite(url, abbreviation, color, callback) {
 	var site = {};
 
 	if (url) {
@@ -25,11 +26,17 @@ function createSite(url, abbreviation, callback) {
 
 	site.abbreviation = makeAbbreviation(site.abbreviation);
 
-	getFaviconColor(site.url, function(color) {
+	if (!color) { 
+		getFaviconColor(site.url, function(color) {
+			setSiteColor(site, color);
+
+			callback(site);
+		});
+	} else {
 		setSiteColor(site, color);
 
 		callback(site);
-	});
+	}
 }
 
 // Delete the site from all of the sites, given the url.
@@ -470,7 +477,7 @@ function getFaviconColor(url, callback) {
 			faviconNotDeclared();
 		}
 	}, function() {
-		console.error("Could not load url – " + url);
+		console.error("Could not load url - " + url);
 
 		faviconNotDeclared();
 	});

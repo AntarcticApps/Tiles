@@ -9,21 +9,15 @@ describe("Sites", function() {
 		server.restore();
 	});
 
-	it("can be created", function() {
+	it("can be created given a color", function() {
 		var site = null;
-		var url = "/";
-		var abbreviation = "Ab";
-
-		server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
+		var url = "http://www.antarcticapps.com/";
+		var abbreviation = "Aa";
 
 		runs(function() {
-			createSite(url, abbreviation, function(s) {
+			createSite(url, abbreviation, [1, 4, 9, 255], function(s) {
 				site = s;
 			});
-
-			console.log(server.requests);
-
-			server.respond();
 		});
 
 		waitsFor(function() {
@@ -35,9 +29,9 @@ describe("Sites", function() {
 				url: url,
 				abbreviation: abbreviation,
 				color: {
-					red: 0,
-					blue: 0,
-					green: 0,
+					red: 1,
+					green: 4,
+					blue: 9,
 					alpha: 255
 				}
 			})
