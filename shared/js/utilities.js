@@ -18,3 +18,13 @@ function getHostname(url) {
 
 	return hostname;
 }
+
+function loop(iteration, end, operation, finishCallback) {
+	if (iteration < end) {
+		operation(iteration, function() {
+			loop(iteration + 1, end, operation, finishCallback);
+		});
+	} else {
+		finishCallback();
+	}
+}
