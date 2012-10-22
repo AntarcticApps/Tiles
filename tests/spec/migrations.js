@@ -59,7 +59,7 @@ describe("A migration", function() {
 				runs(function() {
 					storage.set({
 						"sitesSize": 1,
-						"site-1": testSite
+						"site-0": testSite
 					}, function() {
 						ready = true;
 					});
