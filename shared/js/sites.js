@@ -428,12 +428,7 @@ function setSiteColor(site, color) {
 		}
 	}
 
-	site.color = {
-		'red': color[0],
-		'green': color[1],
-		'blue': color[2],
-		'alpha': color[3]
-	};
+	site.color = colorArrayToObject(color);
 }
 
 function updateFaviconColorForAllSites(callback) {
@@ -811,6 +806,24 @@ function pixelsAreSimilar(a, b) {
 	var bHSL = rgbToHsl(b);
 
 	return Math.abs(aHSL[0] - bHSL[0]) <= TOLERANCE;
+}
+
+function colorArrayToObject(arr) {
+	if (arr.length == 4) {
+		return {
+			red: arr[0],
+			green: arr[1],
+			blue: arr[2],
+			alpha: arr[3]
+		};
+	} else {
+		return {
+			red: arr[0],
+			green: arr[1],
+			blue: arr[2],
+			alpha: 255
+		};	
+	}
 }
 
 /**
