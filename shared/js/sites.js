@@ -129,8 +129,6 @@ function saveSites(sites, callback) {
 	storage.set({'sitesSize': sites.length}, function() {
 		if (sites.length == 0) {
 			// If we have no sites anymore, just update any pages that are currently showing sites
-			chrome.extension.sendMessage({ message:"sitesChanged" }, function() {});
-
 			return callback();
 		}
 
@@ -143,8 +141,6 @@ function saveSites(sites, callback) {
 
 		// Save and update pages currently showing sites
 		storage.set(pairs, function() {
-			chrome.extension.sendMessage({ message:"sitesChanged" }, function() {});
-
 			return callback();
 		});
 	});

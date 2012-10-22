@@ -103,6 +103,8 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 					sendResponse({ message: "success" });
 
 					console.log('Setting abbreviation of ' + tab.url + ' to ' + request.abbreviation);
+
+					updateAllWindows();
 				});
 			}
 		});
@@ -141,20 +143,15 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 		getFocusedTab(function(tab) {
 			createSite(tab.url, request.abbreviation, null, function(site) {
 				saveSite(site, function() {
+					updateAllWindows();
+
 					sendResponse({ message: "saved" });
 
 					console.log('Sent saved');
-
-					updateAllWindows();
 				});
 			});
 		});
-	} else if (request.message == "sitesChanged") {
-		updateAllWindows();
-		
-		sendMessageToExtensionTabs("refresh");
 	}
-
 
 	return true;
 });
@@ -217,6 +214,8 @@ function sendMessageToExtensionTabs(message) {
  * Updates all of the windows.
  */
 function updateAllWindows() {
+	sendMessageToExtensionTabs("refresh");
+
 	chrome.windows.getAll({ populate: true }, function(windows) {
 		console.log('Updating all windows...');
 
