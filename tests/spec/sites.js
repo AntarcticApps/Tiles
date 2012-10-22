@@ -762,7 +762,7 @@ describe("Sites", function() {
 				runs(function() {
 					createSite("/", "Ab", [255, 255, 255, 255], function(created) {
 						addSites([created], function() {
-							setSiteAbbreviation(created.id, "Re", function() {
+							updateSiteAbbreviation(created.id, "Re", function() {
 								getSite(created.id, function(s) {
 									site = s;
 								});
@@ -790,7 +790,6 @@ describe("Sites", function() {
 				});
 			});
 
-<<<<<<< HEAD
 			it("should be able to change its color", function() {
 				runs(function() {
 					createSite("/", "Ab", [255, 255, 255, 255], function(created) {
@@ -823,8 +822,46 @@ describe("Sites", function() {
 				});
 			});
 
-=======
->>>>>>> Minor cleanup on some tests.
+			it("should be able to change its custom color", function() {
+				runs(function() {
+					createSite("/", "Ab", [255, 255, 255, 255], function(created) {
+						addSites([created], function() {
+							updateSiteCustomColor(created.id, [0, 0, 0], function() {
+								getSite(created.id, function(s) {
+									site = s;
+								});
+							});
+						});
+					});
+
+					server.respond();
+				});
+				
+				waitsFor(function() {
+					return site != null;
+				}, "the site to be returned", 500);
+
+				runs(function() {
+					expect(site).toEqual({
+						url: "/",
+						abbreviation: "Ab",
+						color: {
+							red: 255,
+							green: 255,
+							blue: 255,
+							alpha: 255
+						},
+						customColor: {
+							red: 0,
+							green: 0,
+							blue: 0,
+							alpha: 255
+						},
+						id: 0
+					});
+				});
+			});
+
 			it("should be accessible by its URL", function() {
 				runs(function() {
 					createSite("/", "Ab", [255, 255, 255, 255], function(created) {
