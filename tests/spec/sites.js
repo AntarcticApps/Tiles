@@ -614,8 +614,6 @@ describe("Sites", function() {
 			it("should contain a site after it has been added", function() {
 				var sites = null;
 
-				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
-
 				runs(function() {
 					createSite("/", "Ab", [255, 255, 255, 255], function(site) {
 						addSites([site], function() {
@@ -624,8 +622,6 @@ describe("Sites", function() {
 							});
 						});
 					});
-
-					server.respond();
 				});
 				
 				waitsFor(function() {
@@ -651,8 +647,6 @@ describe("Sites", function() {
 			it("should contain two sites after they have been added", function() {
 				var sites = null;
 
-				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
-
 				runs(function() {
 					loop(0, 2, function(iteration, callback) {
 						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
@@ -660,8 +654,6 @@ describe("Sites", function() {
 								callback();
 							});
 						});
-
-						server.respond();
 					}, function() {
 						getAllSites(function(s) {
 							sites = s;
@@ -703,8 +695,6 @@ describe("Sites", function() {
 			it("should not contain a site after it has been removed", function() {
 				var sites = null;
 
-				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
-
 				runs(function() {
 					loop(0, 2, function(iteration, callback) {
 						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
@@ -712,8 +702,6 @@ describe("Sites", function() {
 								callback();
 							});
 						});
-
-						server.respond();
 					}, function() {
 						removeSites([1], function() {
 							getAllSites(function(s) {
@@ -747,8 +735,6 @@ describe("Sites", function() {
 			it("should not contain any site after all sites have been removed", function() {
 				var sites = null;
 
-				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
-
 				runs(function() {
 					loop(0, 2, function(iteration, callback) {
 						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
@@ -756,8 +742,6 @@ describe("Sites", function() {
 								callback();
 							});
 						});
-
-						server.respond();
 					}, function() {
 						removeSites([0,1], function() {
 							getAllSites(function(s) {
@@ -782,10 +766,6 @@ describe("Sites", function() {
 		describe("a site", function() {
 			var site = null;
 
-			beforeEach(function() {
-				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
-			});
-
 			afterEach(function() {
 				site = null;
 			});
@@ -801,8 +781,6 @@ describe("Sites", function() {
 							});
 						});
 					});
-
-					server.respond();
 				});
 				
 				waitsFor(function() {
@@ -836,8 +814,6 @@ describe("Sites", function() {
 							});
 						});
 					});
-
-					server.respond();
 				});
 				
 				waitsFor(function() {
@@ -870,8 +846,6 @@ describe("Sites", function() {
 							});
 						});
 					});
-
-					server.respond();
 				});
 				
 				waitsFor(function() {
