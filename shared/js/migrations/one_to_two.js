@@ -19,8 +19,10 @@ function migrate_1_to_2(callback) {
 			// Ok, we have sites to get...
 			// Determine the key for each site, and get the data for that key from the database
 			
-			if (sitesSize <= 0) {
+			if (sitesSize < 0) {
 				return callback(null);
+			} else if (sitesSize == 0) {
+				return callback([]);
 			}
 
 			var sitesList = [];
@@ -53,8 +55,6 @@ function migrate_1_to_2(callback) {
 
 	// Get all the data currently in the database
 	getSites(function(sites) {
-		console.log(sites);
-
 		storage.clear(function() {
 			setStorageVersion(2, function() {
 				addSites(sites, callback);
