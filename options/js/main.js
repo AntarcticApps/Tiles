@@ -199,8 +199,13 @@ $(document).ready(function() {
 			$("#sites").sortable({
 				handle: '.handle',
 				axis: 'y',
-				update: function(e, ui) {
-					
+				start: function(e, ui) {
+					ui.item.startIndex = ui.item.index();
+				},
+				stop: function(e, ui) {
+					reorderSite(ui.item.startIndex, ui.item.index(), function() {
+						sendMessageToExtensionTabs("refresh");
+					});
 				}
 			});
 
