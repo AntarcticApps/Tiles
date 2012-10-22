@@ -362,15 +362,16 @@ describe("Sites", function() {
 		var oldStorage = null;
 		var oldStorageItems = null;
 		var ready = false;
+		var server = null;
 
 		beforeEach(function() {
 			oldStorage = storage;
 			storage = TEST_STORAGE;
 
+			server = sinon.fakeServer.create();
+
 			storage.get(null, function(items) {
 				oldStorageItems = items;
-
-				console.log(items);
 
 				storage.clear(function() {
 					ready = true;
@@ -380,12 +381,24 @@ describe("Sites", function() {
 			waitsFor(function() {
 				return ready;
 			}, "The storage should be ready.", 500);
+
+			ready = false;
 		});
 
 		afterEach(function() {
-			storage.set(oldStorageItems);
+			storage.set(oldStorageItems, function() {
+				storage = oldStorage;
 
-			storage = oldStorage;
+				server.restore();
+
+				ready = true;
+			});
+
+			waitsFor(function() {
+				return ready;
+			}, "The storage should be ready.", 500);
+
+			ready = false;
 		});
 
 		describe("next ID", function() {
@@ -424,6 +437,32 @@ describe("Sites", function() {
 
 				runs(function() {
 					expect(id).toBe(1);
+				});
+			});
+		});
+
+		describe("should store a new site", function() {
+			it("should return an ID on save", function() {
+				var id = null;
+
+				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
+
+				runs(function() {
+					createSite("/", "Ab", function(site) {
+						storeNewSite(site, function(i) {
+							id = i;
+						});
+					});
+
+					server.respond();
+				});
+				
+				waitsFor(function() {
+					return id != null;
+				}, "The ID should be set.", 500);
+
+				runs(function() {
+					expect(id).toBe(0);
 				});
 			});
 		});
