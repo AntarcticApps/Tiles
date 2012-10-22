@@ -760,6 +760,40 @@ describe("Sites", function() {
 				});
 			});
 
+			it("should be able to change its color", function() {
+				runs(function() {
+					createSite("/", "Ab", [255, 255, 255, 255], function(created) {
+						addSites([created], function() {
+							updateSiteColor(created.id, [0, 0, 0], function() {
+								getSite(created.id, function(s) {
+									site = s;
+								});
+							});
+						});
+					});
+
+					server.respond();
+				});
+				
+				waitsFor(function() {
+					return site != null;
+				}, "the site to be returned", 500);
+
+				runs(function() {
+					expect(site).toEqual({
+						url: "/",
+						abbreviation: "Ab",
+						color: {
+							red: 0,
+							green: 0,
+							blue: 0,
+							alpha: 255
+						},
+						id: 0
+					});
+				});
+			});
+
 			it("should be accessible by its URL", function() {
 				runs(function() {
 					createSite("/", "Ab", [255, 255, 255, 255], function(created) {
