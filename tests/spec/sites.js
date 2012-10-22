@@ -23,7 +23,7 @@ describe("Sites", function() {
 
 			waitsFor(function() {
 				return site != null;
-			}, "the site to be created.", 500);
+			}, "the site to be created", 500);
 
 			runs(function() {
 				expect(site).toEqual({
@@ -54,7 +54,7 @@ describe("Sites", function() {
 
 			waitsFor(function() {
 				return site != null;
-			}, "the site to be created.", 5000);
+			}, "the site to be created", 5000);
 
 			runs(function() {
 				expect(site).toEqual({
@@ -85,7 +85,7 @@ describe("Sites", function() {
 
 			waitsFor(function() {
 				return site != null;
-			}, "the site to be created.", 5000);
+			}, "the site to be created", 5000);
 
 			runs(function() {
 				expect(site).toEqual({
@@ -133,7 +133,7 @@ describe("Sites", function() {
 
 				waitsFor(function() {
 					return done;
-				}, "The favicon path should be found.", 500);
+				}, "the favicon path to be found", 500);
 
 				runs(function() {
 					expect(done).toBe(true);
@@ -162,7 +162,7 @@ describe("Sites", function() {
 
 				waitsFor(function() {
 					return done;
-				}, "The favicon path should be found.", 500);
+				}, "the favicon path to be found", 500);
 
 				runs(function() {
 					expect(done).toBe(true);
@@ -189,7 +189,7 @@ describe("Sites", function() {
 
 				waitsFor(function() {
 					return done;
-				}, "The favicon path should be found.", 500);
+				}, "the favicon path to be found", 500);
 
 				runs(function() {
 					expect(done).toBe(true);
@@ -220,7 +220,7 @@ describe("Sites", function() {
 
 				waitsFor(function() {
 					return done;
-				}, "The favicon path should be found.", 500);
+				}, "the favicon path to be found", 500);
 
 				runs(function() {
 					expect(done).toBe(true);
@@ -247,7 +247,7 @@ describe("Sites", function() {
 
 				waitsFor(function() {
 					return done;
-				}, "The favicon path should be found.", 500);
+				}, "the favicon path to be found", 500);
 
 				runs(function() {
 					expect(done).toBe(true);
@@ -281,7 +281,7 @@ describe("Sites", function() {
 
 					waitsFor(function() {
 						return done;
-					}, "The favicon path should be found.", 500);
+					}, "the favicon path to be found", 500);
 
 					runs(function() {
 						expect(done).toBe(true);
@@ -315,7 +315,7 @@ describe("Sites", function() {
 
 							waitsFor(function() {
 								return done;
-							}, "The favicon path should be found.", 500);
+							}, "the favicon path to be found", 500);
 
 							runs(function() {
 								expect(done).toBe(true);
@@ -347,7 +347,7 @@ describe("Sites", function() {
 
 							waitsFor(function() {
 								return done;
-							}, "The favicon path should be found.", 500);
+							}, "the favicon path to be found", 500);
 
 							runs(function() {
 								expect(done).toBe(true);
@@ -381,7 +381,7 @@ describe("Sites", function() {
 
 							waitsFor(function() {
 								return done;
-							}, "The favicon path should be found.", 500);
+							}, "the favicon path to be found", 500);
 
 							runs(function() {
 								expect(done).toBe(true);
@@ -411,7 +411,7 @@ describe("Sites", function() {
 
 				waitsFor(function() {
 					return done;
-				}, "The favicon path should be found.", 500);
+				}, "the favicon path to be found", 500);
 
 				runs(function() {
 					expect(done).toBe(true);
@@ -444,7 +444,7 @@ describe("Sites", function() {
 
 			waitsFor(function() {
 				return ready;
-			}, "The storage should be ready.", 500);
+			}, "the storage to be ready", 500);
 
 			ready = false;
 		});
@@ -460,7 +460,7 @@ describe("Sites", function() {
 
 			waitsFor(function() {
 				return ready;
-			}, "The storage should be ready.", 500);
+			}, "the storage to be ready", 500);
 
 			ready = false;
 		});
@@ -477,7 +477,7 @@ describe("Sites", function() {
 				
 				waitsFor(function() {
 					return id != null;
-				}, "The ID should be set.", 500);
+				}, "the ID to be set", 500);
 
 				runs(function() {
 					expect(id).toBe(0);
@@ -497,7 +497,7 @@ describe("Sites", function() {
 				
 				waitsFor(function() {
 					return id != null;
-				}, "The ID should be set.", 500);
+				}, "the ID to be set", 500);
 
 				runs(function() {
 					expect(id).toBe(1);
@@ -543,7 +543,7 @@ describe("Sites", function() {
 
 				waitsFor(function() {
 					return ids != null;
-				}, "the sorted site IDs to be set.", 500);
+				}, "the sorted site IDs to be set", 500);
 
 				runs(function() {
 					expect(ids).toEqual([]);
