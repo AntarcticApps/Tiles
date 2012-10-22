@@ -17,20 +17,6 @@ function migrateDatabase() {
 }
 
 /**
- * Get the version of the storage.
- * @param  {Function} callback Function taking in a version
- */
-function getStorageVersion(callback) {
-	storage.get('version', function(items) {
-		if (!items || !items.version) {
-			return callback(1);
-		}
-
-		return callback(items.version);
-	});
-}
-
-/**
  * Get the version of the extension.
  * @return {Object} Object with major, minor, and patch fields
  */
