@@ -1,3 +1,50 @@
+// Create a site given the url, abbreviation, color, and a callback.
+//
+// Callback is required due to getting the site color requiring an async HTTP request
+// (only if color is no null)
+function createSite(url, abbreviation, color, callback) {
+	var site = {};
+
+	if (url) {
+		site.url = url;
+	} else {
+		site.url = '';
+	}
+
+	if (abbreviation) {
+		site.abbreviation = abbreviation;
+	} else {
+		site.abbreviation = getHostname(url);
+	}
+
+	site.abbreviation = makeAbbreviation(site.abbreviation);
+
+	if (!color) { 
+		getFaviconColor(site.url, function(color) {
+			setSiteColor(site, color);
+
+			callback(site);
+		});
+	} else {
+		setSiteColor(site, color);
+
+		callback(site);
+	}
+}
+
+// Set the site color for a given site object
+function setSiteColor(site, color) {
+	if (!color) {
+		color = [0, 0, 0, 255];
+	} else {
+		if (color.length != 4) {
+			return;
+		}
+	}
+
+	site.color = colorArrayToObject(color);
+}
+
 function getNextID(callback) {
 	storage.get('nextID', function(items) {
 		if (!items || !items.nextID) {
@@ -241,40 +288,6 @@ Array.prototype.remove = function(from, to) {
   return this.push.apply(this, rest);
 };
 
-// Create a site given the url, abbreviation, color, and a callback.
-//
-// Callback is required due to getting the site color requiring an async HTTP request
-// (only if color is no null)
-function createSite(url, abbreviation, color, callback) {
-	var site = {};
-
-	if (url) {
-		site.url = url;
-	} else {
-		site.url = '';
-	}
-
-	if (abbreviation) {
-		site.abbreviation = abbreviation;
-	} else {
-		site.abbreviation = getHostname(url);
-	}
-
-	site.abbreviation = makeAbbreviation(site.abbreviation);
-
-	if (!color) { 
-		getFaviconColor(site.url, function(color) {
-			setSiteColor(site, color);
-
-			callback(site);
-		});
-	} else {
-		setSiteColor(site, color);
-
-		callback(site);
-	}
-}
-
 // Ensure a site contains a url, abbreviation, and color and that the color is valid.
 function isValidSite(site) {
 	if (!site.url || !site.abbreviation || !site.color) {
@@ -301,19 +314,6 @@ function isValidColor(color) {
 	}
 
 	return true;
-}
-
-// Set the site color for a given site object
-function setSiteColor(site, color) {
-	if (!color) {
-		color = [0, 0, 0, 255];
-	} else {
-		if (color.length != 4) {
-			return;
-		}
-	}
-
-	site.color = colorArrayToObject(color);
 }
 
 function setBackgroundColor(color, callback) {
