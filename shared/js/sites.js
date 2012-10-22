@@ -354,7 +354,11 @@ function writeUserStylesheet() {
 		getSitesCount(function(sitesCount) {
 			if (sitesCount > 0) {
 				getBackgroundColor(function(color) {
-					writeToFile(fs, "user.css", "body { background: rgb(" + color['red'] + ", " + color['green'] + ", " + color['blue'] + "); }");
+					if (!color) {
+						writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0); }");
+					} else {
+						writeToFile(fs, "user.css", "body { background: rgb(" + color['red'] + ", " + color['green'] + ", " + color['blue'] + "); }");
+					}
 				});
 			} else {
 				writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0); }");
