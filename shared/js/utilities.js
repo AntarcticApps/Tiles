@@ -79,15 +79,18 @@ Array.prototype.firstIndexOfElementEqualTo = function(element) {
 Array.prototype.removeElementEqualTo = function(element) {
 	for (var i = 0; i < this.length; i++) {
 		if (this[i] == element) {
-			this.remove(i);
+			return this.remove(i);
 		}
 	}
-	return this;
 }
 
 // Array Remove - By John Resig (MIT Licensed)
 Array.prototype.remove = function(from, to) {
-  var rest = this.slice((to || from) + 1 || this.length);
-  this.length = from < 0 ? this.length + from : from;
-  return this.push.apply(this, rest);
+	var rest = this.slice((to || from) + 1 || this.length);
+	this.length = from < 0 ? this.length + from : from;
+	return this.push.apply(this, rest);
 };
+
+Array.prototype.insertAtIndex = function(element, index) {
+	this.splice(index, 0, element);
+}
