@@ -173,6 +173,24 @@ function updateSiteCustomColor(id, color, callback) {
 	});
 }
 
+function updateFaviconColorForAllSites(callback) {
+	getAllSites(function(sites) {
+		if (!sites) {
+			callback(false);
+		}
+
+		loop(0, sites.length, function(iteration, callback) {
+			getFaviconColor(sites[iteration].url, function(color) {
+				updateSiteColor(sites[iteration].id, color, function() {
+					callback();
+				});
+			});
+		}, function() {
+			callback(true);
+		});
+	});
+}
+
 function getSiteForURL(url, callback) {
 	getAllSites(function(sites) {
 		if (!sites || sites.length == 0) {
@@ -471,39 +489,6 @@ function setSiteColor(site, color) {
 	}
 
 	site.color = colorArrayToObject(color);
-}
-
-function updateFaviconColorForAllSites(callback) {
-	getSites(function(sites) {
-		if (!sites) {
-			callback();
-		}
-
-		var saved = false;
-		var numberOfSites = sites.length;
-
-		function saveIfReady() {
-			if (numberOfSites <= 0 && !saved) {
-				saved = true;
-
-				saveSites(sites, function() {
-					callback();
-				});
-			}
-		}
-
-		for (var i = 0; i < sites.length; i++) {
-			(function(site) {
-				getFaviconColor(site.url, function(color) {
-					setSiteColor(site, color);
-
-					numberOfSites--;
-
-					saveIfReady();
-				});
-			})(sites[i]);
-		}
-	});
 }
 
 function setBackgroundColor(color, callback) {
