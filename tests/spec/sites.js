@@ -358,7 +358,7 @@ describe("Sites", function() {
 		});
 	});
 
-	describe("storage", function() {
+	describe("should store", function() {
 		var oldStorage = null;
 		var oldStorageItems = null;
 		var ready = false;
@@ -401,7 +401,7 @@ describe("Sites", function() {
 			ready = false;
 		});
 
-		describe("next ID", function() {
+		describe("the next ID", function() {
 			it("should default to 0", function() {
 				var id = null;
 
@@ -441,7 +441,7 @@ describe("Sites", function() {
 			});
 		});
 
-		describe("should store a new site", function() {
+		describe("a new site", function() {
 			it("should return an ID on save", function() {
 				var id = null;
 
