@@ -547,8 +547,7 @@ describe("Sites", function() {
 		});
 
 		describe("sites", function() {
-			it("should contain added sites", function() {
-				var id = null;
+			it("should contain a site after it has been added", function() {
 				var sites = null;
 
 				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
@@ -581,6 +580,58 @@ describe("Sites", function() {
 							alpha: 255
 						},
 						id: 0
+					});
+				});
+			});
+
+			it("should contain two sites after they have been added", function() {
+				var sites = null;
+
+				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
+
+				runs(function() {
+					loop(0, 2, function(iteration, callback) {
+						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
+							addSites([site], function() {
+								callback();
+							});
+						});
+
+						server.respond();
+					}, function() {
+						getAllSites(function(s) {
+							sites = s;
+						});
+					});
+				});
+				
+				waitsFor(function() {
+					return sites != null;
+				}, "the sites to be returned", 500);
+
+				runs(function() {
+					expect(sites.length).toBe(2);
+					expect(sites[0]).toEqual({
+						url: "/",
+						abbreviation: "" + 0,
+						color: {
+							red: 255,
+							green: 255,
+							blue: 255,
+							alpha: 255
+						},
+						id: 0
+					});
+					expect(sites[1]).toEqual({
+						url: "/",
+						abbreviation: "" + 1,
+						color: {
+							red: 255,
+							green: 255,
+							blue: 255,
+							alpha: 255
+						},
+						id: 1
 					});
 				});
 			});
