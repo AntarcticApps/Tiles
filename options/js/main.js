@@ -203,7 +203,7 @@ $(document).ready(function() {
 				handle: '.handle',
 				axis: 'y',
 				update: function(e, ui) {
-					makeSites();
+					
 				}
 			});
 
@@ -224,31 +224,6 @@ $(document).ready(function() {
 					$("#color-regenerate-btn").attr("disabled", "disabled");
 				}
 			});
-		});
-	}
-
-	function makeSites() {
-		var fields = [];
-
-		$('#sites .site-controls').each(function(index, element) {
-			urlField = $(this).children('span.url').eq(0);
-			abbreviationField = $(this).children('input:text.abbreviation').eq(0);
-
-			var url = urlField.html();
-			var abbreviation = abbreviationField.val();
-
-			if (!abbreviation) {
-				abbreviation = makeAbbreviation(getHostname(url));
-
-				abbreviationField.val(abbreviation);
-			}
-
-			fields[index] = {};
-			fields[index].url = url;
-			fields[index].abbreviation = abbreviation;
-			if ($(this).children('input[name="customColorSet"]').val() == "true") {
-				fields[index].customColor = hexToRgb($(this).children('input[type=color]').val());
-			}
 		});
 	}
 });
