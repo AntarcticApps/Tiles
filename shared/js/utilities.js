@@ -28,3 +28,15 @@ function loop(iteration, end, operation, finishCallback) {
 		finishCallback();
 	}
 }
+
+function async_loop(start, end, operation, finishCallback) {
+	var operationsToComplete = (end - start);
+	for (var i = start; i < end; i++) {
+		operation(i, function() {
+			operationsToComplete--;
+			if (operationsToComplete == 0) {
+				finishCallback();
+			}
+		});
+	}
+}
