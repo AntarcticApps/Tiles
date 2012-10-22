@@ -84,7 +84,6 @@ Array.prototype.removeElementEqualTo = function(element) {
 	}
 }
 
-// Array Remove - By John Resig (MIT Licensed)
 Array.prototype.remove = function(index) {
 	return this.splice(index, 1)[0];
 };
