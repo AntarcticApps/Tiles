@@ -764,9 +764,9 @@ describe("Sites", function() {
 		});
 
 		describe("a site", function() {
-			var site = null;
+			var site;
 
-			afterEach(function() {
+			beforeEach(function() {
 				site = null;
 			});
 
