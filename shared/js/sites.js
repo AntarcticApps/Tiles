@@ -28,6 +28,19 @@ function storeNewSite(site, callback) {
 	});
 }
 
+function removeSite(id, callback) {
+	storage.remove(storageKeyForID(id), callback);
+}
+
+function updateSite(id, site, callback) {
+	var key = storageKeyForID(id);
+	var data = {};
+	data[key] = site;
+	storage.set(data, function() {
+		callback();
+	});
+}
+
 function addSites(sites, callback) {
 	var newIDs = {};
 
@@ -90,10 +103,6 @@ function getAllSites(callback) {
 	});
 }
 
-function removeSite(id, callback) {
-	storage.remove(storageKeyForID(id), callback);
-}
-
 function removeSites(sites, callback) {
 	getSortedSiteIDs(function(ids) {
 		var newIDs = ids;
@@ -108,6 +117,26 @@ function removeSites(sites, callback) {
 			});
 		});
 	});
+}
+
+function setSiteAbbreviation(id, abbreviation, callback) {
+	getSortedSiteIDs(function(ids) {
+		var i = ids.firstIndexOfElementEqualTo(id);
+		getSite(ids[i], function(site) {
+			site.abbreviation = abbreviation;
+			updateSite(id, site, function() {
+				return callback();
+			});
+		});
+	});
+}
+
+Array.prototype.firstIndexOfElementEqualTo = function(element) {
+	for (var i = 0; i < this.length; i++) {
+		if (this[i] == element) {
+			return i;
+		}
+	}
 }
 
 Array.prototype.removeElementEqualTo = function(element) {
