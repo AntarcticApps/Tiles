@@ -23,6 +23,37 @@ function storeNewSite(site, callback) {
 	});
 }
 
+function addSites(sites, callback) {
+	var newIDs = {};
+
+	function loop(iteration, end, operation, finishCallback) {
+		if (iteration < end) {
+			operation(iteration, function() {
+				loop(++iteration, end, operation, finishCallback);
+			});
+		} else {
+			finishCallback();
+		}
+	}
+
+	loop(0, sites.length, function(iteration, callback) {
+		storeNewSite(sites[iteration], function(id) {
+			newIDs[iteration] = id;
+			callback();
+		});
+	}, function() {
+		getSortedSiteIDs(function(ids) {
+			for (var j = 0; newIDs[j] != null; j++) {
+				ids.push(newIDs[j]);
+			}
+
+			setSortedSiteIDs(ids, function() {
+				return callback();
+			});
+		});
+	});
+}
+
 function getSortedSiteIDs(callback) {
 	storage.get('ids', function(items) {
 		if (!items || !items.ids) {
