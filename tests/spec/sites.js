@@ -716,17 +716,23 @@ describe("Sites", function() {
 		});
 
 		describe("a site", function() {
-			it("should be able to change its abbreviation", function() {
-				var sites = null;
+			var site = null;
 
+			beforeEach(function() {
 				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
+			});
 
+			afterEach(function() {
+				site = null;
+			});
+
+			it("should be able to change its abbreviation", function() {
 				runs(function() {
-					createSite("/", "Ab", [255, 255, 255, 255], function(site) {
-						addSites([site], function() {
-							setSiteAbbreviation(site.id, "Re", function() {
-								getAllSites(function(s) {
-									sites = s;
+					createSite("/", "Ab", [255, 255, 255, 255], function(created) {
+						addSites([created], function() {
+							setSiteAbbreviation(created.id, "Re", function() {
+								getSite(created.id, function(s) {
+									site = s;
 								});
 							});
 						});
@@ -736,12 +742,11 @@ describe("Sites", function() {
 				});
 				
 				waitsFor(function() {
-					return sites != null;
-				}, "the sites to be returned", 500);
+					return site != null;
+				}, "the site to be returned", 500);
 
 				runs(function() {
-					expect(sites.length).toBe(1);
-					expect(sites[0]).toEqual({
+					expect(site).toEqual({
 						url: "/",
 						abbreviation: "Re",
 						color: {
@@ -756,10 +761,6 @@ describe("Sites", function() {
 			});
 
 			it("should be accessible by its URL", function() {
-				var site = null;
-
-				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
-
 				runs(function() {
 					createSite("/", "Ab", [255, 255, 255, 255], function(created) {
 						addSites([created], function() {
@@ -793,8 +794,6 @@ describe("Sites", function() {
 
 			it("abbreviation should be accessible by its URL", function() {
 				var abbreviation = null;
-
-				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
 
 				runs(function() {
 					createSite("/", "Te", [255, 255, 255, 255], function(created) {
