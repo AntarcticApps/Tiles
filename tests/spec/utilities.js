@@ -19,3 +19,11 @@ describe("Utilities", function() {
 		expect(getDomain('https://www.google.com/kitty')).toMatch('google.com');
 	});
 });
+
+describe("An array", function() {
+	it("should insert an element at an arbitrary index", function() {
+		var arr = [1, 2, 3, 4];
+		arr.insertAtIndex(0, 1);
+		expect(arr).toEqual([1, 0, 2, 3, 4]);
+	});
+});
