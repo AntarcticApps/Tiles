@@ -118,7 +118,10 @@ describe("A migration", function() {
 
 			it("should retain the site information", function() {
 				getSite(0, function(site) {
-					expect(site).toEqual(testSite);
+					expect(site.url).toEqual(testSite.url);
+					expect(site.abbreviation).toEqual(testSite.abbreviation);
+					expect(site.color).toEqual(testSite.color);
+
 				});
 			});
 		});
