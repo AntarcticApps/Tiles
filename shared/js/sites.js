@@ -179,7 +179,7 @@ function updateFaviconColorForAllSites(callback) {
 			callback(false);
 		}
 
-		loop(0, sites.length, function(iteration, callback) {
+		async_loop(0, sites.length, function(iteration, callback) {
 			getFaviconColor(sites[iteration].url, function(color) {
 				updateSiteColor(sites[iteration].id, color, function() {
 					callback();
