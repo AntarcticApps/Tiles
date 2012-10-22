@@ -790,6 +790,32 @@ describe("Sites", function() {
 					});
 				});
 			});
+
+			it("abbreviation should be accessible by its URL", function() {
+				var abbreviation = null;
+
+				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
+
+				runs(function() {
+					createSite("/", "Te", [255, 255, 255, 255], function(created) {
+						addSites([created], function() {
+							getSiteAbbreviationForURL("/", function(abbrev) {
+								abbreviation = abbrev;
+							});
+						});
+					});
+
+					server.respond();
+				});
+				
+				waitsFor(function() {
+					return abbreviation != null;
+				}, "the abbreviation to be returned", 500);
+
+				runs(function() {
+					expect(abbreviation).toMatch("Te");
+				});
+			});
 		});
 	});
 });
