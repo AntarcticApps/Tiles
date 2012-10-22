@@ -152,6 +152,27 @@ function updateSiteColor(id, color, callback) {
 	});
 }
 
+function updateSiteCustomColor(id, color, callback) {
+	if (color instanceof Array) {
+		color = colorArrayToObject(color);
+	}
+
+	if (!isValidColor(color)) {
+		console.error("Invalid color in setSiteCustomColor", id, color);
+		return callback();
+	}
+
+	getSortedSiteIDs(function(ids) {
+		var i = ids.firstIndexOfElementEqualTo(id);
+		getSite(ids[i], function(site) {
+			site.customColor = color;
+			updateSite(id, site, function() {
+				return callback();
+			});
+		});
+	});
+}
+
 function getSiteForURL(url, callback) {
 	getAllSites(function(sites) {
 		if (!sites || sites.length == 0) {
