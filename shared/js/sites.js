@@ -1,3 +1,28 @@
+function getNextID(callback) {
+	storage.get('nextID', function(items) {
+		if (!items || !items.nextID) {
+			storage.set({ 'nextID': 1 }, function() {
+				return callback(0);
+			});
+		} else {
+			storage.set({ 'nextID': items.nextID + 1 }, function() {
+				return callback(items.nextID);
+			});
+		}
+	});
+}
+
+function storeNewSite(site, callback) {
+	getNextID(function(id) {
+		site.id = id;
+		var data = {};
+		data[id] = site;
+		storage.set(data, function() {
+			return callback(id);
+		});
+	});
+}
+
 // Array Remove - By John Resig (MIT Licensed)
 Array.prototype.remove = function(from, to) {
   var rest = this.slice((to || from) + 1 || this.length);
@@ -80,20 +105,6 @@ function saveSite(site, callback) {
 		}
 
 		saveSites(sites, callback);
-	});
-}
-
-function getNextID(callback) {
-	storage.get('nextID', function(items) {
-		if (!items || !items.nextID) {
-			storage.set({ 'nextID': 1 }, function() {
-				return callback(0);
-			});
-		} else {
-			storage.set({ 'nextID': items.nextID + 1 }, function() {
-				return callback(items.nextID);
-			});
-		}
 	});
 }
 
