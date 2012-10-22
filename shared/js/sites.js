@@ -119,7 +119,7 @@ function removeSites(sites, callback) {
 	});
 }
 
-function setSiteAbbreviation(id, abbreviation, callback) {
+function updateSiteAbbreviation(id, abbreviation, callback) {
 	getSortedSiteIDs(function(ids) {
 		var i = ids.firstIndexOfElementEqualTo(id);
 		getSite(ids[i], function(site) {

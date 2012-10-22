@@ -730,7 +730,7 @@ describe("Sites", function() {
 				runs(function() {
 					createSite("/", "Ab", [255, 255, 255, 255], function(created) {
 						addSites([created], function() {
-							setSiteAbbreviation(created.id, "Re", function() {
+							updateSiteAbbreviation(created.id, "Re", function() {
 								getSite(created.id, function(s) {
 									site = s;
 								});
