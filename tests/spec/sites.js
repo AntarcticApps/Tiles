@@ -466,5 +466,51 @@ describe("Sites", function() {
 				});
 			});
 		});
+
+		describe("the sorted site IDs", function() {
+			it("should default to a blank array", function() {
+				var ids = null;
+
+				runs(function() {
+					getSortedSiteIDs(function(i) {
+						ids = i;
+					});
+				})
+
+				waitsFor(function() {
+					return ids != null;
+				}, "The sorted site IDs should be set.", 500);
+
+				runs(function() {
+					expect(ids).toEqual([]);
+				});
+			});
+
+			it("should change when a site is added", function() {
+				var ids = null;
+
+				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
+
+				runs(function() {
+					createSite("/", "1", function(site) {
+						addSites([site], function() {
+							getSortedSiteIDs(function(i) {
+								ids = i;
+							});
+						});
+					});
+
+					server.respond();
+				})
+
+				waitsFor(function() {
+					return ids != null;
+				}, "the sorted site IDs to be set", 500);
+
+				runs(function() {
+					expect(ids).toEqual([0]);
+				});
+			});
+		});
 	});
 });
