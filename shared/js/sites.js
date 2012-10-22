@@ -62,6 +62,12 @@ function addSites(sites, callback) {
 	});
 }
 
+function getSitesCount(callback) {
+	getSortedSiteIDs(function(ids) {
+		return callback(ids.length);
+	});
+}
+
 function getSortedSiteIDs(callback) {
 	storage.get('ids', function(items) {
 		if (!items || !items.ids) {
