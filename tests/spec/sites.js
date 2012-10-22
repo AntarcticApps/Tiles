@@ -635,6 +635,84 @@ describe("Sites", function() {
 					});
 				});
 			});
+
+			it("should not contain a site after it has been removed", function() {
+				var sites = null;
+
+				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
+
+				runs(function() {
+					loop(0, 2, function(iteration, callback) {
+						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
+							addSites([site], function() {
+								callback();
+							});
+						});
+
+						server.respond();
+					}, function() {
+						removeSites([1], function() {
+							getAllSites(function(s) {
+								sites = s;
+							});
+						});
+					});
+				});
+				
+				waitsFor(function() {
+					return sites != null;
+				}, "the sites to be returned", 500);
+
+				runs(function() {
+					expect(sites.length).toBe(1);
+					expect(sites[0]).toEqual({
+						url: "/",
+						abbreviation: "" + 0,
+						color: {
+							red: 255,
+							green: 255,
+							blue: 255,
+							alpha: 255
+						},
+						id: 0
+					});
+					expect(sites[1]).toBeUndefined();
+				});
+			});
+
+			it("should not contain any site after all sites have been removed", function() {
+				var sites = null;
+
+				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
+
+				runs(function() {
+					loop(0, 2, function(iteration, callback) {
+						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
+							addSites([site], function() {
+								callback();
+							});
+						});
+
+						server.respond();
+					}, function() {
+						removeSites([0,1], function() {
+							getAllSites(function(s) {
+								sites = s;
+							});
+						});
+					});
+				});
+				
+				waitsFor(function() {
+					return sites != null;
+				}, "the sites to be returned", 500);
+
+				runs(function() {
+					expect(sites.length).toBe(0);
+					expect(sites[0]).toBeUndefined();
+					expect(sites[1]).toBeUndefined();
+				});
+			});
 		});
 	});
 });
