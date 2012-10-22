@@ -187,7 +187,7 @@ $(document).ready(function() {
 							newControlGroup.find('input.color').val(rgbToHex(site.color["red"], site.color["green"], site.color["blue"]));
 
 							updateSiteCustomColor(site.id, null, function() {
-								sendMessageToExtensionTabs("refresh");
+								sendMessageToExtensionTabs("refresh", false);
 							});
 						});
 
