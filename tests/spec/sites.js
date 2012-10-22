@@ -9,33 +9,97 @@ describe("Sites", function() {
 		server.restore();
 	});
 
-	it("can be created given a color", function() {
-		var site = null;
-		var url = "http://www.antarcticapps.com/";
-		var abbreviation = "Aa";
+	describe("can be created", function() {
+		it("given a color", function() {
+			var site = null;
+			var url = "http://www.antarcticapps.com/";
+			var abbreviation = "Aa";
 
-		runs(function() {
-			createSite(url, abbreviation, [1, 4, 9, 255], function(s) {
-				site = s;
+			runs(function() {
+				createSite(url, abbreviation, [1, 4, 9, 255], function(s) {
+					site = s;
+				});
+			});
+
+			waitsFor(function() {
+				return site != null;
+			}, "the site to be created.", 500);
+
+			runs(function() {
+				expect(site).toEqual({
+					url: url,
+					abbreviation: abbreviation,
+					color: {
+						red: 1,
+						green: 4,
+						blue: 9,
+						alpha: 255
+					}
+				})
 			});
 		});
 
-		waitsFor(function() {
-			return site != null;
-		}, "The site should be created.", 500);
+		it("with a bad URL", function() {
+			server.restore();
 
-		runs(function() {
-			expect(site).toEqual({
-				url: url,
-				abbreviation: abbreviation,
-				color: {
-					red: 1,
-					green: 4,
-					blue: 9,
-					alpha: 255
-				}
-			})
+			var site = null;
+			var url = "http://www.oogle.com/";
+			var abbreviation = "Aa";
+
+			runs(function() {
+				createSite(url, abbreviation, null, function(s) {
+					site = s;
+				});
+			});
+
+			waitsFor(function() {
+				return site != null;
+			}, "the site to be created.", 5000);
+
+			runs(function() {
+				expect(site).toEqual({
+					url: url,
+					abbreviation: abbreviation,
+					color: {
+						red: 0,
+						green: 0,
+						blue: 0,
+						alpha: 255
+					}
+				})
+			});
 		});
+
+		it("with a good URL", function() {
+			server.restore();
+
+			var site = null;
+			var url = "http://www.antarcticapps.com/";
+			var abbreviation = "Aa";
+
+			runs(function() {
+				createSite(url, abbreviation, null, function(s) {
+					site = s;
+				});
+			});
+
+			waitsFor(function() {
+				return site != null;
+			}, "the site to be created.", 5000);
+
+			runs(function() {
+				expect(site).toEqual({
+					url: url,
+					abbreviation: abbreviation,
+					color: {
+						red: 181,
+						green: 209,
+						blue: 226,
+						alpha: 255
+					}
+				})
+			});
+		})
 	});
 
 	describe("should find the favicon in the", function() {
