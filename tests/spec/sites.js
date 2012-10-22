@@ -545,5 +545,45 @@ describe("Sites", function() {
 				});
 			});
 		});
+
+		describe("sites", function() {
+			it("should contain added sites", function() {
+				var id = null;
+				var sites = null;
+
+				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
+
+				runs(function() {
+					createSite("/", "Ab", [255, 255, 255, 255], function(site) {
+						addSites([site], function() {
+							getAllSites(function(s) {
+								sites = s;
+							});
+						});
+					});
+
+					server.respond();
+				});
+				
+				waitsFor(function() {
+					return sites != null;
+				}, "the sites to be returned", 500);
+
+				runs(function() {
+					expect(sites.length).toBe(1);
+					expect(sites[0]).toEqual({
+						url: "/",
+						abbreviation: "Ab",
+						color: {
+							red: 255,
+							green: 255,
+							blue: 255,
+							alpha: 255
+						},
+						id: 0
+					});
+				});
+			});
+		});
 	});
 });
