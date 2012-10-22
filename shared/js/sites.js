@@ -23,6 +23,22 @@ function storeNewSite(site, callback) {
 	});
 }
 
+function getSortedSiteIDs(callback) {
+	storage.get('ids', function(items) {
+		if (!items || !items.ids) {
+			storage.set({ 'ids': [] }, function() {
+				return callback([]);
+			});
+		} else {
+			return callback(items.ids);
+		}
+	});
+}
+
+function setSortedSiteIDs(ids, callback) {
+	storage.set({ 'ids': ids }, callback);
+}
+
 // Array Remove - By John Resig (MIT Licensed)
 Array.prototype.remove = function(from, to) {
   var rest = this.slice((to || from) + 1 || this.length);
