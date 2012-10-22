@@ -55,8 +55,10 @@ function migrate_1_to_2(callback) {
 	getSites(function(sites) {
 		console.log(sites);
 
-		clearStorage(function() {
-
+		storage.clear(function() {
+			setStorageVersion(2, function() {
+				addSites(sites, callback);
+			});
 		});
 	});
 }
