@@ -74,7 +74,7 @@ describe("A migration", function() {
 				}, "the migration to complete", 500);
 			});
 
-			it("should have a database version of 2", function() {
+			it("should have the correct database version", function() {
 				getStorageVersion(function(version) {
 					expect(version).toBe(2);
 				});
@@ -139,7 +139,7 @@ describe("A migration", function() {
 				}, "the migration to complete", 500);
 			});
 
-			it("should have a database version of 2", function() {
+			it("should have the correct database version", function() {
 				getStorageVersion(function(version) {
 					expect(version).toBe(2);
 				});
@@ -161,13 +161,13 @@ describe("A migration", function() {
 				});
 			});
 
-			it("should have the next ID be 1", function() {
+			it("should have the correct next ID", function() {
 				getNextID(function(id) {
 					expect(id).toBe(1);
 				});
 			});
 
-			it("should have the sorted site ids contain 0", function() {
+			it("should have the sorted site ids contain the only site", function() {
 				getSortedSiteIDs(function(ids) {
 					expect(ids.length).toBe(1);
 					expect(ids[0]).toBe(0);
