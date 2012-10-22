@@ -754,6 +754,42 @@ describe("Sites", function() {
 					});
 				});
 			});
+
+			it("should be accessible by its URL", function() {
+				var site = null;
+
+				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
+
+				runs(function() {
+					createSite("/", "Ab", [255, 255, 255, 255], function(created) {
+						addSites([created], function() {
+							getSiteForURL("/", function(s) {
+								site = s;
+							});
+						});
+					});
+
+					server.respond();
+				});
+				
+				waitsFor(function() {
+					return site != null;
+				}, "the site to be returned", 500);
+
+				runs(function() {
+					expect(site).toEqual({
+						url: "/",
+						abbreviation: "Ab",
+						color: {
+							red: 255,
+							green: 255,
+							blue: 255,
+							alpha: 255
+						},
+						id: 0
+					});
+				});
+			});
 		});
 	});
 });
