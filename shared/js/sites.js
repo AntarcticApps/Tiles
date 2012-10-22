@@ -131,6 +131,19 @@ function setSiteAbbreviation(id, abbreviation, callback) {
 	});
 }
 
+function getSiteForURL(url, callback) {
+	getAllSites(function(sites) {
+		if (!sites || sites.length == 0) {
+			return callback(null);
+		}
+
+		for (var i = 0; i < sites.length; i++) {
+			if (sites[i].url == url) {
+				return callback(sites[i]);
+			}
+		}
+	});
+}
 Array.prototype.firstIndexOfElementEqualTo = function(element) {
 	for (var i = 0; i < this.length; i++) {
 		if (this[i] == element) {
