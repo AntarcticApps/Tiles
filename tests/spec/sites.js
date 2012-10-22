@@ -509,16 +509,12 @@ describe("Sites", function() {
 			it("should return an ID on save", function() {
 				var id = null;
 
-				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
-
 				runs(function() {
-					createSite("/", "Ab", null, function(site) {
+					createSite("/", "Ab", [255, 255, 255, 255], function(site) {
 						storeNewSite(site, function(i) {
 							id = i;
 						});
 					});
-
-					server.respond();
 				});
 				
 				waitsFor(function() {
@@ -553,18 +549,14 @@ describe("Sites", function() {
 			it("should change when a site is added", function() {
 				var ids = null;
 
-				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
-
 				runs(function() {
-					createSite("/", "1", null, function(site) {
+					createSite("/", "1", [255, 255, 255, 255], function(site) {
 						addSites([site], function() {
 							getSortedSiteIDs(function(i) {
 								ids = i;
 							});
 						});
 					});
-
-					server.respond();
 				})
 
 				waitsFor(function() {
@@ -579,18 +571,14 @@ describe("Sites", function() {
 			it("should change when two sites are added", function() {
 				var ids = null;
 
-				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
-
 				runs(function() {
 					var sites = [];
 
 					loop(0, 2, function(iteration, callback) {
-						createSite("/", "" + iteration, null, function(site) {
+						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
 							sites.push(site);
 							callback();
 						});
-
-						server.respond();
 					}, function() {
 						addSites(sites, function() {
 							getSortedSiteIDs(function(i) {
