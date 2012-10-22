@@ -134,6 +134,16 @@ function setSortedSiteIDs(ids, callback) {
 	storage.set({ 'ids': ids }, callback);
 }
 
+function reorderSite(oldIndex, newIndex, callback) {
+	getSortedSiteIDs(function(ids) {
+		var removed = ids.remove(oldIndex);
+		ids.insertAtIndex(removed, newIndex);
+		setSortedSiteIDs(ids, function() {
+			return callback();
+		});
+	});
+}
+
 function getSite(id, callback) {
 	storage.get(storageKeyForID(id), function(items) {
 		if (!items || !items[storageKeyForID(id)]) {
