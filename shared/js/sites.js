@@ -144,6 +144,13 @@ function getSiteForURL(url, callback) {
 		}
 	});
 }
+
+function getSiteAbbreviationForURL(url, callback) {
+	var site = getSiteForURL(url, function(site) {
+		return callback(site.abbreviation);
+	});
+}
+
 Array.prototype.firstIndexOfElementEqualTo = function(element) {
 	for (var i = 0; i < this.length; i++) {
 		if (this[i] == element) {
@@ -260,8 +267,6 @@ function saveSites(sites, callback) {
 			sites.remove(i);
 		}
 	}
-
-
 	
 	// Update the sites size entry
 	storage.set({'sitesSize': sites.length}, function() {
