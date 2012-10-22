@@ -90,6 +90,26 @@ function getAllSites(callback) {
 	});
 }
 
+function removeSite(id, callback) {
+	storage.remove(storageKeyForID(id), callback);
+}
+
+function removeSites(sites, callback) {
+	getSortedSiteIDs(function(ids) {
+		var newIDs = ids;
+		loop(0, ids.length, function(iteration, callback) {
+			removeSite(sites[iteration], function(id) {
+				newIDs.removeElementEqualTo(sites[iteration]);
+				callback();
+			});
+		}, function() {
+			setSortedSiteIDs(newIDs, function() {
+				return callback();
+			});
+		});
+	});
+}
+
 Array.prototype.removeElementEqualTo = function(element) {
 	for (var i = 0; i < this.length; i++) {
 		if (this[i] == element) {
