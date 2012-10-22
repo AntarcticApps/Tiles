@@ -647,28 +647,6 @@ function faviconSearchForDeclared(url, success, error) {
 	});
 }
 
-function makeHTTPRequest(url, successCallback, errorCallback) {
-	var http = new XMLHttpRequest();
-
-	http.ontimeout = function() {
-		return errorCallback(null);
-	}
-
-	http.onreadystatechange = function() {
-		if (http.readyState == 4) {
-			if (http.status == 200) {
-				return successCallback(http.responseText, http.getResponseHeader('content-type'));
-			} else {
-				return errorCallback(http.status);
-			}
-		}
-	}
-
-	http.open('GET', url, true);
-	http.timeout = 500;
-	http.send(null);
-}
-
 function isContentImage(contentType) {
 	if (!contentType) {
 		return true;

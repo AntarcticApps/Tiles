@@ -41,6 +41,28 @@ function async_loop(start, end, operation, finishCallback) {
 	}
 }
 
+function makeHTTPRequest(url, successCallback, errorCallback) {
+	var http = new XMLHttpRequest();
+
+	http.ontimeout = function() {
+		return errorCallback(null);
+	}
+
+	http.onreadystatechange = function() {
+		if (http.readyState == 4) {
+			if (http.status == 200) {
+				return successCallback(http.responseText, http.getResponseHeader('content-type'));
+			} else {
+				return errorCallback(http.status);
+			}
+		}
+	}
+
+	http.open('GET', url, true);
+	http.timeout = 500;
+	http.send(null);
+}
+
 /**
  * Returns {true} if the URL is a Chrome URL.
  * @param  {[type]}  url The URL to check it it's a Chrome URL.
