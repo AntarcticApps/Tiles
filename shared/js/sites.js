@@ -291,6 +291,25 @@ function getSiteAbbreviationForURL(url, callback) {
 	});
 }
 
+/**
+ * Returns {true} if a tile exists with the URL.
+ * @param  {String}   url      The URL to check if it exists.
+ * @param  {Function} callback The callback to call with result.
+ */
+function siteExistsWithURL(url, callback) {
+	getAllSites(function(sites) {
+		if (sites) {
+			for (var i = 0; i < sites.length; i++) {
+				if (sites[i].url == url) {
+					return callback(true);
+				}
+			}
+		}
+
+		return callback(false);
+	});
+}
+
 // Ensure a site contains a url, abbreviation, and color and that the color is valid.
 function isValidSite(site) {
 	if (!site.url || !site.abbreviation || !site.color) {

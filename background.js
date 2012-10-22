@@ -229,31 +229,12 @@ function updateTab(tab) {
 
 		changeIcon(false, null, tab.id);
 	} else {
-		siteExists(tab.url, function(exists) {
+		siteExistsWithURL(tab.url, function(exists) {
 			setPopup(!exists, false, tab.id);
 
 			changeIcon(exists, null, tab.id);
 		});
 	}
-}
-
-/**
- * Returns {true} if a tile exists with the URL.
- * @param  {String}   url      The URL to check if it exists.
- * @param  {Function} callback The callback to call with result.
- */
-function siteExists(url, callback) {
-	getAllSites(function(sites) {
-		if (sites) {
-			for (var i = 0; i < sites.length; i++) {
-				if (sites[i].url == url) {
-					return callback(true);
-				}
-			}
-		}
-
-		return callback(false);
-	});
 }
 
 /**
