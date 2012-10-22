@@ -302,6 +302,10 @@ function isValidSite(site) {
 
 // Ensures the color does not have undefined or null properties.
 function isValidColor(color) {
+	if (!color) {
+		return false;
+	}
+
 	if (color.red == undefined
 		|| color.green == undefined
 		|| color.blue == undefined
