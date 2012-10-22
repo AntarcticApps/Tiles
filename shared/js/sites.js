@@ -205,7 +205,7 @@ function updateSiteColor(id, color, callback) {
 	}
 
 	if (!isValidColor(color)) {
-		console.error("Invalid color in setSiteColor", id, color);
+		console.error("Invalid color in updateSiteColor", id, color);
 		return callback();
 	}
 
@@ -226,7 +226,7 @@ function updateSiteCustomColor(id, color, callback) {
 	}
 	
 	if (color && !isValidColor(color)) {
-		console.error("Invalid color in setSiteCustomColor", id, color);
+		console.error("Invalid color in updateSiteCustomColor", id, color);
 		return callback();
 	}
 
