@@ -57,7 +57,11 @@ function migrate_1_to_2(callback) {
 	getSites(function(sites) {
 		storage.clear(function() {
 			setStorageVersion(2, function() {
-				addSites(sites, callback);
+				if (sites != null) {
+					addSites(sites, callback);
+				} else {
+					callback();
+				}
 			});
 		});
 	});
