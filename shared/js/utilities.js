@@ -111,16 +111,6 @@ function isExtensionURL(url) {
 	return url.substring(0, baseURL.length) == baseURL;
 }
 
-Array.prototype.firstIndexOfElementEqualTo = function(element) {
-	for (var i = 0; i < this.length; i++) {
-		if (this[i] == element) {
-			return i;
-		}
-	}
-	
-	return -1;
-}
-
 Array.prototype.removeElementEqualTo = function(element) {
 	for (var i = 0; i < this.length; i++) {
 		if (this[i] == element) {
