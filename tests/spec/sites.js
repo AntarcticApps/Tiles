@@ -584,6 +584,49 @@ describe("Site storage", function() {
 		});
 		});
 	});
+
+	describe("when updating the favicon colors", function() {
+		it("should update all the sites colors", function() {
+			var success = null;
+			var sites = null;
+
+			server.restore();
+
+			runs(function() {
+				createSite("http://antarcticapps.com/", "Aa", [255, 255, 255, 255], function(site) {
+					addSites([site], function() {
+						updateFaviconColorForAllSites(function(s) {
+							success = s;
+						});
+					});
+				});
+			});
+			
+			waitsFor(function() {
+				return success != null;
+			}, "the update favicon color operation to complete", 2000);
+
+			runs(function() {
+				getAllSites(function(s) {
+					sites = s;
+				});
+			});
+
+			waitsFor(function() {
+				return sites != null;
+			}, "the sites to be gotten", 500);
+
+			runs(function() {
+				expect(success).toBe(true);
+				expect(sites[0].color).toNotEqual({
+					red: 255,
+					green: 255,
+					blue: 255,
+					alpha: 255
+				});	
+			});
+		});
+	});
 });
 
 describe("Sites", function() {
@@ -638,36 +681,6 @@ describe("Sites", function() {
 			}, "the storage to be ready", 500);
 
 			ready = false;
-		});
-
-		describe("stored sites", function() {
-			it("should update all colors", function() {
-				var success = null;
-
-				server.restore();
-
-				runs(function() {
-					loop(0, 2, function(iteration, callback) {
-						createSite("http://antarcticapps.com/", "" + iteration, [255, 255, 255, 255], function(site) {
-							addSites([site], function() {
-								callback();
-							});
-						});
-					}, function() {
-						updateFaviconColorForAllSites(function(s) {
-							success = s;
-						});
-					});
-				});
-				
-				waitsFor(function() {
-					return success != null;
-				}, "the update operation to complete", 2000);
-
-				runs(function() {
-					expect(success).toBe(true);
-				});
-			});
 		});
 
 		describe("a site", function() {
