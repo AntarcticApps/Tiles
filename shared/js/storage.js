@@ -6,7 +6,7 @@ chrome.storage.onChanged.addListener(function(changes, areaName) {
 	if (changes.version) {
 		if (changes.version.newValue == undefined
 			|| changes.version.newValue == null) {
-			setStorageVersion(getExtensionVersion());
+			setStorageVersion(getExtensionVersion().major);
 		}
 	}
 });
