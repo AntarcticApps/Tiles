@@ -139,6 +139,80 @@ describe("A site", function() {
 	});
 });
 
+describe("Site storage", function() {
+	var oldStorage = null;
+	var oldStorageItems = null;
+	var ready = false;
+	var server = null;
+
+	beforeEach(function() {
+		oldStorage = storage;
+		storage = TEST_STORAGE;
+
+		server = sinon.fakeServer.create();
+
+		storage.get(null, function(items) {
+			oldStorageItems = items;
+
+			storage.clear(function() {
+				ready = true;
+			});
+		});
+
+		waitsFor(function() {
+			return ready;
+		}, "the storage to be ready", 500);
+
+		ready = false;
+	});
+
+	afterEach(function() {
+		server.restore();
+
+		writeUserStylesheet();
+	});
+
+	describe("next ID", function() {
+		it("should default to 0", function() {
+			var id = null;
+
+			runs(function() {
+				getNextID(function(i) {
+					id = i;
+				});
+			});
+			
+			waitsFor(function() {
+				return id != null;
+			}, "the ID to be set", 500);
+
+			runs(function() {
+				expect(id).toBe(0);
+			});
+		});
+
+		it("should increment after multiple calls", function() {
+			var id = null;
+
+			runs(function() {
+				getNextID(function(i) {
+					getNextID(function(j) {
+						id = j;
+					});
+				});
+			});
+			
+			waitsFor(function() {
+				return id != null;
+			}, "the ID to be set", 500);
+
+			runs(function() {
+				expect(id).toBe(1);
+			});
+		});
+	});
+});
+
 describe("Sites", function() {
 	var server;
 
@@ -193,46 +267,6 @@ describe("Sites", function() {
 			}, "the storage to be ready", 500);
 
 			ready = false;
-		});
-
-		describe("the next ID", function() {
-			it("should default to 0", function() {
-				var id = null;
-
-				runs(function() {
-					getNextID(function(i) {
-						id = i;
-					});
-				});
-				
-				waitsFor(function() {
-					return id != null;
-				}, "the ID to be set", 500);
-
-				runs(function() {
-					expect(id).toBe(0);
-				});
-			});
-
-			it("should increment after multiple calls", function() {
-				var id = null;
-
-				runs(function() {
-					getNextID(function(i) {
-						getNextID(function(j) {
-							id = j;
-						});
-					});
-				});
-				
-				waitsFor(function() {
-					return id != null;
-				}, "the ID to be set", 500);
-
-				runs(function() {
-					expect(id).toBe(1);
-				});
-			});
 		});
 
 		describe("a new site", function() {
