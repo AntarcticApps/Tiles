@@ -25,6 +25,35 @@ describe("A URL", function() {
 			expect(getDomain('https://www.google.com/kitty')).toMatch('google.com');
 		});
 	});
+
+	describe("that is a chrome URL", function() {
+		it("should be detected with no subdirectories", function() {
+			expect(isChromeURL("chrome://newtabpage"));
+		});
+
+		it("should be detected with subdirectories", function() {
+			expect(isChromeURL("chrome://newtabpage/kitty/meow"));
+			expect(isChromeURL("chrome://newtabpage/kitty/meow/"));
+		});
+	});
+
+	describe("that is an extension URL", function() {
+		var url = chrome.extension.getURL("/");
+
+		it("should be detected with no subdirectories", function() {
+			expect(isExtensionURL(url));
+		});
+
+		it("should be detected with subdirectories", function() {
+			expect(isExtensionURL(url + "test"));
+			expect(isExtensionURL(url + "test/"));
+		});
+
+		it("should be detected if it is the new tab page", function() {
+			expect(isExtensionURL("chrome://newtab"));
+			expect(isExtensionURL("chrome://newtab/"));
+		})
+	});
 });
 
 describe("A loop", function() {
