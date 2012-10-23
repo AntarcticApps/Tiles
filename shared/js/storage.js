@@ -16,9 +16,7 @@ function resetStorageToDefault() {
 function getStorageVersion(callback) {
 	storage.get('version', function(items) {
 		if (!items || !items.version) {
-			setStorageVersion(1, function() {
-				return callback(1);
-			});
+			return callback(1);
 		} else {
 			return callback(items.version);
 		}
