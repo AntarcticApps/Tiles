@@ -1,4 +1,4 @@
-describe("Sites", function() {
+describe("A site", function() {
 	var server;
 
 	beforeEach(function() {
@@ -9,97 +9,117 @@ describe("Sites", function() {
 		server.restore();
 	});
 
-	describe("can be created", function() {
-		it("given a color", function() {
-			var site = null;
-			var url = "http://www.antarcticapps.com/";
-			var abbreviation = "Aa";
+	describe("object", function() {
+		describe("should be created", function() {
+			it("given a color", function() {
+				var site = null;
+				var url = "http://www.antarcticapps.com/";
+				var abbreviation = "Aa";
 
-			runs(function() {
-				createSite(url, abbreviation, [1, 4, 9, 255], function(s) {
-					site = s;
+				runs(function() {
+					createSite(url, abbreviation, [1, 4, 9, 255], function(s) {
+						site = s;
+					});
+				});
+
+				waitsFor(function() {
+					return site != null;
+				}, "the site to be created", 500);
+
+				runs(function() {
+					expect(site).toEqual({
+						url: url,
+						abbreviation: abbreviation,
+						color: {
+							red: 1,
+							green: 4,
+							blue: 9,
+							alpha: 255
+						}
+					});
 				});
 			});
 
-			waitsFor(function() {
-				return site != null;
-			}, "the site to be created", 500);
+			it("with a bad URL", function() {
+				var site = null;
+				var url = "/";
+				var abbreviation = "Aa";
 
-			runs(function() {
-				expect(site).toEqual({
-					url: url,
-					abbreviation: abbreviation,
-					color: {
-						red: 1,
-						green: 4,
-						blue: 9,
-						alpha: 255
-					}
-				})
+				runs(function() {
+					createSite(url, abbreviation, null, function(s) {
+						site = s;
+					});
+
+					server.respond();
+				});
+
+				waitsFor(function() {
+					return site != null;
+				}, "the site to be created", 5000);
+
+				runs(function() {
+					expect(site).toEqual({
+						url: url,
+						abbreviation: abbreviation,
+						color: {
+							red: 0,
+							green: 0,
+							blue: 0,
+							alpha: 255
+						}
+					});
+				});
+			});
+
+			it("with a good URL", function() {
+				server.restore();
+
+				var site = null;
+				var url = "http://www.antarcticapps.com/";
+				var abbreviation = "Aa";
+
+				runs(function() {
+					createSite(url, abbreviation, null, function(s) {
+						site = s;
+					});
+				});
+
+				waitsFor(function() {
+					return site != null;
+				}, "the site to be created", 5000);
+
+				runs(function() {
+					expect(site).toEqual({
+						url: url,
+						abbreviation: abbreviation,
+						color: {
+							red: 181,
+							green: 209,
+							blue: 226,
+							alpha: 255
+						}
+					});
+				});
 			});
 		});
+	});
 
-		it("with a bad URL", function() {
-			server.restore();
+	describe("in storage", function() {
 
-			var site = null;
-			var url = "http://www.oogle.com/";
-			var abbreviation = "Aa";
+	});
+});
 
-			runs(function() {
-				createSite(url, abbreviation, null, function(s) {
-					site = s;
-				});
-			});
+describe("Sites", function() {
+	var server;
 
-			waitsFor(function() {
-				return site != null;
-			}, "the site to be created", 5000);
+	beforeEach(function() {
+		server = sinon.fakeServer.create();
+	});
 
-			runs(function() {
-				expect(site).toEqual({
-					url: url,
-					abbreviation: abbreviation,
-					color: {
-						red: 0,
-						green: 0,
-						blue: 0,
-						alpha: 255
-					}
-				})
-			});
-		});
+	afterEach(function() {
+		server.restore();
 
-		it("with a good URL", function() {
-			server.restore();
-
-			var site = null;
-			var url = "http://www.antarcticapps.com/";
-			var abbreviation = "Aa";
-
-			runs(function() {
-				createSite(url, abbreviation, null, function(s) {
-					site = s;
-				});
-			});
-
-			waitsFor(function() {
-				return site != null;
-			}, "the site to be created", 5000);
-
-			runs(function() {
-				expect(site).toEqual({
-					url: url,
-					abbreviation: abbreviation,
-					color: {
-						red: 181,
-						green: 209,
-						blue: 226,
-						alpha: 255
-					}
-				})
-			});
-		})
+		writeUserStylesheet();
 	});
 
 	describe("should find the favicon in the", function() {
