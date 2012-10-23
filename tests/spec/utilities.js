@@ -193,12 +193,12 @@ describe("An asynchronous loop", function() {
 		runs(function() {
 			answer = [];
 
-			loop(0, 5, function(iteration, callback) {
+			async_loop(0, 5, function(iteration, callback) {
 				setTimeout(function() {
 					answer.push(iteration);
-				}, 500 - iteration * 100);
 
-				callback();
+					callback();
+				}, 500 - iteration * 100);
 			}, function() {
 				done = true;
 			});
