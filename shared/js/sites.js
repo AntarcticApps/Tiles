@@ -1,5 +1,7 @@
 const SITES_ADDED_MESSAGE = "sites_added";
 const SITES_REMOVED_MESSAGE = "sites_removed";
+const SITE_UPDATED_MESSAGE = "sites_updated";
+const BACKGROUND_COLOR_UPDATED_MESSAGE = "background_color_updated";
 
 // Create a site given the url, abbreviation, color, and a callback.
 //
@@ -87,6 +89,7 @@ function updateSite(id, site, callback) {
 	var data = {};
 	data[key] = site;
 	storage.set(data, function() {
+		emitMessage(SITE_UPDATED_MESSAGE, id);
 		callback();
 	});
 }
@@ -346,22 +349,18 @@ function isValidColor(color) {
 
 function setBackgroundColor(color, callback) {
 	if (!color) {
-		getFileSystem(function(fs) {
-			writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0); }");
-		});
-
 		storage.remove('backgroundColor', function() {
-			callback(null);
+			emitMessage(BACKGROUND_COLOR_UPDATED_MESSAGE);
+
+			return callback(null);
 		});
+	} else {	
+		storage.set({ 'backgroundColor': color }, function() {
+			emitMessage(BACKGROUND_COLOR_UPDATED_MESSAGE);
 
-		return;
-	}	
-
-	storage.set({ 'backgroundColor': color }, function() {
-		return callback(color);
-	});
-
-	writeUserStylesheet();
+			return callback(color);
+		});
+	}
 }
 
 function getBackgroundColor(callback) {
@@ -371,24 +370,6 @@ function getBackgroundColor(callback) {
 		}
 
 		return callback(backgroundColorItems.backgroundColor);
-	});
-}
-
-function writeUserStylesheet() {
-	getFileSystem(function(fs) {
-		getSitesCount(function(sitesCount) {
-			if (sitesCount > 0) {
-				getBackgroundColor(function(color) {
-					if (!color) {
-						writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0); }");
-					} else {
-						writeToFile(fs, "user.css", "body { background: rgb(" + color['red'] + ", " + color['green'] + ", " + color['blue'] + "); }");
-					}
-				});
-			} else {
-				writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0); }");
-			}
-		});
 	});
 }
 

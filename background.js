@@ -147,6 +147,12 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 				});
 			});
 		});
+	} else if (request.message == SITES_ADDED_MESSAGE
+		|| request.message == SITES_REMOVED_MESSAGE
+		|| request.message == SITE_UPDATED_MESSAGE
+		|| request.message == BACKGROUND_COLOR_UPDATED_MESSAGE) {
+		writeUserStylesheet();
+		sendMessageToExtensionTabs("refresh");
 	}
 
 	return true;
@@ -190,8 +196,6 @@ function setPopup(save, error, tabID) {
  * Updates all of the windows.
  */
 function updateAllWindows() {
-	sendMessageToExtensionTabs("refresh");
-
 	chrome.windows.getAll({ populate: true }, function(windows) {
 		console.log('Updating all windows...');
 
@@ -257,6 +261,25 @@ function changeIcon(color, callback, tabID) {
 	details.tabId = tabID;
 
 	chrome.browserAction.setIcon(details, callback);
+}
+
+
+function writeUserStylesheet() {
+	getFileSystem(function(fs) {
+		getSitesCount(function(sitesCount) {
+			if (sitesCount > 0) {
+				getBackgroundColor(function(color) {
+					if (!color) {
+						writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0); }");
+					} else {
+						writeToFile(fs, "user.css", "body { background: rgb(" + color['red'] + ", " + color['green'] + ", " + color['blue'] + "); }");
+					}
+				});
+			} else {
+				writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0); }");
+			}
+		});
+	});
 }
 
 init();
