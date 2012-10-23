@@ -3,10 +3,16 @@ describe("A site", function() {
 
 	beforeEach(function() {
 		server = sinon.fakeServer.create();
+
+		suppressMessages(SITES_ADDED_MESSAGE);
+		suppressMessages(SITES_REMOVED_MESSAGE);
 	});
 
 	afterEach(function() {
 		server.restore();
+
+		suppressMessages(SITES_ADDED_MESSAGE);
+		suppressMessages(SITES_REMOVED_MESSAGE);
 	});
 
 	describe("object", function() {
