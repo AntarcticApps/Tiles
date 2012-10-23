@@ -241,5 +241,99 @@ describe("A migration", function() {
 				});
 			});
 		});
+
+		describe("should migrate with multiple site", function() {
+			var testSites = [{
+				url: "http://www.google.com/",
+				abbreviation: "Go",
+				color: [0, 0, 0, 255]
+			}, {
+				url: "http://www.antarcticapps.com/",
+				abbreviation: "Aa",
+				color: [0, 0, 255, 255]
+			}];
+
+			beforeEach(function() {
+				// Write the v1.x.x database
+				runs(function() {
+					storage.set({
+						"sitesSize": 2,
+						"site-0": testSites[0],
+						"site-1": testSites[1]
+					}, function() {
+						ready = true;
+					});
+				});
+
+				waitsFor(function() {
+					return ready;
+				}, "the v1.x.x database to be set up", 500);
+
+				// Migrate!
+				runs(function() {
+					migrate_1_to_2(function() {
+						done = true;
+					});
+				});
+
+				waitsFor(function() {
+					return done;
+				}, "the migration to complete", 500);
+			});
+
+			it("should have the correct database version", function() {
+				getStorageVersion(function(version) {
+					expect(version).toBe(2);
+				});
+			});
+
+			it("should not contain any bits from the old database", function() {
+				storage.get("sitesSize", function(items) {
+					expect(items).toEqual({});
+				});
+
+				storage.get("site-0", function(items) {
+					expect(items).toEqual({});
+				});
+
+				storage.get("site-1", function(items) {
+					expect(items).toEqual({});
+				});
+			})
+
+			it("should have correct number of sites", function() {
+				getSitesCount(function(count) {
+					expect(count).toBe(2);
+				});
+			});
+
+			it("should have the correct next ID", function() {
+				getNextID(function(id) {
+					expect(id).toBe(2);
+				});
+			});
+
+			it("should have the sorted site ids contain the only site", function() {
+				getSortedSiteIDs(function(ids) {
+					expect(ids.length).toBe(2);
+					expect(ids[0]).toBe(0);
+					expect(ids[1]).toBe(1);
+				});
+			});
+
+			it("should retain the site information", function() {
+				getSite(0, function(site) {
+					expect(site.url).toEqual(testSites[0].url);
+					expect(site.abbreviation).toEqual(testSites[0].abbreviation);
+					expect(site.color).toEqual(testSites[0].color);
+				});
+
+				getSite(1, function(site) {
+					expect(site.url).toEqual(testSites[1].url);
+					expect(site.abbreviation).toEqual(testSites[1].abbreviation);
+					expect(site.color).toEqual(testSites[1].color);
+				});
+			});
+		});
 	});
 });
