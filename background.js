@@ -154,7 +154,6 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 		|| request.message == SITE_UPDATED_MESSAGE
 		|| request.message == BACKGROUND_COLOR_UPDATED_MESSAGE) {
 		writeUserStylesheet();
-		sendMessageToExtensionTabs("refresh");
 	}
 
 	return true;
@@ -198,6 +197,8 @@ function setPopup(save, error, tabID) {
  * Updates all of the windows.
  */
 function updateAllWindows() {
+	sendMessageToExtensionTabs("refresh");
+	
 	chrome.windows.getAll({ populate: true }, function(windows) {
 		console.log('Updating all windows...');
 
