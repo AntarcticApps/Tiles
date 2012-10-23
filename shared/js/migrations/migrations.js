@@ -10,7 +10,7 @@ function migrateStorage() {
 			setStorageVersion(extensionVersion);
 
 			if (storageVersion == 1) {
-				if (extensionVersion.major == 2) {
+				if (extensionVersion == 2) {
 					// Migrate from a database from 1.x.x to 2.x.x
 					migrate_1_to_2(function() {
 						console.log("Migration from 1.x.x to 2.x.x complete");
