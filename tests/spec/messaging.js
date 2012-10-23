@@ -54,4 +54,39 @@ describe("Messages", function() {
 			expect(result).toMatch("fighterfighterfighter");
 		});
 	});
+
+	it("can be suppressed", function() {
+		var calledBack = false;
+
+		runs(function() {
+			addMessageListener("test", function() {
+				calledBack = true;
+			});
+
+			suppressMessages("test");
+			emitMessage("test");
+		});
+
+		runs(function() {
+			expect(calledBack).toBe(false);
+		});
+	});
+
+	it("can be unsuppressed", function() {
+		var calledBack = false;
+
+		runs(function() {
+			addMessageListener("test", function() {
+				calledBack = true;
+			});
+
+			suppressMessages("test");
+			unsuppressMessages("test");
+			emitMessage("test");
+		});
+
+		runs(function() {
+			expect(calledBack).toBe(true);
+		});
+	});
 });
