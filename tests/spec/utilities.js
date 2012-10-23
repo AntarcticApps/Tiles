@@ -189,27 +189,53 @@ describe("An asynchronous loop", function() {
 		});
 	});
 
-	it("should run asynchronous operations in any order", function() {
-		runs(function() {
-			answer = [];
+	describe("when running asynchronous operations", function() {
+		it("should run them in any order", function() {
+			runs(function() {
+				answer = [];
 
-			async_loop(0, 5, function(iteration, callback) {
-				setTimeout(function() {
-					answer.push(iteration);
+				async_loop(0, 5, function(iteration, callback) {
+					setTimeout(function() {
+						answer.push(iteration);
 
-					callback();
-				}, 500 - iteration * 100);
-			}, function() {
-				done = true;
+						callback();
+					}, 500 - iteration * 100);
+				}, function() {
+					done = true;
+				});
+			});
+
+			waitsFor(function() {
+				return done;
+			}, "loop to finish", 5000);
+
+			runs(function() {
+				expect(answer).toEqual([4, 3, 2, 1, 0]);			
 			});
 		});
 
-		waitsFor(function() {
-			return done && answer.length == 5;
-		}, "loop to finish", 5000);
+		it("should wait for the asynchronous operations to finish", function() {
+			runs(function() {
+				answer = [];
 
-		runs(function() {
-			expect(answer).toEqual([4, 3, 2, 1, 0]);			
+				async_loop(0, 5, function(iteration, callback) {
+					setTimeout(function() {
+						answer.push(iteration);
+
+						callback();
+					}, 1000);
+				}, function() {
+					done = true;
+				});
+			});
+
+			waitsFor(function() {
+				return done;
+			}, "loop to finish", 5000);
+
+			runs(function() {
+				expect(answer).toEqual([0, 1, 2, 3, 4]);			
+			});
 		});
 	});
 });
