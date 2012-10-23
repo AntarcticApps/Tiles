@@ -15,22 +15,3 @@ function migrateDatabase() {
 		}
 	});
 }
-
-/**
- * Get the version of the extension.
- * @return {Object} Object with major, minor, and patch fields
- */
-function getExtensionVersion() {
-	var details = chrome.app.getDetails();
-	var versionString = details.version;
-
-	var array = versionString.split('.');
-
-	var version = {
-		major: array[0],
-		minor: array[1],
-		patch: array[2]
-	}
-
-	return version;
-}
