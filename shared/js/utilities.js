@@ -9,9 +9,9 @@ function getExtensionVersion() {
 	var array = versionString.split('.');
 
 	var version = {
-		major: array[0],
-		minor: array[1],
-		patch: array[2]
+		major: parseInt(array[0], 10),
+		minor: parseInt(array[1], 10),
+		patch: parseInt(array[2], 10)
 	}
 
 	return version;
