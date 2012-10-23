@@ -135,43 +135,10 @@ describe("A site", function() {
 	});
 
 	describe("in storage", function() {
-		var oldStorage = null;
-		var oldStorageItems = null;
-		var ready = false;
 		var site;
 
 		beforeEach(function() {
-			oldStorage = storage;
-			storage = TEST_STORAGE;
-
-			storage.get(null, function(items) {
-				oldStorageItems = items;
-
-				storage.clear(function() {
-					ready = true;
-				});
-			});
-
-			waitsFor(function() {
-				return ready;
-			}, "the storage to be ready", 500);
-
-			ready = false;
 			site = null;
-		});
-
-		afterEach(function() {
-			storage.set(oldStorageItems, function() {
-				storage = oldStorage;
-
-				ready = true;
-			});
-
-			waitsFor(function() {
-				return ready;
-			}, "the storage to be ready", 500);
-
-			ready = false;
 		});
 
 		describe("when removed", function() {
@@ -399,46 +366,14 @@ describe("A site", function() {
 });
 
 describe("Site storage", function() {
-	var oldStorage = null;
-	var oldStorageItems = null;
-	var ready = false;
 	var server = null;
 
 	beforeEach(function() {
-		oldStorage = storage;
-		storage = TEST_STORAGE;
-
 		server = sinon.fakeServer.create();
-
-		storage.get(null, function(items) {
-			oldStorageItems = items;
-
-			storage.clear(function() {
-				ready = true;
-			});
-		});
-
-		waitsFor(function() {
-			return ready;
-		}, "the storage to be ready for the test", 500);
-
-		ready = false;
 	});
 
 	afterEach(function() {
-		storage.set(oldStorageItems, function() {
-			storage = oldStorage;
-
-			server.restore();
-
-			ready = true;
-		});
-
-		waitsFor(function() {
-			return ready;
-		}, "the storage to be ready for the next test", 500);
-
-		ready = false;
+		server.restore();
 	});
 
 	describe("when requesting a next ID", function() {
