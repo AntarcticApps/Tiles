@@ -215,46 +215,97 @@ describe("Site storage", function() {
 	describe("when storing a new site", function() {
 		var id, site;
 
-		beforeEach(function() {
-			id = null;
-			site = null;
+		describe("using store new site", function() {
+			beforeEach(function() {
+				id = null;
+				site = null;
 
-			runs(function() {
-				createSite("/", "Ab", [255, 255, 255, 255], function(s) {
-					site = s;
+				runs(function() {
+					createSite("/", "Ab", [255, 255, 255, 255], function(s) {
+						site = s;
 
-					storeNewSite(site, function(i) {
-						id = i;
+						storeNewSite(site, function(i) {
+							id = i;
+						});
 					});
 				});
+				
+				waitsFor(function() {
+					return id != null;
+				}, "the ID to be set", 500);
 			});
-			
-			waitsFor(function() {
-				return id != null;
-			}, "the ID to be set", 500);
-		});
 
-		it("should return an ID on save", function() {
-			runs(function() {
-				expect(id).toBe(0);
-			});
-		});
-
-		it("should exist in storage", function() {
-			var savedSite = null;
-
-			runs(function() {
-				getSite(id, function(s) {
-					savedSite = s;
+			it("should return an ID on save", function() {
+				runs(function() {
+					expect(id).toBe(0);
 				});
 			});
 
-			waitsFor(function() {
-				return savedSite != null;
-			}, "the site to be gotten", 500);
+			it("should exist in storage", function() {
+				var savedSite = null;
 
-			runs(function() {
-				expect(savedSite).toEqual(site);
+				runs(function() {
+					getSite(id, function(s) {
+						savedSite = s;
+					});
+				});
+
+				waitsFor(function() {
+					return savedSite != null;
+				}, "the site to be gotten", 500);
+
+				runs(function() {
+					expect(savedSite).toEqual(site);
+				});
+			});
+		});
+
+		describe("using add sites", function() {
+			var done;
+
+			beforeEach(function() {
+				done = false;
+
+				runs(function() {
+					createSite("/", "Ab", [255, 255, 255, 255], function(site) {
+						addSites([site], function() {
+							done = true;
+						});
+					});
+				});
+
+				waitsFor(function() {
+					return done;
+				}, "the site to finish saving", 500);
+			});
+
+			it("should exist in storage", function() {
+				var sites = null;
+				
+				runs(function() {
+					getAllSites(function(s) {
+						sites = s;
+					});
+				});
+
+				waitsFor(function() {
+					return sites != null;
+				}, "the sites to be returned", 500);
+
+				runs(function() {
+					expect(sites.length).toBe(1);
+					expect(sites[0]).toEqual({
+						url: "/",
+						abbreviation: "Ab",
+						color: {
+							red: 255,
+							green: 255,
+							blue: 255,
+							alpha: 255
+						},
+						id: 0
+					});
+				});
 			});
 		});
 	});
@@ -436,39 +487,6 @@ describe("Sites", function() {
 		});
 
 		describe("stored sites", function() {
-			it("should contain a site after it has been added", function() {
-				var sites = null;
-
-				runs(function() {
-					createSite("/", "Ab", [255, 255, 255, 255], function(site) {
-						addSites([site], function() {
-							getAllSites(function(s) {
-								sites = s;
-							});
-						});
-					});
-				});
-				
-				waitsFor(function() {
-					return sites != null;
-				}, "the sites to be returned", 500);
-
-				runs(function() {
-					expect(sites.length).toBe(1);
-					expect(sites[0]).toEqual({
-						url: "/",
-						abbreviation: "Ab",
-						color: {
-							red: 255,
-							green: 255,
-							blue: 255,
-							alpha: 255
-						},
-						id: 0
-					});
-				});
-			});
-
 			it("should contain two sites after they have been added", function() {
 				var sites = null;
 
