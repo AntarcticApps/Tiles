@@ -258,6 +258,125 @@ describe("Site storage", function() {
 			});
 		});
 	});
+
+	describe("the sorted site IDs", function() {
+		it("should default to a blank array", function() {
+			var ids = null;
+
+			runs(function() {
+				getSortedSiteIDs(function(i) {
+					ids = i;
+				});
+			})
+
+			waitsFor(function() {
+				return ids != null;
+			}, "the sorted site IDs to be set", 500);
+
+			runs(function() {
+				expect(ids).toEqual([]);
+			});
+		});
+
+		describe("when a site is added", function() {
+			it("should not be empty", function() {
+				var ids = null;
+
+				runs(function() {
+					createSite("/", "1", [255, 255, 255, 255], function(site) {
+						addSites([site], function() {
+							getSortedSiteIDs(function(i) {
+								ids = i;
+							});
+						});
+					});
+				})
+
+				waitsFor(function() {
+					return ids != null;
+				}, "the sorted site IDs to be set", 500);
+
+				runs(function() {
+					expect(ids).toEqual([0]);
+				});
+			});
+		});
+
+		describe("when multiple sites are added", function() {
+			it("should not be empty", function() {
+				var ids = null;
+
+				runs(function() {
+					var sites = [];
+
+					loop(0, 2, function(iteration, callback) {
+						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
+							sites.push(site);
+							callback();
+						});
+					}, function() {
+						addSites(sites, function() {
+							getSortedSiteIDs(function(i) {
+								ids = i;
+							});
+						});
+					});
+				});
+
+				waitsFor(function() {
+					return ids != null;
+				}, "the sorted site IDs to be set", 500);
+
+				runs(function() {
+					expect(ids).toEqual([0,1]);
+				});
+			});
+		});
+
+		describe("when sites are reordered", function() {
+			var sites;
+			var ids;
+
+			beforeEach(function() {
+				sites = [];
+				ids = null;
+
+				runs(function() {
+					loop(0, 2, function(iteration, callback) {
+						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
+							sites.push(site);
+							callback();
+						});
+					}, function() {
+						addSites(sites, function() {
+							reorderSite(1, 0, function() {
+								getSortedSiteIDs(function(i) {
+									ids = i;
+								});
+							});
+						});
+					});
+				});
+
+				waitsFor(function() {
+					return ids != null;
+				}, "the sorted site IDs to be set", 500);
+			});
+
+			it("should not be empty", function() {
+				runs(function() {
+					expect(ids.length).toBe(2);
+				});
+			});
+
+			it("should have the sites in the right order", function() {
+				runs(function() {
+					expect(ids[0]).toBe(1);
+					expect(ids[1]).toBe(0);
+				});
+			});
+		});
+	});
 });
 
 describe("Sites", function() {
@@ -314,109 +433,6 @@ describe("Sites", function() {
 			}, "the storage to be ready", 500);
 
 			ready = false;
-		});
-
-		describe("the sorted site IDs", function() {
-			it("should default to a blank array", function() {
-				var ids = null;
-
-				runs(function() {
-					getSortedSiteIDs(function(i) {
-						ids = i;
-					});
-				})
-
-				waitsFor(function() {
-					return ids != null;
-				}, "the sorted site IDs to be set", 500);
-
-				runs(function() {
-					expect(ids).toEqual([]);
-				});
-			});
-
-			it("should change when a site is added", function() {
-				var ids = null;
-
-				runs(function() {
-					createSite("/", "1", [255, 255, 255, 255], function(site) {
-						addSites([site], function() {
-							getSortedSiteIDs(function(i) {
-								ids = i;
-							});
-						});
-					});
-				})
-
-				waitsFor(function() {
-					return ids != null;
-				}, "the sorted site IDs to be set", 500);
-
-				runs(function() {
-					expect(ids).toEqual([0]);
-				});
-			});
-
-			it("should change when two sites are added", function() {
-				var ids = null;
-
-				runs(function() {
-					var sites = [];
-
-					loop(0, 2, function(iteration, callback) {
-						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
-							sites.push(site);
-							callback();
-						});
-					}, function() {
-						addSites(sites, function() {
-							getSortedSiteIDs(function(i) {
-								ids = i;
-							});
-						});
-					});
-				});
-
-				waitsFor(function() {
-					return ids != null;
-				}, "the sorted site IDs to be set", 500);
-
-				runs(function() {
-					expect(ids).toEqual([0,1]);
-				});
-			});
-
-			it("should reorder", function() {
-				var sites = [];
-				var ids = null;
-
-				runs(function() {
-					loop(0, 2, function(iteration, callback) {
-						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
-							sites.push(site);
-							callback();
-						});
-					}, function() {
-						addSites(sites, function() {
-							reorderSite(1, 0, function() {
-								getSortedSiteIDs(function(i) {
-									ids = i;
-								});
-							});
-						});
-					});
-				});
-
-				waitsFor(function() {
-					return ids != null;
-				}, "the sorted site IDs to be set", 500);
-
-				runs(function() {
-					expect(ids.length).toBe(2);
-					expect(ids[0]).toBe(1);
-					expect(ids[1]).toBe(0);
-				});
-			});
 		});
 
 		describe("stored sites", function() {
