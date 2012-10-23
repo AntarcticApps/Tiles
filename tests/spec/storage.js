@@ -32,10 +32,8 @@ describe("Storage", function() {
 		var version = null;
 
 		runs(function() {
-			storage.clear(function() {
-				storage.get("version", function(v) {
-					version = v.version;
-				});
+			storage.get("version", function(v) {
+				version = v.version;
 			});
 		});
 
