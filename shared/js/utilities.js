@@ -44,7 +44,7 @@ function loop(iteration, end, operation, finishCallback) {
 			loop(iteration + 1, end, operation, finishCallback);
 		});
 	} else {
-		finishCallback();
+		return finishCallback();
 	}
 }
 
@@ -54,7 +54,7 @@ function async_loop(start, end, operation, finishCallback) {
 		operation(i, function() {
 			operationsToComplete--;
 			if (operationsToComplete == 0) {
-				finishCallback();
+				return finishCallback();
 			}
 		});
 	}
