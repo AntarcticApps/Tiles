@@ -64,4 +64,24 @@ describe("Storage", function() {
 			expect(version).toEqual(1261);
 		});
 	});
+
+	it("should always have the version", function() {
+		var version = null;
+
+		runs(function() {
+			storage.clear(function() {
+				storage.get("version", function(v) {
+					version = v.version;
+				});
+			});
+		});
+
+		waitsFor(function() {
+			return version != null;
+		}, "the storage version to be gotten", 500);
+
+		runs(function() {
+			expect(version).toMatch(setStorageVersion());
+		});
+	});
 });
