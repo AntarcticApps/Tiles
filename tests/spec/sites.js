@@ -135,7 +135,106 @@ describe("A site", function() {
 	});
 
 	describe("in storage", function() {
+		var oldStorage = null;
+		var oldStorageItems = null;
+		var ready = false;
 
+		beforeEach(function() {
+			oldStorage = storage;
+			storage = TEST_STORAGE;
+
+			storage.get(null, function(items) {
+				oldStorageItems = items;
+
+				storage.clear(function() {
+					ready = true;
+				});
+			});
+
+			waitsFor(function() {
+				return ready;
+			}, "the storage to be ready", 500);
+
+			ready = false;
+		});
+
+		afterEach(function() {
+			storage.set(oldStorageItems, function() {
+				storage = oldStorage;
+
+				ready = true;
+			});
+
+			waitsFor(function() {
+				return ready;
+			}, "the storage to be ready", 500);
+
+			ready = false;
+		});
+
+		describe("when removed", function() {
+			var sites;
+
+			beforeEach(function() {
+				site = null;
+
+				runs(function() {
+					loop(0, 2, function(iteration, callback) {
+						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
+							addSites([site], function() {
+								callback();
+							});
+						});
+					}, function() {
+						removeSites([1], function() {
+							getAllSites(function(s) {
+								sites = s;
+							});
+						});
+					});
+				});
+				
+				waitsFor(function() {
+					return sites != null;
+				}, "the sites to be returned", 1000);
+			});
+
+			it("should not exist in storage", function() {
+				runs(function() {
+					expect(sites.length).toBe(1);
+					expect(sites[0]).toEqual({
+						url: "/",
+						abbreviation: "" + 0,
+						color: {
+							red: 255,
+							green: 255,
+							blue: 255,
+							alpha: 255
+						},
+						id: 0
+					});
+					expect(sites[1]).toBeUndefined();
+				});
+			});
+
+			it("should not be in the ids list", function() {
+				var ids = null;
+
+				runs(function() {
+					getSortedSiteIDs(function(i) {
+						ids = i;
+					});
+				});
+
+				waitsFor(function() {
+					return ids != null;
+				}, "the ids to be gotten", 500);
+
+				runs(function() {
+					expect(ids).toEqual([]);
+				});
+			});
+		});
 	});
 });
 
@@ -542,76 +641,6 @@ describe("Sites", function() {
 		});
 
 		describe("stored sites", function() {
-			it("should not contain a site after it has been removed", function() {
-				var sites = null;
-
-				runs(function() {
-					loop(0, 2, function(iteration, callback) {
-						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
-							addSites([site], function() {
-								callback();
-							});
-						});
-					}, function() {
-						removeSites([1], function() {
-							getAllSites(function(s) {
-								sites = s;
-							});
-						});
-					});
-				});
-				
-				waitsFor(function() {
-					return sites != null;
-				}, "the sites to be returned", 1000);
-
-				runs(function() {
-					expect(sites.length).toBe(1);
-					expect(sites[0]).toEqual({
-						url: "/",
-						abbreviation: "" + 0,
-						color: {
-							red: 255,
-							green: 255,
-							blue: 255,
-							alpha: 255
-						},
-						id: 0
-					});
-					expect(sites[1]).toBeUndefined();
-				});
-			});
-
-			it("should not contain any site after all sites have been removed", function() {
-				var sites = null;
-
-				runs(function() {
-					loop(0, 2, function(iteration, callback) {
-						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
-							addSites([site], function() {
-								callback();
-							});
-						});
-					}, function() {
-						removeSites([0,1], function() {
-							getAllSites(function(s) {
-								sites = s;
-							});
-						});
-					});
-				});
-				
-				waitsFor(function() {
-					return sites != null;
-				}, "the sites to be returned", 500);
-
-				runs(function() {
-					expect(sites.length).toBe(0);
-					expect(sites[0]).toBeUndefined();
-					expect(sites[1]).toBeUndefined();
-				});
-			});
-
 			it("should update all colors", function() {
 				var success = null;
 
