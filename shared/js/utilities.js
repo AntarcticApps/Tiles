@@ -49,6 +49,10 @@ function loop(iteration, end, operation, finishCallback) {
 }
 
 function async_loop(start, end, operation, finishCallback) {
+	if (end < start) {
+		finishCallback();
+	}
+
 	var operationsToComplete = (end - start);
 	for (var i = start; i < end; i++) {
 		operation(i, function() {
@@ -58,8 +62,6 @@ function async_loop(start, end, operation, finishCallback) {
 			}
 		});
 	}
-
-	return finishCallback();
 }
 
 function makeHTTPRequest(url, successCallback, errorCallback) {
