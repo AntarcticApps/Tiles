@@ -28,10 +28,9 @@ function getStorageVersion(callback) {
 			setStorageVersion(1, function() {
 				return callback(1);
 			});
-			return;
+		} else {
+			return callback(items.version);
 		}
-
-		return callback(items.version);
 	});
 }
 
