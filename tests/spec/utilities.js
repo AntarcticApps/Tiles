@@ -117,47 +117,75 @@ describe("An asynchronous loop", function() {
 		done = false;
 	});
 
-	it("should repeat the right number of times", function() {
-		runs(function() {
-			answer = 0;
+	describe("when the end is greater than the start", function() {
+		it("should repeat the right number of times", function() {
+			runs(function() {
+				answer = 0;
 
-			async_loop(0, 5, function(iteration, callback) {
-				answer += iteration;
+				async_loop(0, 5, function(iteration, callback) {
+					answer += iteration;
 
-				callback();
-			}, function() {
-				done = true;
+					callback();
+				}, function() {
+					done = true;
+				});
 			});
-		});
 
-		waitsFor(function() {
-			return done;
-		}, "loop to finish", 500);
+			waitsFor(function() {
+				return done;
+			}, "loop to finish", 500);
 
-		runs(function() {
-			expect(answer).toBe(10);			
+			runs(function() {
+				expect(answer).toBe(10);
+			});
 		});
 	});
 
-	it("should not run when the end is less than the iteration", function() {
-		runs(function() {
-			answer = 0;
+	describe("when the end is one more than the start", function() {
+		it("should repeat the right number of times", function() {
+			runs(function() {
+				answer = 1;
 
-			async_loop(5, -1, function(iteration, callback) {
-				answer += iteration;
+				async_loop(0, 1, function(iteration, callback) {
+					answer += iteration;
 
-				callback();
-			}, function() {
-				done = true;
+					callback();
+				}, function() {
+					done = true;
+				});
+			});
+
+			waitsFor(function() {
+				return done;
+			}, "loop to finish", 500);
+
+			runs(function() {
+				expect(answer).toBe(1);
 			});
 		});
+	});
 
-		waitsFor(function() {
-			return done;
-		}, "loop to finish", 500);
+	describe("when the end is less than the start", function() {
+		it("should not run", function() {
+			runs(function() {
+				answer = 0;
 
-		runs(function() {
-			expect(answer).toBe(0);			
+				async_loop(5, -1, function(iteration, callback) {
+					answer += iteration;
+
+					callback();
+				}, function() {
+					done = true;
+				});
+			});
+
+			waitsFor(function() {
+				return done;
+			}, "loop to finish", 500);
+
+			runs(function() {
+				expect(answer).toBe(0);			
+			});
 		});
 	});
 
