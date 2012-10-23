@@ -74,7 +74,7 @@
 		"description": "No tiles added text for new tab page."
 	},
 	"tab_page_no_tiles_added_help": {
-		"message": "Add tiles to this page by clicking the $icon$ button in the Chrome toolbar when you are on a page you want to add.",
+		"message": "Add a tile to this page by clicking the $icon$ button in the Chrome toolbar when you are on a page you want to add.",
 		"description": "Help text for new tab page when no tiles added.",
 		"placeholders": {
 			"icon": {
