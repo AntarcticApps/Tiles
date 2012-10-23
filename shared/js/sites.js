@@ -1,3 +1,6 @@
+const SITES_ADDED_MESSAGE = "sites_added";
+const SITES_REMOVED_MESSAGE = "sites_removed";
+
 // Create a site given the url, abbreviation, color, and a callback.
 //
 // Callback is required due to getting the site color requiring an async HTTP request
@@ -103,8 +106,7 @@ function addSites(sites, callback) {
 			}
 
 			setSortedSiteIDs(ids, function() {
-				// background color in user CSS
-				writeUserStylesheet();
+				emitMessage(SITES_ADDED_MESSAGE);
 
 				return callback();
 			});
@@ -179,7 +181,7 @@ function removeSites(sites, callback) {
 			});
 		}, function() {
 			setSortedSiteIDs(newIDs, function() {
-				writeUserStylesheet();
+				emitMessage(SITES_REMOVED_MESSAGE);
 
 				return callback();
 			});
