@@ -25,7 +25,8 @@ function resetStorageToDefault() {
 function getStorageVersion(callback) {
 	storage.get('version', function(items) {
 		if (!items || !items.version) {
-			return callback(1);
+			setStorageVersion(1, callback);
+			return;
 		}
 
 		return callback(items.version);
@@ -39,4 +40,10 @@ function getStorageVersion(callback) {
  */
 function setStorageVersion(version, callback) {
 	storage.set({ 'version': version }, callback);
+}
+
+function versionsAreEqual(a, b) {
+	return a.major == b.major
+		&& a.minor == b.minor
+		&& a.patch == b.patch;
 }

@@ -11,6 +11,8 @@ function init() {
 		updateWindow(window);
 	});
 
+	migrateStorage();
+
 	writeUserStylesheet();
 }
 
