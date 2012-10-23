@@ -187,11 +187,11 @@ function onTileClick(e) {
 function showNoSitesMessage() {
 	var siteElement = document.getElementById('sites');
 
-	var tile = document.createElement('div');
-	tile.setAttribute("class", "message");
-	tile.innerHTML = "<p>" + chrome.i18n.getMessage("no_tiles_added")
-	 + "<span class='help'>" + chrome.i18n.getMessage("tab_page_no_tiles_added_help", ["<img src='../../icons/icon-bitty-gray.png'>"]) + "</span>";
+	var message = document.createElement('div');
+	message.setAttribute("class", "message");
+	message.innerHTML = "<p>" + chrome.i18n.getMessage("no_tiles_added")
+	 + "<span class='help'>" + chrome.i18n.getMessage("tab_page_no_tiles_added_help", ["<img src='../../icons/icon-bitty-gray.png'>"]) + "</span>"
 	 + "</p>";
 
-	document.getElementsByTagName('body')[0].appendChild(tile);
+	document.getElementsByTagName('body')[0].appendChild(message);
 }
