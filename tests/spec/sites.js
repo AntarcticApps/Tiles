@@ -420,13 +420,25 @@ describe("Site storage", function() {
 
 		waitsFor(function() {
 			return ready;
-		}, "the storage to be ready", 500);
+		}, "the storage to be ready for the test", 500);
 
 		ready = false;
 	});
 
 	afterEach(function() {
-		server.restore();
+		storage.set(oldStorageItems, function() {
+			storage = oldStorage;
+
+			server.restore();
+
+			ready = true;
+		});
+
+		waitsFor(function() {
+			return ready;
+		}, "the storage to be ready for the next test", 500);
+
+		ready = false;
 	});
 
 	describe("when requesting a next ID", function() {
