@@ -102,6 +102,36 @@ describe("A site", function() {
 				});
 			});
 		});
+
+		describe("should be able to be assigned a color", function() {
+			var site;
+
+			beforeEach(function() {
+				site = {};
+			});
+
+			it("given a non-null color", function() {
+				setSiteColor(site, [0, 1, 4, 9]);
+
+				expect(site.color).toEqual({
+					red: 0,
+					green: 1,
+					blue: 4,
+					alpha: 9
+				});
+			});
+
+			it("given a null color", function() {
+				setSiteColor(site, null);
+
+				expect(site.color).toEqual({
+					red: 0,
+					green: 0,
+					blue: 0,
+					alpha: 255
+				});
+			});
+		});
 	});
 
 	describe("in storage", function() {
