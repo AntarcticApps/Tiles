@@ -13,6 +13,13 @@ function init() {
 
 	migrateStorage();
 
+	// Set the version if not done already
+	storageVersionExists(function(exists) {
+		if (!exists) {
+			setStorageVersion(getExtensionVersion().major);
+		}
+	});
+
 	writeUserStylesheet();
 }
 

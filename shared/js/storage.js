@@ -2,15 +2,6 @@ var storage = chrome.storage.sync;
 const DEFAULT_STORAGE = chrome.storage.sync;
 const TEST_STORAGE = chrome.storage.local;
 
-chrome.storage.onChanged.addListener(function(changes, areaName) {
-	if (changes.version) {
-		if (changes.version.newValue == undefined
-			|| changes.version.newValue == null) {
-			setStorageVersion(getExtensionVersion().major);
-		}
-	}
-});
-
 /**
  * Reset the storage to the default storage for normal use.
  */
@@ -41,6 +32,12 @@ function getStorageVersion(callback) {
  */
 function setStorageVersion(version, callback) {
 	storage.set({ 'version': version }, callback);
+}
+
+function storageVersionExists(callback) {
+	storage.get('version', function(items) {
+		return callback(!items || !items.version);
+	});
 }
 
 function versionsAreEqual(a, b) {
