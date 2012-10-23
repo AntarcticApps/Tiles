@@ -157,6 +157,116 @@ describe("An asynchronous loop", function() {
 	});
 });
 
+describe("An HTTP request", function() {
+	var server = null;
+	var success, error, response;
+
+	beforeEach(function() {
+		server = sinon.fakeServer.create();
+
+		success = false;
+		error = false;
+		response = null;
+	});
+
+	afterEach(function() {
+		server.restore();
+	});
+
+	describe("making a request that will respond 200", function() {
+		beforeEach(function() {
+			server.respondWith("GET", "/", [200, { "Content-Type": "text/html"}, "yay"]);
+
+			runs(function() {
+				makeHTTPRequest('/', function(res, headers) {
+					response = res;
+
+					success = true;
+				}, function(status) {
+					error = true;
+				});
+
+				server.respond();
+			});
+
+			waitsFor(function() {
+				return success || error;
+			}, "the HTTP request to finish", 500);
+		});
+
+		it("should be successful", function() {
+			expect(success).toBe(true);
+			expect(error).toBe(false);
+		});
+
+		it("should have the correct response", function() {
+			expect(response).toEqual("yay");
+		});
+	});
+
+	describe("making a request that will respond 404", function() {
+		beforeEach(function() {
+			server.respondWith("GET", "/", [404, { "Content-Type": "text/html"}, "yay"]);
+
+			runs(function() {
+				makeHTTPRequest('/', function(res, headers) {
+					response = res;
+
+					success = true;
+				}, function(status) {
+					error = true;
+				});
+
+				server.respond();
+			});
+
+			waitsFor(function() {
+				return success || error;
+			}, "the HTTP request to finish", 500);
+		});
+
+		it("should not be successful", function() {
+			expect(success).toBe(false);
+			expect(error).toBe(true);
+		});
+
+		it("should have no response", function() {
+			expect(response).toBeNull();
+		});
+	});
+
+	describe("making a request that will respond 301", function() {
+		beforeEach(function() {
+			server.respondWith("GET", "/", [301, { "Content-Type": "text/html"}, "yay"]);
+
+			runs(function() {
+				makeHTTPRequest('/', function(res, headers) {
+					response = res;
+
+					success = true;
+				}, function(status) {
+					error = true;
+				});
+
+				server.respond();
+			});
+
+			waitsFor(function() {
+				return success || error;
+			}, "the HTTP request to finish", 500);
+		});
+
+		it("should not be successful", function() {
+			expect(success).toBe(false);
+			expect(error).toBe(true);
+		});
+
+		it("should have no response", function() {
+			expect(response).toBeNull();
+		});
+	});
+});
+
 describe("An array", function() {
 	it("should remove an element at an arbitrary index", function() {
 		var arr = [100, 200, 300, 400];
