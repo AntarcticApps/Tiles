@@ -1,5 +1,3 @@
-var messages = [];
-
 /**
  * Sends a Chrome message to all tabs that are Tiles tabs.
  * @param  {String} message The message to send to each tab.
@@ -30,50 +28,6 @@ function sendMessageToExtensionTabs(message, ignoreCurrent) {
 	});
 }
 
-function indexOfMessage(message) {
-	for (var i = 0; i < messages.length; i++) {
-		if (messages[i].message == message) {
-			return i;
-		}
-	}
-
-	return -1;
-}
-
-function addMessageListener(message, callback) {
-	var i = indexOfMessage(message);
-	if (i >= 0) {
-		messages[i].callbacks.push(callback);
-	} else {
-		messages.push({ message: message, callbacks: [callback] });
-	}
-}
-
 function emitMessage(message, data) {
-	var i = indexOfMessage(message);
-	if (i >= 0) {
-		if (messages[i].suppressed) {
-			return;
-		}
-
-		for (var j = 0; j < messages[i].callbacks.length; j++) {
-			messages[i].callbacks[j](data);
-		}
-	}
-}
-
-function suppressMessages(message) {
-	var i = indexOfMessage(message);
-	if (i >= 0) {
-		messages[i].suppressed = true;
-	}
-}
-
-function unsuppressMessages(message) {
-	var i = indexOfMessage(message);
-	if (i >= 0) {
-		delete messages[i].suppressed;
-	}
-}function emitMessage(message, data) {
 	chrome.extension.sendMessage({ message: message, data: data });
 }
