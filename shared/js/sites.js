@@ -205,6 +205,10 @@ function updateSiteAbbreviation(id, abbreviation, callback) {
 }
 
 function updateSiteColor(id, color, callback) {
+	if (color == null) {
+		color = [0, 0, 0, 255];
+	}
+
 	if (color instanceof Array) {
 		color = colorArrayToObject(color);
 	}
