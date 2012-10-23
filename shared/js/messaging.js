@@ -52,8 +52,26 @@ function addMessageListener(message, callback) {
 function emitMessage(message, data) {
 	var i = indexOfMessage(message);
 	if (i >= 0) {
+		if (messages[i].suppressed) {
+			return;
+		}
+
 		for (var j = 0; j < messages[i].callbacks.length; j++) {
 			messages[i].callbacks[j](data);
 		}
+	}
+}
+
+function suppressMessages(message) {
+	var i = indexOfMessage(message);
+	if (i >= 0) {
+		messages[i].suppressed = true;
+	}
+}
+
+function unsuppressMessages(message) {
+	var i = indexOfMessage(message);
+	if (i >= 0) {
+		delete messages[i].suppressed;
 	}
 }
