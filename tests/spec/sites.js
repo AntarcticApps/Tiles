@@ -168,8 +168,6 @@ describe("Site storage", function() {
 
 	afterEach(function() {
 		server.restore();
-
-		writeUserStylesheet();
 	});
 
 	describe("when requesting a next ID", function() {
@@ -498,8 +496,6 @@ describe("Sites", function() {
 
 	afterEach(function() {
 		server.restore();
-
-		writeUserStylesheet();
 	});
 
 	describe("should store", function() {

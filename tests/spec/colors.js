@@ -7,8 +7,6 @@ describe("A favicon", function() {
 
 	afterEach(function() {
 		server.restore();
-
-		writeUserStylesheet();
 	});
 
 	describe("should be found in the", function() {
