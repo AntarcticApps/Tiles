@@ -214,13 +214,10 @@ function updateSiteColor(id, color, callback) {
 		return callback();
 	}
 
-	getSortedSiteIDs(function(ids) {
-		var i = ids.firstIndexOfElementEqualTo(id);
-		getSite(ids[i], function(site) {
-			site.color = color;
-			updateSite(id, site, function() {
-				return callback();
-			});
+	getSite(id, function(site) {
+		site.color = color;
+		updateSite(id, site, function() {
+			return callback();
 		});
 	});
 }
