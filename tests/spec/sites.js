@@ -172,8 +172,8 @@ describe("Site storage", function() {
 		writeUserStylesheet();
 	});
 
-	describe("next ID", function() {
-		it("should default to 0", function() {
+	describe("when requesting a next ID", function() {
+		it("should default to zero", function() {
 			var id = null;
 
 			runs(function() {
