@@ -32,8 +32,8 @@ describe("Storage", function() {
 		var version = null;
 
 		runs(function() {
-			storage.get("version", function(v) {
-				version = v.version;
+			getStorageVersion(function(v) {
+				version = v;
 			});
 		});
 
@@ -42,7 +42,7 @@ describe("Storage", function() {
 		}, "the storage version to be gotten", 500);
 
 		runs(function() {
-			expect(version).toMatch(setStorageVersion());
+			expect(version).toMatch(getExtensionVersion().major);
 		});
 	});
 });
