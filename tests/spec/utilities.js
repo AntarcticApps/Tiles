@@ -297,29 +297,54 @@ describe("An HTTP request", function() {
 });
 
 describe("An array", function() {
-	it("should remove an element at an arbitrary index", function() {
-		var arr = [100, 200, 300, 400];
+	var arr = [];
 
-		var removed = arr.removeAtIndex(0);
+	beforeEach(function() {
+		arr = [100, 200, 300, 400];
+	});
 
-		expect(removed).toEqual(100);
-		expect(arr).toEqual([200, 300, 400]);
+	describe("should remove", function() {
+		it("an element in the array", function() {
+			var removed = arr.removeElementEqualTo(300);
+
+			expect(removed).toEqual(300);
+			expect(arr).toEqual([100, 200, 400]);
+		});
+
+		it("an element not in the array", function() {
+			var removed = arr.removeElementEqualTo(800);
+
+			expect(removed).toEqual(null);
+			expect(arr).toEqual([100, 200, 300, 400]);
+		});
+	});
+
+	describe("should remove the element at the index", function() {
+		it("in the array", function() {
+			var removed = arr.removeAtIndex(0);
+
+			expect(removed).toEqual(100);
+			expect(arr).toEqual([200, 300, 400]);
+		});
+
+		it("outside of the array (pos)", function() {
+			var removed = arr.removeAtIndex(800);
+
+			expect(removed).toEqual(null);
+			expect(arr).toEqual([100, 200, 300, 400]);
+		});
 	});
 
 	it("should insert an element at an arbitrary index", function() {
-		var arr = [100, 200, 300, 400];
-
 		arr.insertAtIndex(0, 3);
 
 		expect(arr).toEqual([100, 200, 300, 0, 400]);
 	});
 
 	it("should swap elements", function() {
-		var arr = [100, 200, 300, 400];
-
 		var removed = arr.removeAtIndex(-1);
 		arr.insertAtIndex(removed, 2);
-		
+
 		expect(removed).toEqual(400);
 		expect(arr).toEqual([100, 200, 400, 300]);
 	});
