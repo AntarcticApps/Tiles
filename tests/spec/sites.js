@@ -428,6 +428,65 @@ describe("Site storage", function() {
 			});
 		});
 	});
+
+	describe("when multiple sites are saved", function() {
+		var sites;
+
+		beforeEach(function() {
+			sites = null;
+
+			runs(function() {
+				loop(0, 2, function(iteration, callback) {
+					createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
+						addSites([site], function() {
+							callback();
+						});
+					});
+				}, function() {
+					getAllSites(function(s) {
+						sites = s;
+					});
+				});
+			});
+			
+			waitsFor(function() {
+				return sites != null;
+			}, "the sites to be saved and retrieved", 500);
+		});
+
+		it("should contain the correct number of sites", function() {
+			runs(function() {
+				expect(sites.length).toBe(2);
+			});
+		});
+
+		it("should contain the right sites", function() {
+		runs(function() {
+			expect(sites[0]).toEqual({
+				url: "/",
+				abbreviation: "" + 0,
+				color: {
+					red: 255,
+					green: 255,
+					blue: 255,
+					alpha: 255
+				},
+				id: 0
+			});
+			expect(sites[1]).toEqual({
+				url: "/",
+				abbreviation: "" + 1,
+				color: {
+					red: 255,
+					green: 255,
+					blue: 255,
+					alpha: 255
+				},
+				id: 1
+			});
+		});
+		});
+	});
 });
 
 describe("Sites", function() {
@@ -487,54 +546,6 @@ describe("Sites", function() {
 		});
 
 		describe("stored sites", function() {
-			it("should contain two sites after they have been added", function() {
-				var sites = null;
-
-				runs(function() {
-					loop(0, 2, function(iteration, callback) {
-						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
-							addSites([site], function() {
-								callback();
-							});
-						});
-					}, function() {
-						getAllSites(function(s) {
-							sites = s;
-						});
-					});
-				});
-				
-				waitsFor(function() {
-					return sites != null;
-				}, "the sites to be returned", 500);
-
-				runs(function() {
-					expect(sites.length).toBe(2);
-					expect(sites[0]).toEqual({
-						url: "/",
-						abbreviation: "" + 0,
-						color: {
-							red: 255,
-							green: 255,
-							blue: 255,
-							alpha: 255
-						},
-						id: 0
-					});
-					expect(sites[1]).toEqual({
-						url: "/",
-						abbreviation: "" + 1,
-						color: {
-							red: 255,
-							green: 255,
-							blue: 255,
-							alpha: 255
-						},
-						id: 1
-					});
-				});
-			});
-
 			it("should not contain a site after it has been removed", function() {
 				var sites = null;
 
