@@ -58,6 +58,8 @@ function async_loop(start, end, operation, finishCallback) {
 			}
 		});
 	}
+
+	return finishCallback();
 }
 
 function makeHTTPRequest(url, successCallback, errorCallback) {
