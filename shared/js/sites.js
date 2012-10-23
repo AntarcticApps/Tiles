@@ -193,13 +193,10 @@ function removeSites(sites, callback) {
 }
 
 function updateSiteAbbreviation(id, abbreviation, callback) {
-	getSortedSiteIDs(function(ids) {
-		var i = ids.firstIndexOfElementEqualTo(id);
-		getSite(ids[i], function(site) {
-			site.abbreviation = abbreviation;
-			updateSite(id, site, function() {
-				return callback();
-			});
+	getSite(id, function(site) {
+		site.abbreviation = abbreviation;
+		updateSite(id, site, function() {
+			return callback();
 		});
 	});
 }
@@ -236,17 +233,14 @@ function updateSiteCustomColor(id, color, callback) {
 		return callback();
 	}
 
-	getSortedSiteIDs(function(ids) {
-		var i = ids.firstIndexOfElementEqualTo(id);
-		getSite(ids[i], function(site) {
-			if (!color) {
-				delete site.customColor;
-			} else {
-				site.customColor = color;
-			}
-			updateSite(id, site, function() {
-				return callback();
-			});
+	getSite(id, function(site) {
+		if (!color) {
+			delete site.customColor;
+		} else {
+			site.customColor = color;
+		}
+		updateSite(id, site, function() {
+			return callback();
 		});
 	});
 }
