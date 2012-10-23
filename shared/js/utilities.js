@@ -96,6 +96,8 @@ Array.prototype.firstIndexOfElementEqualTo = function(element) {
 			return i;
 		}
 	}
+	
+	return -1;
 }
 
 Array.prototype.removeElementEqualTo = function(element) {
