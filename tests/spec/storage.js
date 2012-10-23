@@ -1,4 +1,31 @@
 describe("Storage", function() {
+	it("should be empty for each test", function() {
+		var items, ready;
+
+		runs(function() {
+			ready = false;
+
+			storage.get(null, function(i) {
+				items = i;
+
+				ready = true;
+			});
+		});
+
+		waitsFor(function() {
+			return ready;
+		}, "all the items in storage to be gotten", 500);
+
+		runs(function() {
+			expect(items).toEqual({});
+		});
+	});
+
+	it("should be using the test storage", function() {
+		expect(storage).toEqual(TEST_STORAGE);
+		expect(storage).toNotEqual(DEFAULT_STORAGE);
+	});
+
 	describe("version", function() {
 		it("should be able to be set and get", function() {
 			var done = false;
