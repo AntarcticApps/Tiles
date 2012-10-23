@@ -4,9 +4,11 @@
 function migrateStorage() {
 	var extensionVersion = getExtensionVersion().major;
 
+	console.log("Checking to see if a migration is needed...");
+
 	getStorageVersion(function(storageVersion) {
 		if (extensionVersion != storageVersion) {
-			console.log("Extension and storage versions are not equal", extensionVersion, storageVersion);
+			console.log("Migration needed - storage is at v" + storageVersion + "; extension is at v" + extensionVersion);
 			setStorageVersion(extensionVersion);
 
 			if (storageVersion == 1) {
