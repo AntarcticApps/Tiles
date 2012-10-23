@@ -138,6 +138,7 @@ describe("A site", function() {
 		var oldStorage = null;
 		var oldStorageItems = null;
 		var ready = false;
+		var site;
 
 		beforeEach(function() {
 			oldStorage = storage;
@@ -156,6 +157,7 @@ describe("A site", function() {
 			}, "the storage to be ready", 500);
 
 			ready = false;
+			site = null;
 		});
 
 		afterEach(function() {
@@ -233,6 +235,164 @@ describe("A site", function() {
 				runs(function() {
 					expect(ids).toEqual([]);
 				});
+			});
+		});
+
+		it("should be able to change its abbreviation", function() {
+			runs(function() {
+				createSite("/", "Ab", [255, 255, 255, 255], function(created) {
+					addSites([created], function() {
+						updateSiteAbbreviation(created.id, "Re", function() {
+							getSite(created.id, function(s) {
+								site = s;
+							});
+						});
+					});
+				});
+			});
+			
+			waitsFor(function() {
+				return site != null;
+			}, "the site to be returned", 500);
+
+			runs(function() {
+				expect(site).toEqual({
+					url: "/",
+					abbreviation: "Re",
+					color: {
+						red: 255,
+						green: 255,
+						blue: 255,
+						alpha: 255
+					},
+					id: 0
+				});
+			});
+		});
+
+		it("should be able to change its color", function() {
+			runs(function() {
+				createSite("/", "Ab", [255, 255, 255, 255], function(created) {
+					addSites([created], function() {
+						updateSiteColor(created.id, [0, 0, 0], function() {
+							getSite(created.id, function(s) {
+								site = s;
+							});
+						});
+					});
+				});
+			});
+			
+			waitsFor(function() {
+				return site != null;
+			}, "the site to be returned", 500);
+
+			runs(function() {
+				expect(site).toEqual({
+					url: "/",
+					abbreviation: "Ab",
+					color: {
+						red: 0,
+						green: 0,
+						blue: 0,
+						alpha: 255
+					},
+					id: 0
+				});
+			});
+		});
+
+		it("should be able to change its custom color", function() {
+			runs(function() {
+				createSite("/", "Ab", [255, 255, 255, 255], function(created) {
+					addSites([created], function() {
+						updateSiteCustomColor(created.id, [0, 0, 0], function() {
+							getSite(created.id, function(s) {
+								site = s;
+							});
+						});
+					});
+				});
+
+				server.respond();
+			});
+			
+			waitsFor(function() {
+				return site != null;
+			}, "the site to be returned", 500);
+
+			runs(function() {
+				expect(site).toEqual({
+					url: "/",
+					abbreviation: "Ab",
+					color: {
+						red: 255,
+						green: 255,
+						blue: 255,
+						alpha: 255
+					},
+					customColor: {
+						red: 0,
+						green: 0,
+						blue: 0,
+						alpha: 255
+					},
+					id: 0
+				});
+			});
+		});
+
+		it("should be accessible by its URL", function() {
+			runs(function() {
+				createSite("/", "Ab", [255, 255, 255, 255], function(created) {
+					addSites([created], function() {
+						getSiteForURL("/", function(s) {
+							site = s;
+						});
+					});
+				});
+			});
+			
+			waitsFor(function() {
+				return site != null;
+			}, "the site to be returned", 500);
+
+			runs(function() {
+				expect(site).toEqual({
+					url: "/",
+					abbreviation: "Ab",
+					color: {
+						red: 255,
+						green: 255,
+						blue: 255,
+						alpha: 255
+					},
+					id: 0
+				});
+			});
+		});
+
+		it("abbreviation should be accessible by its URL", function() {
+			var abbreviation = null;
+
+			runs(function() {
+				createSite("/", "Te", [255, 255, 255, 255], function(created) {
+					addSites([created], function() {
+						getSiteAbbreviationForURL("/", function(abbrev) {
+							abbreviation = abbrev;
+						});
+					});
+				});
+
+				server.respond();
+			});
+			
+			waitsFor(function() {
+				return abbreviation != null;
+			}, "the abbreviation to be returned", 500);
+
+			runs(function() {
+				expect(abbreviation).toMatch("Te");
 			});
 		});
 	});
@@ -681,172 +841,6 @@ describe("Sites", function() {
 			}, "the storage to be ready", 500);
 
 			ready = false;
-		});
-
-		describe("a site", function() {
-			var site;
-
-			beforeEach(function() {
-				site = null;
-			});
-
-			it("should be able to change its abbreviation", function() {
-				runs(function() {
-					createSite("/", "Ab", [255, 255, 255, 255], function(created) {
-						addSites([created], function() {
-							updateSiteAbbreviation(created.id, "Re", function() {
-								getSite(created.id, function(s) {
-									site = s;
-								});
-							});
-						});
-					});
-				});
-				
-				waitsFor(function() {
-					return site != null;
-				}, "the site to be returned", 500);
-
-				runs(function() {
-					expect(site).toEqual({
-						url: "/",
-						abbreviation: "Re",
-						color: {
-							red: 255,
-							green: 255,
-							blue: 255,
-							alpha: 255
-						},
-						id: 0
-					});
-				});
-			});
-
-			it("should be able to change its color", function() {
-				runs(function() {
-					createSite("/", "Ab", [255, 255, 255, 255], function(created) {
-						addSites([created], function() {
-							updateSiteColor(created.id, [0, 0, 0], function() {
-								getSite(created.id, function(s) {
-									site = s;
-								});
-							});
-						});
-					});
-				});
-				
-				waitsFor(function() {
-					return site != null;
-				}, "the site to be returned", 500);
-
-				runs(function() {
-					expect(site).toEqual({
-						url: "/",
-						abbreviation: "Ab",
-						color: {
-							red: 0,
-							green: 0,
-							blue: 0,
-							alpha: 255
-						},
-						id: 0
-					});
-				});
-			});
-
-			it("should be able to change its custom color", function() {
-				runs(function() {
-					createSite("/", "Ab", [255, 255, 255, 255], function(created) {
-						addSites([created], function() {
-							updateSiteCustomColor(created.id, [0, 0, 0], function() {
-								getSite(created.id, function(s) {
-									site = s;
-								});
-							});
-						});
-					});
-
-					server.respond();
-				});
-				
-				waitsFor(function() {
-					return site != null;
-				}, "the site to be returned", 500);
-
-				runs(function() {
-					expect(site).toEqual({
-						url: "/",
-						abbreviation: "Ab",
-						color: {
-							red: 255,
-							green: 255,
-							blue: 255,
-							alpha: 255
-						},
-						customColor: {
-							red: 0,
-							green: 0,
-							blue: 0,
-							alpha: 255
-						},
-						id: 0
-					});
-				});
-			});
-
-			it("should be accessible by its URL", function() {
-				runs(function() {
-					createSite("/", "Ab", [255, 255, 255, 255], function(created) {
-						addSites([created], function() {
-							getSiteForURL("/", function(s) {
-								site = s;
-							});
-						});
-					});
-				});
-				
-				waitsFor(function() {
-					return site != null;
-				}, "the site to be returned", 500);
-
-				runs(function() {
-					expect(site).toEqual({
-						url: "/",
-						abbreviation: "Ab",
-						color: {
-							red: 255,
-							green: 255,
-							blue: 255,
-							alpha: 255
-						},
-						id: 0
-					});
-				});
-			});
-
-			it("abbreviation should be accessible by its URL", function() {
-				var abbreviation = null;
-
-				runs(function() {
-					createSite("/", "Te", [255, 255, 255, 255], function(created) {
-						addSites([created], function() {
-							getSiteAbbreviationForURL("/", function(abbrev) {
-								abbreviation = abbrev;
-							});
-						});
-					});
-
-					server.respond();
-				});
-				
-				waitsFor(function() {
-					return abbreviation != null;
-				}, "the abbreviation to be returned", 500);
-
-				runs(function() {
-					expect(abbreviation).toMatch("Te");
-				});
-			});
 		});
 
 		describe("stored sites count", function() {
