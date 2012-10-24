@@ -45,6 +45,10 @@ function storageVersionExists(callback) {
 }
 
 function versionsAreEqual(a, b) {
+	if (!a || !b) {
+		return false;
+	}
+	
 	return a.major == b.major
 		&& a.minor == b.minor
 		&& a.patch == b.patch;
