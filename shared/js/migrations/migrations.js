@@ -16,6 +16,7 @@ function migrateStorage() {
 					// Migrate from a database from 1.x.x to 2.x.x
 					migrate_1_to_2(function() {
 						console.log("Migration from 1.x.x to 2.x.x complete");
+						emitMessage("refresh");
 					});
 				}
 			}
