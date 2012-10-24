@@ -329,3 +329,19 @@ describe("A favicon", function() {
 		});
 	});
 });
+
+describe("A color", function() {
+	it("should equal another identical color", function() {
+		var a = colorArrayToObject([16, 16, 16, 255]);
+		var b = colorArrayToObject([16, 16, 16]);
+
+		expect(colorsAreEqual(a, b)).toBe(true);
+	});
+
+	it("should not equal a different color", function() {
+		var a = colorArrayToObject([16, 16, 16, 255]);
+		var b = colorArrayToObject([0, 0, 0, 255]);
+
+		expect(colorsAreEqual(a, b)).toBe(false);
+	});
+});
