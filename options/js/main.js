@@ -127,11 +127,11 @@ $(document).ready(function() {
 						abbreviationField.data('oldVal', abbreviationField.val());
 
 						newControlGroup.find('input.abbreviation').on("propertychange keyup input paste", function() {
-							var value = abbreviationField.val();
+							var value = makeAbbreviation(abbreviationField.val());
+
+							abbreviationField.val(value);
 
 							if (abbreviationField.data('oldVal') != value && value != '') {
-								value = makeAbbreviation(value);
-
 								abbreviationField.val(value);
 								abbreviationField.data('oldVal', value);
 
