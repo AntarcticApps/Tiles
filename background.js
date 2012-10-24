@@ -280,13 +280,13 @@ function writeUserStylesheet() {
 			if (sitesCount > 0) {
 				getBackgroundColor(function(color) {
 					if (!color) {
-						writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0); }");
+						writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0) !important; }");
 					} else {
-						writeToFile(fs, "user.css", "body { background: rgb(" + color['red'] + ", " + color['green'] + ", " + color['blue'] + "); }");
+						writeToFile(fs, "user.css", "body { background: rgb(" + color['red'] + ", " + color['green'] + ", " + color['blue'] + ") !important; }");
 					}
 				});
 			} else {
-				writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0); }");
+				writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0) !important; }");
 			}
 		});
 	});
