@@ -64,10 +64,6 @@ function storageKeyForID(id) {
 	return "s" + id;
 }
 
-function removeSite(id, callback) {
-	storage.remove(storageKeyForID(id), callback);
-}
-
 function updateSite(id, site, callback) {
 	var key = storageKeyForID(id);
 	var data = {};
@@ -87,7 +83,7 @@ function addSites(sites, callback) {
 
 		loop(0, sites.length, function(iteration, callback) {
 			id = id + iteration;
-			
+
 			sites[iteration].id = id;
 			var siteKey = storageKeyForID(id);
 			data[siteKey] = sites[iteration];
@@ -170,16 +166,19 @@ function getAllSites(callback) {
 	});
 }
 
-function removeSites(sites, callback) {
-	getSortedSiteIDs(function(ids) {
-		var newIDs = ids;
-		loop(0, ids.length, function(iteration, callback) {
-			removeSite(sites[iteration], function(id) {
-				newIDs.removeElementEqualTo(sites[iteration]);
-				callback();
-			});
-		}, function() {
-			setSortedSiteIDs(newIDs, function() {
+function removeSites(siteIDs, callback) {
+	var storageKeys = [];
+	for (var i = 0; i < siteIDs.length; i++) {
+		storageKeys.push(storageKeyForID(siteIDs[i]));
+	}
+
+	storage.remove(storageKeys, function() {
+		getSortedSiteIDs(function(ids) {
+			for (var i = 0; i < siteIDs.length; i++) {
+				ids.removeElementEqualTo(siteIDs[i]);
+			}
+
+			setSortedSiteIDs(ids, function() {
 				emitMessage(SITES_REMOVED_MESSAGE);
 
 				return callback();
