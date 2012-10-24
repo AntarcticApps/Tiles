@@ -426,3 +426,14 @@ function correctLightnessIfNeeded(rgb) {
 
 	return rgb;
 }
+
+function colorsAreEqual(a, b) {
+	if (!a || !b) {
+		return false;
+	}
+
+	return a.red == b.red
+		&& a.green == b.green
+		&& a.blue == b.blue
+		&& a.alpha == b.alpha;
+}
