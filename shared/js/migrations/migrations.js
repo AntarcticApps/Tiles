@@ -14,7 +14,7 @@ function migrateStorage() {
 				extensionVersion.patch);
 
 		if (!versionsAreEqual(extensionVersion, storageVersion)) {
-			console.log("Migration needed");
+			console.log("Migration is needed");
 			setStorageVersion(extensionVersion);
 
 			if (storageVersion.major == 1) {
@@ -26,6 +26,8 @@ function migrateStorage() {
 					});
 				}
 			}
+		} else {
+			console.log("Migration is not needed");
 		}
 	});
 }
