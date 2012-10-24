@@ -365,5 +365,6 @@ function getBackgroundColor(callback) {
 
 // Get the first two letters our of a string, make uppercase
 function makeAbbreviation(string) {
+	string = string.trim();
 	return string.substring(0, 1).toUpperCase() + string.substring(1, 2).toLowerCase();
 }

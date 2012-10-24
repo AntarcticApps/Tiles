@@ -16,6 +16,12 @@ function init() {
 
 	function fixAbbreviationCapitalization() {
 		document.getElementById('abbreviation').value = makeAbbreviation(document.getElementById('abbreviation').value);
+
+		if (document.getElementById('abbreviation').value == '') {
+			document.getElementById('rename-btn').setAttribute('disabled', 'disabled');
+		} else {
+			document.getElementById('rename-btn').removeAttribute('disabled');
+		}
 	}
 
 	document.getElementById('abbreviation').addEventListener("propertychange", fixAbbreviationCapitalization);
