@@ -10,14 +10,18 @@ function init() {
 		document.getElementById('abbreviation').value = makeAbbreviation(getHostname(response.url));
 	});
 
-	function fixAbbreviationCapitalization() {
-		document.getElementById('abbreviation').value = makeAbbreviation(document.getElementById('abbreviation').value);
+	function onAbbreviationEvent() {
+		var value = document.getElementById('abbreviation').value;
+		var abbreviation = makeAbbreviation(document.getElementById('abbreviation').value);
+		if (value != abbreviation) {
+			document.getElementById('abbreviation').value = abbreviation;
+		}
 	}
 
-	document.getElementById('abbreviation').addEventListener("propertychange", fixAbbreviationCapitalization);
-	document.getElementById('abbreviation').addEventListener("keyup", fixAbbreviationCapitalization);
-	document.getElementById('abbreviation').addEventListener("input", fixAbbreviationCapitalization);
-	document.getElementById('abbreviation').addEventListener("paste", fixAbbreviationCapitalization);
+	document.getElementById('abbreviation').addEventListener("propertychange", onAbbreviationEvent);
+	document.getElementById('abbreviation').addEventListener("keyup", onAbbreviationEvent);
+	document.getElementById('abbreviation').addEventListener("input", onAbbreviationEvent);
+	document.getElementById('abbreviation').addEventListener("paste", onAbbreviationEvent);
 
 	var submitButton = document.getElementById('submit-btn');
 	submitButton.innerHTML = chrome.i18n.getMessage('popup_add_tile');
