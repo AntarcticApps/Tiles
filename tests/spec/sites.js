@@ -143,6 +143,7 @@ describe("A site", function() {
 
 		describe("when removed", function() {
 			var sites;
+			var removedSite;
 
 			beforeEach(function() {
 				site = null;
@@ -157,6 +158,10 @@ describe("A site", function() {
 					}, function() {
 						removeSites([1], function() {
 							getAllSites(function(s) {
+								storage.get("s1", function(items) {
+									removedSite = items.s1;
+								});
+
 								sites = s;
 							});
 						});
@@ -183,6 +188,7 @@ describe("A site", function() {
 						id: 0
 					});
 					expect(sites[1]).toBeUndefined();
+					expect(removedSite).toBeUndefined();
 				});
 			});
 
