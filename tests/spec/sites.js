@@ -675,30 +675,82 @@ describe("Site storage", function() {
 		});
 
 		it("should contain the right sites", function() {
-		runs(function() {
-			expect(sites[0]).toEqual({
-				url: "/",
-				abbreviation: "" + 0,
-				color: {
-					red: 255,
-					green: 255,
-					blue: 255,
-					alpha: 255
-				},
-				id: 0
-			});
-			expect(sites[1]).toEqual({
-				url: "/",
-				abbreviation: "" + 1,
-				color: {
-					red: 255,
-					green: 255,
-					blue: 255,
-					alpha: 255
-				},
-				id: 1
+			runs(function() {
+				expect(sites[0]).toEqual({
+					url: "/",
+					abbreviation: "" + 0,
+					color: {
+						red: 255,
+						green: 255,
+						blue: 255,
+						alpha: 255
+					},
+					id: 0
+				});
+				expect(sites[1]).toEqual({
+					url: "/",
+					abbreviation: "" + 1,
+					color: {
+						red: 255,
+						green: 255,
+						blue: 255,
+						alpha: 255
+					},
+					id: 1
+				});
 			});
 		});
+	});
+
+	describe("when multiple sites are removed", function() {
+		var sites;
+
+		beforeEach(function() {
+			sites = null;
+
+			runs(function() {
+				loop(0, 3, function(iteration, callback) {
+					createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
+						addSites([site], function() {
+							callback();
+						});
+					});
+				}, function() {
+					removeSites([0, 2], function() {
+						getAllSites(function(s) {
+							sites = s;
+						});
+					});
+				});
+			});
+			
+			waitsFor(function() {
+				return sites != null;
+			}, "the sites to be removed and retrieved", 500);
+		});
+
+		it("should contain the correct number of sites", function() {
+			runs(function() {
+				expect(sites.length).toBe(1);
+			});
+		});
+
+		it("should contain the right sites", function() {
+			runs(function() {
+				expect(sites[0]).toEqual({
+					url: "/",
+					abbreviation: "" + 1,
+					color: {
+						red: 255,
+						green: 255,
+						blue: 255,
+						alpha: 255
+					},
+					id: 1
+				});
+				expect(sites[1]).toBeUndefined();
+				expect(sites[2]).toBeUndefined();
+			});
 		});
 	});
 
