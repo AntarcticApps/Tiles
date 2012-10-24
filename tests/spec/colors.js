@@ -344,4 +344,18 @@ describe("A color", function() {
 
 		expect(colorsAreEqual(a, b)).toBe(false);
 	});
+
+	it("should not equal null", function() {
+		var a = colorArrayToObject([16, 16, 16, 255]);
+		var b = null;
+
+		expect(colorsAreEqual(a, b)).toBe(false);
+	});
+
+	it("should not equal undefined", function() {
+		var a = colorArrayToObject([16, 16, 16, 255]);
+		var b = undefined;
+
+		expect(colorsAreEqual(a, b)).toBe(false);
+	});
 });
