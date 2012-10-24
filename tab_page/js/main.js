@@ -107,6 +107,12 @@ function onTileClick(e) {
 	e.preventDefault();
 
 	var target = e.target;
+
+	// correct target if element clicked was actually the url span
+	if (target.getAttribute("class") == "url") {
+		target = target.parentNode;
+	}
+
 	var sitesElement = document.getElementById("sites");
 	var url = target.href;
 
