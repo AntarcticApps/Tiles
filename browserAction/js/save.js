@@ -13,6 +13,7 @@ function init() {
 	function onAbbreviationEvent() {
 		var value = document.getElementById('abbreviation').value;
 		var abbreviation = makeAbbreviation(document.getElementById('abbreviation').value);
+		
 		if (value != abbreviation) {
 			document.getElementById('abbreviation').value = abbreviation;
 		}
