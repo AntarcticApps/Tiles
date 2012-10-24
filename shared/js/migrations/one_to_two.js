@@ -53,6 +53,8 @@ function migrate_1_to_2(callback) {
 		});
 	}
 
+	console.log("Migration from 1.x.x to 2.x.x started");
+
 	// Get all the data currently in the database
 	getSites(function(sites) {
 		storage.clear(function() {

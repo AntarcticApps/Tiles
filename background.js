@@ -16,7 +16,7 @@ function init() {
 	// Set the version if not done already
 	storageVersionExists(function(exists) {
 		if (!exists) {
-			setStorageVersion(getExtensionVersion().major);
+			setStorageVersion(getExtensionVersion());
 		}
 	});
 
