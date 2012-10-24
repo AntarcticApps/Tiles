@@ -391,7 +391,7 @@ function hexToRgb(hex) {
 
 function safeAlphaHslToRgb(hsl) {
 	var rgb = hslToRgb(hsl);
-	var safeRgb = [0, 0, 0, 255]
+	var safeRgb = [0, 0, 0, 255];
 	for (var i = 0; i < hsl.length; i++) {
 		safeRgb[i] = Math.floor(rgb[i]);
 	}
