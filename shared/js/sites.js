@@ -82,13 +82,13 @@ function addSites(sites, callback) {
 		data.nextID = id + sites.length;
 
 		loop(0, sites.length, function(iteration, callback) {
-			id = id + 1;
-
 			sites[iteration].id = id;
 			var siteKey = storageKeyForID(id);
 			data[siteKey] = sites[iteration];
 
 			newIDs.push(id);
+
+			id++;
 
 			callback();
 		}, function() {
