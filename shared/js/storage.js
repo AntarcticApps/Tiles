@@ -2,6 +2,12 @@ var storage = chrome.storage.sync;
 const DEFAULT_STORAGE = chrome.storage.sync;
 const TEST_STORAGE = chrome.storage.local;
 
+var count = 0;
+chrome.storage.onChanged.addListener(function(changes, areaName) {
+	if (areaName == "sync")
+		console.log(++count, changes);
+});
+
 /**
  * Reset the storage to the default storage for normal use.
  */

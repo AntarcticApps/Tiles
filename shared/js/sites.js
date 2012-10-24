@@ -53,31 +53,15 @@ function setSiteColor(site, color) {
 function getNextID(callback) {
 	storage.get('nextID', function(items) {
 		if (!items || !items.nextID) {
-			storage.set({ 'nextID': 1 }, function() {
-				return callback(0);
-			});
+			return callback(0);
 		} else {
-			storage.set({ 'nextID': items.nextID + 1 }, function() {
-				return callback(items.nextID);
-			});
+			return callback(items.nextID);
 		}
 	});
 }
 
 function storageKeyForID(id) {
 	return "s" + id;
-}
-
-function storeNewSite(site, callback) {
-	getNextID(function(id) {
-		site.id = id;
-		var key = storageKeyForID(id);
-		var data = {};
-		data[key] = site;
-		storage.set(data, function() {
-			return callback(id);
-		});
-	});
 }
 
 function removeSite(id, callback) {
@@ -95,23 +79,35 @@ function updateSite(id, site, callback) {
 }
 
 function addSites(sites, callback) {
-	var newIDs = {};
+	var data = {};
+	var newIDs = [];
 
-	loop(0, sites.length, function(iteration, callback) {
-		storeNewSite(sites[iteration], function(id) {
-			newIDs[iteration] = id;
+	getNextID(function(id) {
+		data.nextID = id + sites.length;
+
+		loop(0, sites.length, function(iteration, callback) {
+			id = id + iteration;
+			
+			sites[iteration].id = id;
+			var siteKey = storageKeyForID(id);
+			data[siteKey] = sites[iteration];
+
+			newIDs.push(id);
+
 			callback();
-		});
-	}, function() {
-		getSortedSiteIDs(function(ids) {
-			for (var j = 0; newIDs[j] != null; j++) {
-				ids.push(newIDs[j]);
-			}
+		}, function() {
+			getSortedSiteIDs(function(ids) {
+				for (var j = 0; newIDs[j] != null; j++) {
+					ids.push(newIDs[j]);
+				}
 
-			setSortedSiteIDs(ids, function() {
-				emitMessage(SITES_ADDED_MESSAGE);
+				data.ids = ids;
 
-				return callback();
+				storage.set(data, function() {
+					emitMessage(SITES_ADDED_MESSAGE);
+
+					return callback();
+				});
 			});
 		});
 	});

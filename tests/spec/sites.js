@@ -395,13 +395,15 @@ describe("Site storage", function() {
 			});
 		});
 
-		it("should increment after multiple calls", function() {
+		it("should increment after adding a site", function() {
 			var id = null;
 
 			runs(function() {
-				getNextID(function(i) {
-					getNextID(function(j) {
-						id = j;
+				createSite("/", "Ab", [255, 255, 255, 255], function(site) {
+					addSites([site], function() {
+						getNextID(function(i) {
+							id = i;
+						});
 					});
 				});
 			});
@@ -414,55 +416,39 @@ describe("Site storage", function() {
 				expect(id).toBe(1);
 			});
 		});
-	});
 
-	describe("when storing a new site", function() {
-		var id, site;
+		it("should increase by the amount of sites added", function() {
+			var id = null;
 
-		describe("using store new site", function() {
-			beforeEach(function() {
-				id = null;
-				site = null;
+			runs(function() {
+				var sites = [];
 
-				runs(function() {
-					createSite("/", "Ab", [255, 255, 255, 255], function(s) {
-						site = s;
-
-						storeNewSite(site, function(i) {
+				async_loop(0, 2, function(iteration, callback) {
+					createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
+						sites.push(site);
+						callback();
+					});
+				}, function() {
+					addSites(sites, function() {
+						getNextID(function(i) {
 							id = i;
 						});
 					});
 				});
-				
-				waitsFor(function() {
-					return id != null;
-				}, "the ID to be set", 500);
 			});
+			
+			waitsFor(function() {
+				return id != null;
+			}, "the ID to be set", 500);
 
-			it("should return an ID on save", function() {
-				runs(function() {
-					expect(id).toBe(0);
-				});
-			});
-
-			it("should exist in storage", function() {
-				var savedSite = null;
-
-				runs(function() {
-					getSite(id, function(s) {
-						savedSite = s;
-					});
-				});
-
-				waitsFor(function() {
-					return savedSite != null;
-				}, "the site to be gotten", 500);
-
-				runs(function() {
-					expect(savedSite).toEqual(site);
-				});
+			runs(function() {
+				expect(id).toBe(2);
 			});
 		});
+	});
+
+	describe("when storing a new site", function() {
+		var id, site;
 
 		describe("using add sites", function() {
 			var done;
