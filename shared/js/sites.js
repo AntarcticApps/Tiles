@@ -152,15 +152,26 @@ function getSite(id, callback) {
 }
 
 function getAllSites(callback) {
+	var storageKeys = [];
 	var sites = [];
 
 	getSortedSiteIDs(function(ids) {
-		loop(0, ids.length, function(iteration, callback) {
-			getSite(ids[iteration], function(site) {
-				sites.push(site);
-				callback();
-			});
-		}, function() {
+		var storageKeys = [];
+		for (var i = 0; i < ids.length; i++) {
+			storageKeys.push(storageKeyForID(ids[i]));
+		}
+
+		storage.get(storageKeys, function(items) {
+			if (!items) {
+				return callback([]);
+			}
+
+			for (var i = 0; i < storageKeys.length; i++) {
+				if (items[storageKeys[i]]) {
+					sites.push(items[storageKeys[i]]);
+				}
+			}
+
 			return callback(sites);
 		});
 	});
