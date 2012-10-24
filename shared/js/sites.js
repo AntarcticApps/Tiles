@@ -248,9 +248,14 @@ function updateFaviconColorForAllSites(callback) {
 
 		async_loop(0, sites.length, function(iteration, callback) {
 			getFaviconColor(sites[iteration].url, function(color) {
-				updateSiteColor(sites[iteration].id, color, function() {
+				var color = colorArrayToObject(color);
+				if (!colorsAreEqual(sites[iteration].color, color)) {
+					updateSiteColor(sites[iteration].id, color, function() {
+						callback();
+					});
+				} else {
 					callback();
-				});
+				}
 			});
 		}, function() {
 			callback(true);
