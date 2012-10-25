@@ -22,7 +22,11 @@ function resetStorageToDefault() {
 function getStorageVersion(callback) {
 	storage.get('version', function(items) {
 		if (!items || !items.version) {
-			return callback(1);
+			return callback({
+				major: 1,
+				minor: 0,
+				patch: 0
+			});
 		} else {
 			return callback(items.version);
 		}
