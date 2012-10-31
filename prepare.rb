@@ -3,8 +3,9 @@
 require "eregex"
 require "fileutils"
 
+project = File.basename(Dir.getwd)
 version = "200"
-prepared_dir = "../Tiles_#{version}"
+prepared_dir = "../#{project}_#{version}"
 
 FileUtils.rm_r("#{prepared_dir}", :verbose => true)
 FileUtils.cp_r("./", "#{prepared_dir}", :verbose => true)
