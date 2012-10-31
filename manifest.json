@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "manifest_version": 2,
   "description": "__MSG_extension_description__",
-  "options_page": "TILES_VERSION_ID__/options/options.html",
+  "options_page": "TILES_VERSION_ID_/options/options.html",
   "default_locale": "en",
   "minimum_chrome_version": "21.0.0.0",
 
@@ -18,38 +18,38 @@
   ],
 
   "icons": {
-    "16": "TILES_VERSION_ID__/icons/icon-bitty.png",
-    "48": "TILES_VERSION_ID__/icons/icon-small.png",
-    "128": "TILES_VERSION_ID__/icons/icon-large.png"
+    "16": "TILES_VERSION_ID_/icons/icon-bitty.png",
+    "48": "TILES_VERSION_ID_/icons/icon-small.png",
+    "128": "TILES_VERSION_ID_/icons/icon-large.png"
   },
 
   "chrome_url_overrides": {
-    "newtab": "TILES_VERSION_ID__/tab_page/tiles.html"
+    "newtab": "TILES_VERSION_ID_/tab_page/tiles.html"
   },
 
   "browser_action": {
-    "default_icon": "TILES_VERSION_ID__/icons/icon-bitty-gray.png",
+    "default_icon": "TILES_VERSION_ID_/icons/icon-bitty-gray.png",
     "default_title": "Tiles"
   },
 
   "background": {
-    "page": "TILES_VERSION_ID__/background.html"
+    "page": "TILES_VERSION_ID_/background.html"
   },
 
   "web_accessible_resources": [
-    "TILES_VERSION_ID__/tab_page/tiles.html",
-    "TILES_VERSION_ID__/tab_page/css/style.css",
-    "TILES_VERSION_ID__/tab_page/js/main.js",
-    "TILES_VERSION_ID__/shared/js/colors.js",
-    "TILES_VERSION_ID__/shared/js/files.js",
-    "TILES_VERSION_ID__/shared/js/messaging.js",
-    "TILES_VERSION_ID__/shared/js/storage.js",
-    "TILES_VERSION_ID__/shared/js/googleAnalytics.js",
-    "TILES_VERSION_ID__/shared/js/sites.js",
-    "TILES_VERSION_ID__/shared/js/utilities.js",
-    "TILES_VERSION_ID__/options/options.html",
-    "TILES_VERSION_ID__/options/css/style.css",
-    "TILES_VERSION_ID__/options/js/main.js",
-    "TILES_VERSION_ID__/persistent/user.css"
+    "TILES_VERSION_ID_/tab_page/tiles.html",
+    "TILES_VERSION_ID_/tab_page/css/style.css",
+    "TILES_VERSION_ID_/tab_page/js/main.js",
+    "TILES_VERSION_ID_/shared/js/colors.js",
+    "TILES_VERSION_ID_/shared/js/files.js",
+    "TILES_VERSION_ID_/shared/js/messaging.js",
+    "TILES_VERSION_ID_/shared/js/storage.js",
+    "TILES_VERSION_ID_/shared/js/googleAnalytics.js",
+    "TILES_VERSION_ID_/shared/js/sites.js",
+    "TILES_VERSION_ID_/shared/js/utilities.js",
+    "TILES_VERSION_ID_/options/options.html",
+    "TILES_VERSION_ID_/options/css/style.css",
+    "TILES_VERSION_ID_/options/js/main.js",
+    "TILES_VERSION_ID_/persistent/user.css"
   ]
 }

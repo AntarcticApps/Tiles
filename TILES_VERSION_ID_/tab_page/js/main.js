@@ -196,7 +196,7 @@ function showNoSitesMessage() {
 	var message = document.createElement('div');
 	message.setAttribute("class", "message");
 	message.innerHTML = "<p>" + chrome.i18n.getMessage("no_tiles_added")
-	 + "<span class='help'>" + chrome.i18n.getMessage("tab_page_no_tiles_added_help", ["<img src='/TILES_VERSION_ID__/icons/icon-bitty-gray.png'>"]) + "</span>"
+	 + "<span class='help'>" + chrome.i18n.getMessage("tab_page_no_tiles_added_help", ["<img src='/TILES_VERSION_ID_/icons/icon-bitty-gray.png'>"]) + "</span>"
 	 + "</p>";
 
 	document.getElementsByTagName('body')[0].appendChild(message);

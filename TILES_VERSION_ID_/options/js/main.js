@@ -96,7 +96,7 @@ $(document).ready(function() {
 			$("#sites").html("");
 			
 			if (!items || items.length == 0) {
-				$("#sites").prepend("<h4>" + chrome.i18n.getMessage('no_tiles_added') + "</h4><p class='message'>" + chrome.i18n.getMessage('options_no_tiles_added_help', ["<img src='/TILES_VERSION_ID__/icons/icon-bitty-gray.png'>"]) + "</p>");
+				$("#sites").prepend("<h4>" + chrome.i18n.getMessage('no_tiles_added') + "</h4><p class='message'>" + chrome.i18n.getMessage('options_no_tiles_added_help', ["<img src='/TILES_VERSION_ID_/icons/icon-bitty-gray.png'>"]) + "</p>");
 				$("#color-regenerate-btn").attr("disabled", "disabled");
 			} else {
 				var sites = items.reverse();
@@ -222,7 +222,7 @@ $(document).ready(function() {
 
 			getSitesCount(function(sitesCount) {
 				if (sitesCount == 0) {
-					$("#sites").prepend("<h4>" + chrome.i18n.getMessage('no_tiles_added') + "</h4><p class='message'>" + chrome.i18n.getMessage('options_no_tiles_added_help', ["<img src='/TILES_VERSION_ID__/icons/icon-bitty-gray.png'>"]) + "</p>");
+					$("#sites").prepend("<h4>" + chrome.i18n.getMessage('no_tiles_added') + "</h4><p class='message'>" + chrome.i18n.getMessage('options_no_tiles_added_help', ["<img src='/TILES_VERSION_ID_/icons/icon-bitty-gray.png'>"]) + "</p>");
 					$("#color-regenerate-btn").attr("disabled", "disabled");
 				}
 			});

@@ -3,7 +3,7 @@
 require "eregex"
 require "fileutils"
 
-VERSION_DIRECTORY_IDENTIFIER = "TILES_VERSION_ID__"
+VERSION_DIRECTORY_IDENTIFIER = "TILES_VERSION_ID_"
 
 project = File.basename(Dir.getwd)
 version = nil
@@ -38,4 +38,4 @@ def recursive_string_find_and_replace(dir, types_exp, match, replace)
 	system("find -E #{dir} -type f -iregex '#{types_exp}' -exec sed -i '' s/#{match}/#{replace}/g {} +")
 end
 
-recursive_string_find_and_replace(prepared_dir, "(.*\.html|.*\.css|.*\.js|.*\.json)", Regexp.escape("TILES_VERSION_ID__"), Regexp.escape("#{version}"))
+recursive_string_find_and_replace(prepared_dir, "(.*\.html|.*\.css|.*\.js|.*\.json)", Regexp.escape(VERSION_DIRECTORY_IDENTIFIER), Regexp.escape("#{version}"))
