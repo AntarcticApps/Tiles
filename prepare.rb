@@ -20,4 +20,4 @@ end
 match = Regexp.escape("\\.js")
 replace = Regexp.escape("_#{version}.js")
 
-exec("find #{prepared_dir} -type f -name '*.html' -exec sed -i '' s/#{match}/#{replace}/g {} +")
+exec("find -E #{prepared_dir} -type f -iregex '.*\.(html|json)' -exec sed -i '' s/#{match}/#{replace}/g {} +")
