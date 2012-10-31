@@ -4,7 +4,15 @@ require "eregex"
 require "fileutils"
 
 project = File.basename(Dir.getwd)
-version = "200"
+version = nil
+File.open("manifest.json") do |f|
+	f.any? do |line|
+		if /"version"/.match(line)
+			version = /[0-9]+.[0-9]+.[0-9]/.match(line).to_s.gsub(/\./) { "" }
+		end
+	end
+end
+
 prepared_dir = "../#{project}_#{version}"
 
 FileUtils.rm_r("#{prepared_dir}", :verbose => true)
