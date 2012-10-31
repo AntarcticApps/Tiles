@@ -29,7 +29,7 @@ def recursive_string_find_and_replace(dir, types_exp, match, replace)
 	system("find -E #{dir} -type f -iregex '#{types_exp}' -exec sed -i '' s/#{match}/#{replace}/g {} +")
 end
 
-types_to_replace = %w(js html css png)
+types_to_replace = %w(js html css)
 types_to_replace.each do |type|
 	recursive_string_find_and_replace(prepared_dir, "(.*\.html|.*/manifest\.json)", Regexp.escape("\\.#{type}"), Regexp.escape("_#{version}.#{type}"))
 end
