@@ -31,3 +31,7 @@ li {
 	float: right;
 	margin-top: 2px;
 }
+
+.note {
+	font-style: italic;
+}
