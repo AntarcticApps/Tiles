@@ -49,7 +49,7 @@
 		"placeholders": {
 			"icon": {
 				"content": "$1",
-				"example": "<img src='../../icons/icon-bitty-gray.png'>"
+				"example": "<img src='/TILES_VERSION_ID__/icons/icon-bitty-gray.png'>"
 			}
 		}
 	},

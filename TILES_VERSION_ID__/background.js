@@ -61,7 +61,7 @@ chrome.contextMenus.removeAll(function() {
 });
 
 function goToOptionsPage(newTab) {
-	var optionsURL = chrome.extension.getURL("options/options.html");
+	var optionsURL = chrome.extension.getURL("/TILES_VERSION_ID__/options/options.html");
 
 	if (newTab) {
 		chrome.tabs.create({
@@ -186,12 +186,12 @@ function setPopup(save, error, tabID) {
 	var details = {};
 
 	if (error) {
-		details.popup = 'browserAction/error.html';
+		details.popup = '/TILES_VERSION_ID__/browser_action/error.html';
 	} else {
 		if (save) {
-			details.popup = 'browserAction/save.html';
+			details.popup = '/TILES_VERSION_ID__/browser_action/save.html';
 		} else {
-			details.popup = 'browserAction/delete.html';
+			details.popup = '/TILES_VERSION_ID__/browser_action/delete.html';
 		}
 	}
 
@@ -263,9 +263,9 @@ function changeIcon(color, callback, tabID) {
 	var details = {};
 
 	if (color) {
-		details.path = '../icons/icon-bitty.png';
+		details.path = '/TILES_VERSION_ID__/icons/icon-bitty.png';
 	} else {
-		details.path = '../icons/icon-bitty-gray.png';
+		details.path = '/TILES_VERSION_ID__/icons/icon-bitty-gray.png';
 	}
 
 	details.tabId = tabID;

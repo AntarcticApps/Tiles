@@ -3,6 +3,8 @@
 require "eregex"
 require "fileutils"
 
+VERSION_DIRECTORY_IDENTIFIER = "TILES_VERSION_ID__"
+
 project = File.basename(Dir.getwd)
 version = nil
 File.open("manifest.json") do |f|
@@ -20,16 +22,17 @@ FileUtils.rm_r(Dir.glob("#{prepared_dir}/**/*.{psd}"), :verbose => true)
 FileUtils.rm(Dir.glob("#{prepared_dir}/**/.DS_Store"), :verbose => true)
 FileUtils.rm_r(["#{prepared_dir}/.git", "#{prepared_dir}/promos", "#{prepared_dir}/.gitignore", "#{prepared_dir}/prepare.rb", "#{prepared_dir}/tests"], :verbose => true)
 
-Dir.glob("#{prepared_dir}/**/*.{js,html,css}").each do |file|
-	new_name = File.dirname(file) + "/" + File.basename(file, File.extname(file)) + "_" + version + File.extname(file)
-	File.rename(file, new_name)
-end
+File.rename("#{prepared_dir}/#{VERSION_DIRECTORY_IDENTIFIER}", "#{prepared_dir}/#{version}")
+
+manifest_file_name = "#{prepared_dir}/manifest.json"
+manifest = File.read(manifest_file_name)
+manifest.gsub!(VERSION_DIRECTORY_IDENTIFIER, version)
+File.open(manifest_file_name, "w") { |file|
+	file.puts manifest
+}
 
 def recursive_string_find_and_replace(dir, types_exp, match, replace)
 	system("find -E #{dir} -type f -iregex '#{types_exp}' -exec sed -i '' s/#{match}/#{replace}/g {} +")
 end
 
-types_to_replace = %w(js html css)
-types_to_replace.each do |type|
-	recursive_string_find_and_replace(prepared_dir, "(.*\.html|.*/manifest\.json)", Regexp.escape("\\.#{type}"), Regexp.escape("_#{version}.#{type}"))
-end
+recursive_string_find_and_replace(prepared_dir, "(.*\.html|.*\.css|.*\.js|.*\.json)", Regexp.escape("TILES_VERSION_ID__"), Regexp.escape("#{version}"))
