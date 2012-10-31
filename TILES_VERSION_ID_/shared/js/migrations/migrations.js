@@ -34,12 +34,6 @@ function migrateStorage() {
 			}
 		} else {
 			console.log("Migration is not needed");
-
-									var notification = webkitNotifications.createHTMLNotification(
-						  '/TILES_VERSION_ID_/notifications/new.html'
-						);
-
-						notification.show();
 		}
 	});
 }
