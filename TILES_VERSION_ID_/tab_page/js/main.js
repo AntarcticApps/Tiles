@@ -183,9 +183,12 @@ function onTileClick(e) {
 		var translateY = sitesMidY - centerY;
 		target.style.webkitTransform = "translate(" + translateX + "px, " + translateY + "px) scale(" + scaleX + ", " + scaleY + ")";
 		target.style.background = "white";
+
 		setTimeout(function() {
 			document.body.style.visibility = "hidden";
 		}, CHANGE_LOCATION_DELAY);
+
+		window.onresize = null;
 
 		setTimeout(function() {
 			window.location = url;
