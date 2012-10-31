@@ -14,7 +14,8 @@
     "storage",
     "contextMenus",
     "<all_urls>",
-    "unlimitedStorage"
+    "unlimitedStorage",
+    "notifications"
   ],
 
   "icons": {

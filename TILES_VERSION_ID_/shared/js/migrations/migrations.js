@@ -23,6 +23,14 @@ function migrateStorage() {
 					migrate_1_to_2(function() {
 						console.log("Migration from 1.x.x to 2.x.x complete");
 						emitMessage("refresh");
+
+						var notification = webkitNotifications.createNotification(
+						  '/TILES_VERSION_ID_/icons/icon-small.png',
+						  'Tiles Updated',
+						  'Lorem ipsum...'
+						);
+
+						notification.show();
 					});
 				}
 			}
