@@ -12,7 +12,6 @@ File.open("manifest.json") do |f|
 		end
 	end
 end
-
 prepared_dir = "../#{project}_#{version}"
 
 FileUtils.rm_r("#{prepared_dir}", :verbose => true)
@@ -26,14 +25,11 @@ Dir.glob("#{prepared_dir}/**/*.{js,html,css}").each do |file|
 	File.rename(file, new_name)
 end
 
-match = Regexp.escape("\\.js")
-replace = Regexp.escape("_#{version}.js")
-system("find -E #{prepared_dir} -type f -iregex '(.*\.html|.*/manifest\.json)' -exec sed -i '' s/#{match}/#{replace}/g {} +")
+def recursive_string_find_and_replace(dir, types_exp, match, replace)
+	system("find -E #{dir} -type f -iregex '#{types_exp}' -exec sed -i '' s/#{match}/#{replace}/g {} +")
+end
 
-match = Regexp.escape("\\.html")
-replace = Regexp.escape("_#{version}.html")
-system("find -E #{prepared_dir} -type f -iregex '(.*\.html|.*/manifest\.json)' -exec sed -i '' s/#{match}/#{replace}/g {} +")
-
-match = Regexp.escape("\\.css")
-replace = Regexp.escape("_#{version}.css")
-system("find -E #{prepared_dir} -type f -iregex '(.*\.html|.*/manifest\.json)' -exec sed -i '' s/#{match}/#{replace}/g {} +")
+types_to_replace = %w(js html css png)
+types_to_replace.each do |type|
+	recursive_string_find_and_replace(prepared_dir, "(.*\.html|.*/manifest\.json)", Regexp.escape("\\.#{type}"), Regexp.escape("_#{version}.#{type}"))
+end
