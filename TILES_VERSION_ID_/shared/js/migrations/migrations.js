@@ -24,10 +24,8 @@ function migrateStorage() {
 						console.log("Migration from 1.x.x to 2.x.x complete");
 						emitMessage("refresh");
 
-						var notification = webkitNotifications.createNotification(
-						  '/TILES_VERSION_ID_/icons/icon-small.png',
-						  'Tiles Updated',
-						  'Lorem ipsum...'
+						var notification = webkitNotifications.createHTMLNotification(
+						  '/TILES_VERSION_ID_/notifications/new.html'
 						);
 
 						notification.show();
@@ -36,6 +34,12 @@ function migrateStorage() {
 			}
 		} else {
 			console.log("Migration is not needed");
+
+									var notification = webkitNotifications.createHTMLNotification(
+						  '/TILES_VERSION_ID_/notifications/new.html'
+						);
+
+						notification.show();
 		}
 	});
 }
