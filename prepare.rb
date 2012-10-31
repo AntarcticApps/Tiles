@@ -17,7 +17,7 @@ Dir.glob("#{prepared_dir}/**/*.{js}").each do |file|
 	File.rename(file, new_name)
 end
 
-# match = Regexp.escape(".js")
-# replace = Regexp.escape("_#{version}.js")
+match = Regexp.escape("\\.js")
+replace = Regexp.escape("_#{version}.js")
 
-# exec("find #{prepared_dir} -type f | cat")
+exec("find #{prepared_dir} -type f -name '*.html' -exec sed -i '' s/#{match}/#{replace}/g {} +")
