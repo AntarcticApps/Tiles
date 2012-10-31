@@ -24,6 +24,10 @@ html, body {
 	overflow: hidden;
 }
 
+html {
+	background: #fff;
+}
+
 #sites {
 	position: absolute;
 	top: 50%;
