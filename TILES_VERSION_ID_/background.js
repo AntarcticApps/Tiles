@@ -156,6 +156,10 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 				});
 			});
 		});
+	} else if (request.message == "openTab") {
+		chrome.tabs.create({
+			url: request.url
+		});
 	} else if (request.message == SITES_ADDED_MESSAGE
 		|| request.message == SITES_REMOVED_MESSAGE
 		|| request.message == SITE_UPDATED_MESSAGE
