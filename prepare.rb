@@ -1,17 +1,14 @@
 #!/usr/bin/env ruby
 
-require "eregex"
+require "fileutils"
 
-# @string1 = ".js"
-# @string2 = "_200.js"
+version = "200"
+prepared_dir = "../Tiles_#{version}"
 
-# @string1 = Regexp.escape(@string1)
-# @string2 = Regexp.escape(@string2)
+FileUtils.cp_r("./", "#{prepared_dir}", :verbose => true, :remove_destination => true)
 
-# exec("find ./ -type f | xargs sed -i 's/#{@string1}/#{@string2}/g'")
-
-Dir.glob("./**/*").each do |file|
-	if File.extname(file) == ".js"
-		puts file
-	end
-end
+# Dir.glob("#{prepared_dir}/**/*.{js}").each do |file|
+# 	new_name = File.basename(file, ".js") + "_" + version + ".js"
+# 	File.rename(file, new_name)
+# 	puts new_name
+# end
