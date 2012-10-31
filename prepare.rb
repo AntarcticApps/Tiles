@@ -16,7 +16,10 @@ File.open("manifest.json") do |f|
 end
 prepared_dir = "../#{project}_#{version}"
 
-FileUtils.rm_r("#{prepared_dir}", :verbose => true)
+if File.directory?("#{prepared_dir}")
+	FileUtils.rm_r("#{prepared_dir}", :verbose => true)
+end
+
 FileUtils.cp_r("./", "#{prepared_dir}", :verbose => true)
 FileUtils.rm_r(Dir.glob("#{prepared_dir}/**/*.{psd}"), :verbose => true)
 FileUtils.rm(Dir.glob("#{prepared_dir}/**/.DS_Store"), :verbose => true)
