@@ -56,7 +56,7 @@ describe("Storage", function() {
 			});
 		});
 
-		it("should default to one if it does not exist", function() {
+		it("should default to 1.0.0 if it does not exist", function() {
 			var version = null;
 
 			runs(function() {
@@ -70,7 +70,11 @@ describe("Storage", function() {
 			}, "the storage version to be gotten", 500);
 
 			runs(function() {
-				expect(version).toMatch(1);
+				expect(version).toEqual({
+					major: 1,
+					minor: 0,
+					patch: 0
+				});
 			});
 		});
 	});
