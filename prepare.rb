@@ -10,7 +10,7 @@ version = nil
 File.open("manifest.json") do |f|
 	f.any? do |line|
 		if /"version"/.match(line)
-			version = /[0-9]+.[0-9]+.[0-9]/.match(line).to_s.gsub(/\./) { "" }
+			version = /[0-9]+.[0-9]+.[0-9]/.match(line).to_s.gsub(/\./) { "_" }
 		end
 	end
 end
