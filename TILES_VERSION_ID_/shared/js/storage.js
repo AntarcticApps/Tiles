@@ -8,7 +8,7 @@ chrome.storage.onChanged.addListener(function(changes, areaName) {
 			writeUserStylesheet();
 		}
 
-		console.log("Storage changed ", changes);
+		console.log("Storage changed", changes);
 	}
 });
 
