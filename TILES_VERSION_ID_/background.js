@@ -1,13 +1,7 @@
-var lastFocusedWindowID = 1;
-
 function init() {
 	console.log("Tiles background page started");
 
-	chrome.windows.get(chrome.windows.WINDOW_ID_CURRENT, { populate: true }, function(window) {
-		if (window.type == 'normal') {
-			lastFocusedWindowID = chrome.windows.WINDOW_ID_CURRENT;
-		}
-
+	chrome.windows.getLastFocused({ populate: true }, function(window) {
 		updateWindow(window);
 	});
 
@@ -41,10 +35,6 @@ chrome.windows.onFocusChanged.addListener(function(windowID) {
 	}
 
 	chrome.windows.get(windowID, { populate: true }, function(window) {
-		if (window.type == 'normal') {
-			lastFocusedWindowID = windowID;
-		}
-
 		updateWindow(window);
 	});
 });
@@ -173,7 +163,7 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 function getFocusedTab(callback) {
-	chrome.windows.get(lastFocusedWindowID, { populate: true }, function(window) {
+	chrome.windows.getLastFocused({ populate: true }, function(window) {
 		if (window && window.type != 'normal') {
 			return callback(null);
 		}
