@@ -104,7 +104,7 @@ html {
 
 	color: #fff;
 
-	box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2),
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15),
 		inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 
 	-webkit-user-select: none;
@@ -116,12 +116,12 @@ html {
 .tile:active {
 	text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
 
-	box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2),
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15),
 		inset 0 0 0 2px rgba(255, 255, 255, 0.4);
 }
 
 .tile:active {
-	box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2),
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15),
 		inset 0 0 0 2px rgba(255, 255, 255, 0.6);
 }
 
