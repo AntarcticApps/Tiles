@@ -5,7 +5,7 @@ function migrateStorage() {
 	var extensionVersion = getExtensionVersion();
 
 	getStorageVersion(function(storageVersion) {
-		console.log("Check to see if a migration is needed: storage is at %s.%s.%s, extension is at %s.%s.%s",
+		console.log("storage version: %s.%s.%s, extension version: %s.%s.%s",
 				storageVersion.major,
 				storageVersion.minor,
 				storageVersion.patch,
@@ -14,7 +14,7 @@ function migrateStorage() {
 				extensionVersion.patch);
 
 		if (!versionsAreEqual(extensionVersion, storageVersion)) {
-			console.log("Migration is needed");
+			console.log("Migration may be needed - version did change");
 			setStorageVersion(extensionVersion);
 
 			if (storageVersion.major == 1) {
@@ -23,17 +23,14 @@ function migrateStorage() {
 					migrate_1_to_2(function() {
 						console.log("Migration from 1.x.x to 2.x.x complete");
 						emitMessage("refresh");
-
-						var notification = webkitNotifications.createHTMLNotification(
-						  '/TILES_VERSION_ID_/notifications/new.html'
-						);
-
-						notification.show();
 					});
 				}
 			}
+
+			var notification = webkitNotifications.createHTMLNotification('/TILES_VERSION_ID_/notifications/new.html');
+			notification.show();
 		} else {
-			console.log("Migration is not needed");
+			console.log("Migration is not needed - version did not change");
 		}
 	});
 }
