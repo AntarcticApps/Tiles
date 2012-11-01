@@ -160,6 +160,8 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 		chrome.tabs.create({
 			url: request.url
 		});
+
+		sendResponse({ message: "opened" });
 	} else if (request.message == SITES_ADDED_MESSAGE
 		|| request.message == SITES_REMOVED_MESSAGE
 		|| request.message == SITE_UPDATED_MESSAGE

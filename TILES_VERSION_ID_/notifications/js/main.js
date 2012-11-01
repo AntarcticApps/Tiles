@@ -5,9 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			link.onclick = function(e) {
 				e.preventDefault();
 				
-				chrome.extension.sendMessage({ message: "openTab", url: link.href }, function(response) {
-					window.close();
-				});
+				chrome.extension.sendMessage({ message: "openTab", url: link.href }, function(response) { });
 			}
 		})(links[i]);
 	}
