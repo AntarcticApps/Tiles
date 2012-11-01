@@ -89,7 +89,7 @@ canvas {
 }
 
 .nav-tabs > li > a > i.icon-chevron-right {
-	background-image: url("TILES_VERSION_ID_/shared/images/glyphicons-halflings.png") !important;
+	background-image: url("/TILES_VERSION_ID_/shared/images/glyphicons-halflings.png") !important;
 	float: right;
 	margin-top: 2px;
 	opacity: 0.5;
