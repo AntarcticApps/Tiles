@@ -36,6 +36,7 @@ function init() {
 
 		var abbreviation = document.getElementById('abbreviation').value;
 		chrome.extension.sendMessage({ message: "save", abbreviation: abbreviation }, function(response) {
+			sendMessageToExtensionTabs("refresh");
 			window.close();
 		});
 

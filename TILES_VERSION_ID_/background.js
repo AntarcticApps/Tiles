@@ -199,9 +199,7 @@ function setPopup(save, error, tabID) {
 /**
  * Updates all of the windows.
  */
-function updateAllWindows() {
-	sendMessageToExtensionTabs("refresh");
-	
+function updateAllWindows() {	
 	chrome.windows.getAll({ populate: true }, function(windows) {
 		console.log('Updating all windows...');
 

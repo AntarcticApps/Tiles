@@ -42,6 +42,7 @@ function init() {
 		_gaq.push(['_trackEvent', 'Popup Rename Button', 'clicked']);
 
 		chrome.extension.sendMessage({ message: "setAbbreviation", abbreviation: document.getElementById('abbreviation').value }, function(response) {
+			sendMessageToExtensionTabs("refresh");
 			window.close();
 		});
 
@@ -52,6 +53,7 @@ function init() {
 		_gaq.push(['_trackEvent', 'Popup Delete Button', 'clicked']);
 
 		chrome.extension.sendMessage({ message: "delete" }, function(response) {
+			sendMessageToExtensionTabs("refresh");
 			window.close();
 		});
 

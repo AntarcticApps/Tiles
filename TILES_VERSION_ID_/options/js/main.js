@@ -226,6 +226,8 @@ $(document).ready(function() {
 					$("#color-regenerate-btn").attr("disabled", "disabled");
 				}
 			});
+			
+			sendMessageToExtensionTabs("refresh");
 		});
 	}
 });
