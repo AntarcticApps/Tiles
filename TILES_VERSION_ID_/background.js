@@ -50,6 +50,16 @@ chrome.contextMenus.removeAll(function() {
 	});
 });
 
+chrome.storage.onChanged.addListener(function(changes, areaName) {
+	if (areaName == "sync") {
+		if (changes.backgroundColor) {
+			writeUserStylesheet();
+		}
+
+		console.log("Storage changed", changes);
+	}
+});
+
 function goToOptionsPage(newTab) {
 	var optionsURL = chrome.extension.getURL("/TILES_VERSION_ID_/options/options.html");
 
@@ -153,9 +163,7 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 
 		sendResponse({ message: "opened" });
 	} else if (request.message == SITES_ADDED_MESSAGE
-		|| request.message == SITES_REMOVED_MESSAGE
-		|| request.message == SITE_UPDATED_MESSAGE
-		|| request.message == BACKGROUND_COLOR_UPDATED_MESSAGE) {
+		|| request.message == SITES_REMOVED_MESSAGE) {
 		writeUserStylesheet();
 	}
 
