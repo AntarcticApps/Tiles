@@ -4,6 +4,11 @@ chrome.storage.onChanged.addListener(function(changes, areaName) {
 	}
 });
 
+/**
+ * Detect if the version changed from a new version to an older version
+ * @param  {Object}		Object of changes (provided from chrome.storage.onChanged listener)
+ * @return {boolean}	Whether or not the version backtracked
+ */
 function didVersionBacktrack(changes) {
 	var version = changes.version;
 
@@ -22,6 +27,11 @@ function didVersionBacktrack(changes) {
 	return false;
 }
 
+/**
+ * Revert changes from a changes object.
+ * @param  {Object}		Object of changes (provided from chrome.storage.onChanged listener)
+ * @param  {Function}	Completion callback
+ */
 function revertChanges(changes, callback) {
 	var data = {};
 
