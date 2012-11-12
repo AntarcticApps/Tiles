@@ -1,6 +1,7 @@
 var ready;
 
 beforeEach(function() {
+	ready = false;
 	storage = TEST_STORAGE;
 
 	storage.clear(function() {
