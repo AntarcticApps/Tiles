@@ -1,5 +1,5 @@
 var storage = chrome.storage.sync;
-const DEFAULT_STORAGE = chrome.storage.sync;
+const DEFAULT_STORAGE = chrome.storage.local;
 const TEST_STORAGE = chrome.storage.local;
 
 /**
