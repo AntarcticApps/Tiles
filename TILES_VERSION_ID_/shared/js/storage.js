@@ -1,6 +1,7 @@
-var storage = chrome.storage.sync;
 const DEFAULT_STORAGE = chrome.storage.local;
 const TEST_STORAGE = chrome.storage.local;
+
+var storage = DEFAULT_STORAGE;
 
 /**
  * Reset the storage to the default storage for normal use.
