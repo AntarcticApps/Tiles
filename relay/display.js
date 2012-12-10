@@ -1,5 +1,13 @@
 var displayListener = new Listener();
 
+document.addEventListener("DOMContentLoaded", function(){
+	document.write('<canvas width="512" height="512" style="display: none"></canvas>');
+
+	var backup;
+
+	relay();
+}, false);
+
 displayListener.onEnter = function(part) {
 	if (part instanceof Describe || part instanceof It) {
 		var prefix = "";
@@ -35,7 +43,13 @@ displayListener.onExit = function(part) {
 		} else if (!alreadyFailed) {
 			document.getElementById(prefix + "-" + relevantParent.id).style.color = "red";
 			document.getElementById(prefix + "-" + relevantParent.id).dataset['failed'] = true;
-			document.write(part.callerLine);
+			
+			for (var i = 0; i < part.callStack.length; i++) {
+				document.write(part.callStack[i]);
+				if (i < part.callStack.length - 2) {
+					document.write("<br>");
+				}
+			}
 		}
 	}
 

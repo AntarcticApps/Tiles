@@ -1,14 +1,44 @@
+const TEST_DOMAIN = chrome.extension.getURL("/relay/favicon_test/index.html");
+var backup;
+
+beforeEach(function(done) {
+	if (DEFAULT_STORAGE == TEST_STORAGE) {
+		// Storage units are the same
+		storage.get(null, function(items) {
+			backup = items;
+
+			storage.clear(function() {
+				storage.get(null, function(items) {
+					done();
+				});
+			});
+		});
+		
+	} else {
+		// Storage units are not the same
+		storage = TEST_STORAGE;
+
+		storage.clear(function() {
+			done();
+		});
+	}
+});
+
+afterEach(function(done) {
+	if (DEFAULT_STORAGE == TEST_STORAGE) {
+		// Storage units are the same
+		storage.clear(function() {
+			storage.set(backup, function() {
+				done();
+			});
+		});
+	} else {
+		// Storage units are not the same
+		storage = DEFAULT_STORAGE;
+	}
+});
+
 describe("A site", function() {
-	var server;
-
-	beforeEach(function() {
-		server = sinon.fakeServer.create();
-	});
-
-	afterEach(function() {
-		server.restore();
-	});
-
 	describe("object", function() {
 		describe("should be created", function() {
 			it("given a color", function() {
@@ -16,17 +46,14 @@ describe("A site", function() {
 				var url = "http://www.antarcticapps.com/";
 				var abbreviation = "Aa";
 
-				runs(function() {
+				runs(function(done) {
 					createSite(url, abbreviation, [1, 4, 9, 255], function(s) {
 						site = s;
+						done();
 					});
 				});
 
-				waitsFor(function() {
-					return site != null;
-				}, "the site to be created", 500);
-
-				runs(function() {
+				runs(function(done) {
 					expect(site).toEqual({
 						url: url,
 						abbreviation: abbreviation,
@@ -37,6 +64,7 @@ describe("A site", function() {
 							alpha: 255
 						}
 					});
+					done();
 				});
 			});
 
@@ -45,19 +73,14 @@ describe("A site", function() {
 				var url = "/";
 				var abbreviation = "Aa";
 
-				runs(function() {
+				runs(function(done) {
 					createSite(url, abbreviation, null, function(s) {
 						site = s;
+						done();
 					});
-
-					server.respond();
 				});
 
-				waitsFor(function() {
-					return site != null;
-				}, "the site to be created", 5000);
-
-				runs(function() {
+				runs(function(done) {
 					expect(site).toEqual({
 						url: url,
 						abbreviation: abbreviation,
@@ -68,27 +91,23 @@ describe("A site", function() {
 							alpha: 255
 						}
 					});
+					done();
 				});
 			});
 
 			it("with a good URL", function() {
-				server.restore();
-
 				var site = null;
 				var url = "http://www.antarcticapps.com/";
 				var abbreviation = "Aa";
 
-				runs(function() {
+				runs(function(done) {
 					createSite(url, abbreviation, null, function(s) {
 						site = s;
+						done();
 					});
-				});
+				}, 5000);
 
-				waitsFor(function() {
-					return site != null;
-				}, "the site to be created", 5000);
-
-				runs(function() {
+				runs(function(done) {
 					expect(site).toEqual({
 						url: url,
 						abbreviation: abbreviation,
@@ -99,6 +118,7 @@ describe("A site", function() {
 							alpha: 255
 						}
 					});
+					done();
 				});
 			});
 		});
@@ -106,8 +126,9 @@ describe("A site", function() {
 		describe("should be able to be assigned a color", function() {
 			var site;
 
-			beforeEach(function() {
+			beforeEach(function(done) {
 				site = {};
+				done();
 			});
 
 			it("given a non-null color", function() {
@@ -137,47 +158,43 @@ describe("A site", function() {
 	describe("in storage", function() {
 		var site;
 
-		beforeEach(function() {
+		beforeEach(function(done) {
 			site = null;
+			done();
 		});
 
 		describe("when removed", function() {
 			var sites;
 			var removedSite;
 
-			beforeEach(function() {
+			beforeEach(function(done) {
 				site = null;
 
-				runs(function() {
-					loop(0, 2, function(iteration, callback) {
-						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
-							addSites([site], function() {
-								callback();
-							});
-						});
-					}, function() {
-						removeSites([1], function() {
-							getAllSites(function(s) {
-								storage.get("s1", function(items) {
-									removedSite = items.s1;
-								});
-
-								sites = s;
-							});
+				loop(0, 2, function(iteration, callback) {
+					createSite(TEST_DOMAIN, "" + iteration, [255, 255, 255, 255], function(site) {
+						addSites([site], function() {
+							callback();
 						});
 					});
-				});
-				
-				waitsFor(function() {
-					return sites != null;
-				}, "the sites to be returned", 1000);
+				}, function() {
+					removeSites([1], function() {
+						getAllSites(function(s) {
+							storage.get("s1", function(items) {
+								removedSite = items.s1;
+								done();
+							});
+
+							sites = s;
+						});
+					});
+				}, 1000);
 			});
 
 			it("should not exist in storage", function() {
-				runs(function() {
+				runs(function(done) {
 					expect(sites.length).toBe(1);
 					expect(sites[0]).toEqual({
-						url: "/",
+						url: TEST_DOMAIN,
 						abbreviation: "" + 0,
 						color: {
 							red: 255,
@@ -189,48 +206,44 @@ describe("A site", function() {
 					});
 					expect(sites[1]).toBeUndefined();
 					expect(removedSite).toBeUndefined();
+					done();
 				});
 			});
 
 			it("should not be in the ids list", function() {
 				var ids = null;
 
-				runs(function() {
+				runs(function(done) {
 					getSortedSiteIDs(function(i) {
 						ids = i;
+						done();
 					});
-				});
+				}, 500);
 
-				waitsFor(function() {
-					return ids != null;
-				}, "the ids to be gotten", 500);
-
-				runs(function() {
-					expect(ids).toEqual([]);
+				runs(function(done) {
+					expect(ids).toEqual([0]);
+					done();
 				});
 			});
 		});
 
 		it("should be able to change its abbreviation", function() {
-			runs(function() {
-				createSite("/", "Ab", [255, 255, 255, 255], function(created) {
+			runs(function(done) {
+				createSite(TEST_DOMAIN, "Ab", [255, 255, 255, 255], function(created) {
 					addSites([created], function() {
 						updateSiteAbbreviation(created.id, "Re", function() {
 							getSite(created.id, function(s) {
 								site = s;
+								done();
 							});
 						});
 					});
 				});
-			});
-			
-			waitsFor(function() {
-				return site != null;
-			}, "the site to be returned", 500);
+			}, 500);
 
-			runs(function() {
+			runs(function(done) {
 				expect(site).toEqual({
-					url: "/",
+					url: TEST_DOMAIN,
 					abbreviation: "Re",
 					color: {
 						red: 255,
@@ -240,29 +253,27 @@ describe("A site", function() {
 					},
 					id: 0
 				});
+				done();
 			});
 		});
 
 		it("should be able to change its color", function() {
-			runs(function() {
-				createSite("/", "Ab", [255, 255, 255, 255], function(created) {
+			runs(function(done) {
+				createSite(TEST_DOMAIN, "Ab", [255, 255, 255, 255], function(created) {
 					addSites([created], function() {
 						updateSiteColor(created.id, [0, 0, 0], function() {
 							getSite(created.id, function(s) {
 								site = s;
+								done();
 							});
 						});
 					});
 				});
-			});
-			
-			waitsFor(function() {
-				return site != null;
-			}, "the site to be returned", 500);
+			}, 500);
 
-			runs(function() {
+			runs(function(done) {
 				expect(site).toEqual({
-					url: "/",
+					url: TEST_DOMAIN,
 					abbreviation: "Ab",
 					color: {
 						red: 0,
@@ -272,31 +283,27 @@ describe("A site", function() {
 					},
 					id: 0
 				});
+				done();
 			});
 		});
 
 		it("should be able to change its custom color", function() {
-			runs(function() {
-				createSite("/", "Ab", [255, 255, 255, 255], function(created) {
+			runs(function(done) {
+				createSite(TEST_DOMAIN, "Ab", [255, 255, 255, 255], function(created) {
 					addSites([created], function() {
 						updateSiteCustomColor(created.id, [0, 0, 0], function() {
 							getSite(created.id, function(s) {
 								site = s;
+								done();
 							});
 						});
 					});
 				});
+			}, 500);
 
-				server.respond();
-			});
-			
-			waitsFor(function() {
-				return site != null;
-			}, "the site to be returned", 500);
-
-			runs(function() {
+			runs(function(done) {
 				expect(site).toEqual({
-					url: "/",
+					url: TEST_DOMAIN,
 					abbreviation: "Ab",
 					color: {
 						red: 255,
@@ -312,27 +319,25 @@ describe("A site", function() {
 					},
 					id: 0
 				});
+				done();
 			});
 		});
 
 		it("should be accessible by its URL", function() {
-			runs(function() {
-				createSite("/", "Ab", [255, 255, 255, 255], function(created) {
+			runs(function(done) {
+				createSite(TEST_DOMAIN, "Ab", [255, 255, 255, 255], function(created) {
 					addSites([created], function() {
-						getSiteForURL("/", function(s) {
+						getSiteForURL(TEST_DOMAIN, function(s) {
 							site = s;
+							done();
 						});
 					});
 				});
-			});
-			
-			waitsFor(function() {
-				return site != null;
-			}, "the site to be returned", 500);
+			}, 500);
 
-			runs(function() {
+			runs(function(done) {
 				expect(site).toEqual({
-					url: "/",
+					url: TEST_DOMAIN,
 					abbreviation: "Ab",
 					color: {
 						red: 255,
@@ -342,95 +347,77 @@ describe("A site", function() {
 					},
 					id: 0
 				});
+				done();
 			});
 		});
 
 		it("abbreviation should be accessible by its URL", function() {
 			var abbreviation = null;
 
-			runs(function() {
-				createSite("/", "Te", [255, 255, 255, 255], function(created) {
+			runs(function(done) {
+				createSite(TEST_DOMAIN, "Te", [255, 255, 255, 255], function(created) {
 					addSites([created], function() {
-						getSiteAbbreviationForURL("/", function(abbrev) {
+						getSiteAbbreviationForURL(TEST_DOMAIN, function(abbrev) {
 							abbreviation = abbrev;
+							done();
 						});
 					});
 				});
+			}, 500);
 
-				server.respond();
-			});
-			
-			waitsFor(function() {
-				return abbreviation != null;
-			}, "the abbreviation to be returned", 500);
-
-			runs(function() {
+			runs(function(done) {
 				expect(abbreviation).toMatch("Te");
+				done();
 			});
 		});
 	});
 });
 
 describe("Site storage", function() {
-	var server = null;
-
-	beforeEach(function() {
-		server = sinon.fakeServer.create();
-	});
-
-	afterEach(function() {
-		server.restore();
-	});
-
 	describe("when requesting a next ID", function() {
 		it("should default to zero", function() {
 			var id = null;
 
-			runs(function() {
+			runs(function(done) {
 				getNextID(function(i) {
 					id = i;
+					done();
 				});
-			});
-			
-			waitsFor(function() {
-				return id != null;
-			}, "the ID to be set", 500);
+			}, 500);
 
-			runs(function() {
+			runs(function(done) {
 				expect(id).toBe(0);
+				done();
 			});
 		});
 
 		it("should increment after adding a site", function() {
 			var id = null;
 
-			runs(function() {
-				createSite("/", "Ab", [255, 255, 255, 255], function(site) {
+			runs(function(done) {
+				createSite(TEST_DOMAIN, "Ab", [255, 255, 255, 255], function(site) {
 					addSites([site], function() {
 						getNextID(function(i) {
 							id = i;
 						});
 					});
 				});
-			});
-			
-			waitsFor(function() {
-				return id != null;
-			}, "the ID to be set", 500);
+			}, 500);
 
-			runs(function() {
+			runs(function(done) {
 				expect(id).toBe(1);
+				done();
 			});
 		});
 
 		it("should increase by the amount of sites added", function() {
 			var id = null;
 
-			runs(function() {
+			runs(function(done) {
 				var sites = [];
 
 				async_loop(0, 2, function(iteration, callback) {
-					createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
+					createSite(TEST_DOMAIN, "" + iteration, [255, 255, 255, 255], function(site) {
 						sites.push(site);
 						callback();
 					});
@@ -441,14 +428,11 @@ describe("Site storage", function() {
 						});
 					});
 				});
-			});
-			
-			waitsFor(function() {
-				return id != null;
-			}, "the ID to be set", 500);
+			}, 500);
 
-			runs(function() {
+			runs(function(done) {
 				expect(id).toBe(2);
+				done();
 			});
 		});
 	});
@@ -457,41 +441,28 @@ describe("Site storage", function() {
 		var id, site;
 
 		describe("using add sites", function() {
-			var done;
-
-			beforeEach(function() {
-				done = false;
-
-				runs(function() {
-					createSite("/", "Ab", [255, 255, 255, 255], function(site) {
-						addSites([site], function() {
-							done = true;
-						});
+			beforeEach(function(done) {
+				createSite(TEST_DOMAIN, "Ab", [255, 255, 255, 255], function(site) {
+					addSites([site], function() {
+						done();
 					});
 				});
-
-				waitsFor(function() {
-					return done;
-				}, "the site to finish saving", 500);
 			});
 
 			it("should exist in storage", function() {
 				var sites = null;
 				
-				runs(function() {
+				runs(function(done) {
 					getAllSites(function(s) {
 						sites = s;
+						done();
 					});
-				});
+				}, 500);
 
-				waitsFor(function() {
-					return sites != null;
-				}, "the sites to be returned", 500);
-
-				runs(function() {
+				runs(function(done) {
 					expect(sites.length).toBe(1);
 					expect(sites[0]).toEqual({
-						url: "/",
+						url: TEST_DOMAIN,
 						abbreviation: "Ab",
 						color: {
 							red: 255,
@@ -501,24 +472,23 @@ describe("Site storage", function() {
 						},
 						id: 0
 					});
+					done();
 				});
 			});
 
 			it("should cause an update to sites count", function() {
 				var sitesCount = null;
 
-				runs(function() {
+				runs(function(done) {
 					getSitesCount(function(s) {
 						sitesCount = s;
+						done();
 					});
-				});
+				}, 500);
 
-				waitsFor(function() {
-					return sitesCount != null;
-				}, "the sites count to be accessed", 500);
-
-				runs(function() {
+				runs(function(done) {
 					expect(sitesCount).toBe(1);
+					done();
 				});
 			});
 		});
@@ -528,18 +498,16 @@ describe("Site storage", function() {
 		it("should default to a blank array", function() {
 			var ids = null;
 
-			runs(function() {
+			runs(function(done) {
 				getSortedSiteIDs(function(i) {
 					ids = i;
+					done();
 				});
-			})
+			}, 500);
 
-			waitsFor(function() {
-				return ids != null;
-			}, "the sorted site IDs to be set", 500);
-
-			runs(function() {
+			runs(function(done) {
 				expect(ids).toEqual([]);
+				done();
 			});
 		});
 
@@ -547,22 +515,20 @@ describe("Site storage", function() {
 			it("should not be empty", function() {
 				var ids = null;
 
-				runs(function() {
-					createSite("/", "1", [255, 255, 255, 255], function(site) {
+				runs(function(done) {
+					createSite(TEST_DOMAIN, "1", [255, 255, 255, 255], function(site) {
 						addSites([site], function() {
 							getSortedSiteIDs(function(i) {
-								ids = i;
+								ids = i;		
+								done();
 							});
 						});
 					});
-				})
+				}, 500);
 
-				waitsFor(function() {
-					return ids != null;
-				}, "the sorted site IDs to be set", 500);
-
-				runs(function() {
+				runs(function(done) {
 					expect(ids).toEqual([0]);
+					done();
 				});
 			});
 		});
@@ -571,11 +537,11 @@ describe("Site storage", function() {
 			it("should not be empty", function() {
 				var ids = null;
 
-				runs(function() {
+				runs(function(done) {
 					var sites = [];
 
 					loop(0, 2, function(iteration, callback) {
-						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
+						createSite(TEST_DOMAIN, "" + iteration, [255, 255, 255, 255], function(site) {
 							sites.push(site);
 							callback();
 						});
@@ -583,17 +549,15 @@ describe("Site storage", function() {
 						addSites(sites, function() {
 							getSortedSiteIDs(function(i) {
 								ids = i;
+								done();
 							});
 						});
 					});
-				});
+				}, 500);
 
-				waitsFor(function() {
-					return ids != null;
-				}, "the sorted site IDs to be set", 500);
-
-				runs(function() {
+				runs(function(done) {
 					expect(ids).toEqual([0,1]);
+					done();
 				});
 			});
 		});
@@ -602,42 +566,39 @@ describe("Site storage", function() {
 			var sites;
 			var ids;
 
-			beforeEach(function() {
+			beforeEach(function(done) {
 				sites = [];
 				ids = null;
 
-				runs(function() {
-					loop(0, 2, function(iteration, callback) {
-						createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
-							sites.push(site);
-							callback();
-						});
-					}, function() {
-						addSites(sites, function() {
-							reorderSite(1, 0, function() {
-								getSortedSiteIDs(function(i) {
-									ids = i;
-								});
+				loop(0, 2, function(iteration, callback) {
+					createSite(TEST_DOMAIN, "" + iteration, [255, 255, 255, 255], function(site) {
+						sites.push(site);
+						callback();
+					});
+				}, function() {
+					addSites(sites, function() {
+						reorderSite(1, 0, function() {
+							getSortedSiteIDs(function(i) {
+								ids = i;
+								done();
 							});
 						});
 					});
 				});
-
-				waitsFor(function() {
-					return ids != null;
-				}, "the sorted site IDs to be set", 500);
-			});
+			}, 500);
 
 			it("should not be empty", function() {
-				runs(function() {
+				runs(function(done) {
 					expect(ids.length).toBe(2);
+					done();
 				});
 			});
 
 			it("should have the sites in the right order", function() {
-				runs(function() {
+				runs(function(done) {
 					expect(ids[0]).toBe(1);
 					expect(ids[1]).toBe(0);
+					done();
 				});
 			});
 		});
@@ -646,38 +607,34 @@ describe("Site storage", function() {
 	describe("when multiple sites are saved", function() {
 		var sites;
 
-		beforeEach(function() {
+		beforeEach(function(done) {
 			sites = null;
 
-			runs(function() {
-				loop(0, 2, function(iteration, callback) {
-					createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
-						addSites([site], function() {
-							callback();
-						});
-					});
-				}, function() {
-					getAllSites(function(s) {
-						sites = s;
+			loop(0, 2, function(iteration, callback) {
+				createSite(TEST_DOMAIN, "" + iteration, [255, 255, 255, 255], function(site) {
+					addSites([site], function() {
+						callback();
 					});
 				});
+			}, function() {
+				getAllSites(function(s) {
+					sites = s;
+					done();
+				});
 			});
-			
-			waitsFor(function() {
-				return sites != null;
-			}, "the sites to be saved and retrieved", 500);
-		});
+		}, 500);
 
 		it("should contain the correct number of sites", function() {
-			runs(function() {
+			runs(function(done) {
 				expect(sites.length).toBe(2);
+				done();
 			});
 		});
 
 		it("should contain the right sites", function() {
-			runs(function() {
+			runs(function(done) {
 				expect(sites[0]).toEqual({
-					url: "/",
+					url: TEST_DOMAIN,
 					abbreviation: "" + 0,
 					color: {
 						red: 255,
@@ -688,7 +645,7 @@ describe("Site storage", function() {
 					id: 0
 				});
 				expect(sites[1]).toEqual({
-					url: "/",
+					url: TEST_DOMAIN,
 					abbreviation: "" + 1,
 					color: {
 						red: 255,
@@ -698,6 +655,7 @@ describe("Site storage", function() {
 					},
 					id: 1
 				});
+				done();
 			});
 		});
 	});
@@ -705,40 +663,36 @@ describe("Site storage", function() {
 	describe("when multiple sites are removed", function() {
 		var sites;
 
-		beforeEach(function() {
+		beforeEach(function(done) {
 			sites = null;
 
-			runs(function() {
-				loop(0, 3, function(iteration, callback) {
-					createSite("/", "" + iteration, [255, 255, 255, 255], function(site) {
-						addSites([site], function() {
-							callback();
-						});
+			loop(0, 3, function(iteration, callback) {
+				createSite(TEST_DOMAIN, "" + iteration, [255, 255, 255, 255], function(site) {
+					addSites([site], function() {
+						callback();
 					});
-				}, function() {
-					removeSites([0, 2], function() {
-						getAllSites(function(s) {
-							sites = s;
-						});
+				});
+			}, function() {
+				removeSites([0, 2], function() {
+					getAllSites(function(s) {
+						sites = s;
+						done();
 					});
 				});
 			});
-			
-			waitsFor(function() {
-				return sites != null;
-			}, "the sites to be removed and retrieved", 500);
-		});
+		}, 500);
 
 		it("should contain the correct number of sites", function() {
-			runs(function() {
+			runs(function(done) {
 				expect(sites.length).toBe(1);
+				done();
 			});
 		});
 
 		it("should contain the right sites", function() {
-			runs(function() {
+			runs(function(done) {
 				expect(sites[0]).toEqual({
-					url: "/",
+					url: TEST_DOMAIN,
 					abbreviation: "" + 1,
 					color: {
 						red: 255,
@@ -750,49 +704,40 @@ describe("Site storage", function() {
 				});
 				expect(sites[1]).toBeUndefined();
 				expect(sites[2]).toBeUndefined();
+				done();
 			});
 		});
 	});
 
 	describe("when updating the favicon colors", function() {
 		it("should update all the sites colors", function() {
-			var success = null;
 			var sites = null;
 
-			server.restore();
-
-			runs(function() {
+			runs(function(done) {
 				createSite("http://antarcticapps.com/", "Aa", [255, 255, 255, 255], function(site) {
 					addSites([site], function() {
 						updateFaviconColorForAllSites(function(s) {
-							success = s;
+							done();
 						});
 					});
 				});
-			});
-			
-			waitsFor(function() {
-				return success != null;
-			}, "the update favicon color operation to complete", 2000);
+			}, 2000);
 
-			runs(function() {
+			runs(function(done) {
 				getAllSites(function(s) {
 					sites = s;
+					done();
 				});
 			});
 
-			waitsFor(function() {
-				return sites != null;
-			}, "the sites to be gotten", 500);
-
-			runs(function() {
-				expect(success).toBe(true);
+			runs(function(done) {
 				expect(sites[0].color).toNotEqual({
 					red: 255,
 					green: 255,
 					blue: 255,
 					alpha: 255
-				});	
+				});
+				done();
 			});
 		});
 	});

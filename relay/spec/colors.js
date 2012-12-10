@@ -1,107 +1,95 @@
 describe("A favicon", function() {
 	var server;
 
-	beforeEach(function() {
+	beforeEach(function(done) {
 		server = sinon.fakeServer.create();
+		done();
 	});
 
-	afterEach(function() {
+	afterEach(function(done) {
 		server.restore();
+		done();
 	});
 
 	describe("should be found in the", function() {
 		var path, error;
 
-		beforeEach(function() {
+		beforeEach(function(done) {
 			path = '';
 			error = false;
 
-			done = false;
+			done();
 		});
 
 		describe("root directory", function() {
 			it("with no folders", function() {
 				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
 
-				runs(function() {
+				runs(function(done) {
 					faviconSearchRoot("/", function(favicon_path) {
 						path = favicon_path;
 						error = false;
-
-						done = true;
+						done();
 					}, function() {
 						error = true;
-
-						done = true;
+						done();
 					});
 
 					server.respond();
-				});
+				}, 500);
 
-				waitsFor(function() {
-					return done;
-				}, "the favicon path to be found", 500);
-
-				runs(function() {
-					expect(done).toBe(true);
+				runs(function(done) {
 					expect(error).toBe(false);
 					expect(path).toMatch("/favicon.ico");
+					done();
 				});
 			});
 
 			it("with folders", function() {
 				server.respondWith("GET", "/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
 
-				runs(function() {
+				runs(function(done) {
 					faviconSearchRoot("/kitty/is/here", function(favicon_path) {
 						path = favicon_path;
 						error = false;
 
-						done = true;
+						done();
 					}, function() {
 						error = true;
 
-						done = true;
+						done();
 					});
 
 					server.respond();
-				});
+				}, 500);
 
-				waitsFor(function() {
-					return done;
-				}, "the favicon path to be found", 500);
-
-				runs(function() {
-					expect(done).toBe(true);
+				runs(function(done) {
 					expect(error).toBe(false);
 					expect(path).toMatch("/favicon.ico");
+					done();
 				});
 			});
 
 			it("with failures", function() {
-				runs(function() {
+				runs(function(done) {
 					faviconSearchRoot("/", function(favicon_path) {
 						path = favicon_path;
 						error = false;
 
-						done = true;
+						done();
 					}, function() {
 						error = true;
 
-						done = true;
+						done();
 					});
 
 					server.respond();
-				});
+				}, 500);
 
-				waitsFor(function() {
-					return done;
-				}, "the favicon path to be found", 500);
-
-				runs(function() {
-					expect(done).toBe(true);
+				runs(function(done) {
 					expect(error).toBe(true);
 					expect(path).toMatch("");
+					done();
 				});
 			});
 		});
@@ -110,56 +98,48 @@ describe("A favicon", function() {
 			it("as is", function() {
 				server.respondWith("GET", "/kitty/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
 
-				runs(function() {
+				runs(function(done) {
 					faviconSearchCurrent("/kitty", function(favicon_path) {
 						path = favicon_path;
 						error = false;
 
-						done = true;
+						done();
 					}, function() {
 						error = true;
 
-						done = true;
+						done();
 					});
 
 					server.respond();
-				});
+				}, 500);
 
-				waitsFor(function() {
-					return done;
-				}, "the favicon path to be found", 500);
-
-				runs(function() {
-					expect(done).toBe(true);
+				runs(function(done) {
 					expect(error).toBe(false);
 					expect(path).toMatch("/kitty/favicon.ico");
+					done();
 				});
 			});
 
 			it("with failures", function() {
-				runs(function() {
+				runs(function(done) {
 					faviconSearchCurrent("/kitty", function(favicon_path) {
 						path = favicon_path;
 						error = false;
 
-						done = true;
+						done();
 					}, function() {
 						error = true;
 
-						done = true;
+						done();
 					});
 
 					server.respond();
-				});
+				}, 500);
 
-				waitsFor(function() {
-					return done;
-				}, "the favicon path to be found", 500);
-
-				runs(function() {
-					expect(done).toBe(true);
+				runs(function(done) {
 					expect(error).toBe(true);
 					expect(path).toMatch("");
+					done();
 				});
 			});
 		});
@@ -171,29 +151,25 @@ describe("A favicon", function() {
 						"<html><head><link rel=\"icon\" href=\"//www.kitty.com/meow/favicon.ico\"></head><body></body</html>"]);
 					server.respondWith("GET", "http://www.kitty.com/meow/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
 
-					runs(function() {
+					runs(function(done) {
 						faviconSearchForDeclared("/index.html", function(favicon_path) {
 							path = favicon_path;
 							error = false;
 
-							done = true;
+							done();
 						}, function() {
 							error = true;
 
-							done = true;
+							done();
 						});
 
 						server.respond();
-					});
+					}, 500);
 
-					waitsFor(function() {
-						return done;
-					}, "the favicon path to be found", 500);
-
-					runs(function() {
-						expect(done).toBe(true);
+					runs(function(done) {
 						expect(error).toBe(false);
 						expect(path).toMatch("http://www.kitty.com/meow/favicon.ico");
+						done();
 					});
 				});
 
@@ -205,29 +181,25 @@ describe("A favicon", function() {
 							server.respondWith("GET", "http://www.kitty.com/meow/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
 							server.respondWith("GET", "http://kitty.com/meow/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
 
-							runs(function() {
+							runs(function(done) {
 								faviconSearchForDeclared("http://www.kitty.com/index.html", function(favicon_path) {
 									path = favicon_path;
 									error = false;
 
-									done = true;
+									done();
 								}, function() {
 									error = true;
 
-									done = true;
+									done();
 								});
 
 								server.respond();
-							});
+							}, 500);
 
-							waitsFor(function() {
-								return done;
-							}, "the favicon path to be found", 500);
-
-							runs(function() {
-								expect(done).toBe(true);
+							runs(function(done) {
 								expect(error).toBe(false);
 								expect(path).toMatch("http://kitty.com/meow/favicon.ico");
+								done();
 							});
 						});
 
@@ -237,29 +209,25 @@ describe("A favicon", function() {
 							server.respondWith("GET", "http://www.kitty.com/meow/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
 							server.respondWith("GET", "http://kitty.com/meow/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
 
-							runs(function() {
+							runs(function(done) {
 								faviconSearchForDeclared("http://www.kitty.com/index", function(favicon_path) {
 									path = favicon_path;
 									error = false;
 
-									done = true;
+									done();
 								}, function() {
 									error = true;
 
-									done = true;
+									done();
 								});
 
 								server.respond();
-							});
+							}, 500);
 
-							waitsFor(function() {
-								return done;
-							}, "the favicon path to be found", 500);
-
-							runs(function() {
-								expect(done).toBe(true);
+							runs(function(done) {
 								expect(error).toBe(false);
 								expect(path).toMatch("http://kitty.com/meow/favicon.ico");
+								done();
 							});
 						});
 					});
@@ -271,29 +239,25 @@ describe("A favicon", function() {
 							server.respondWith("GET", "http://www.kitty.com/meow/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
 							server.respondWith("GET", "http://kitty.com/meow/favicon.ico", [200, { "Content-Type": "image/png"}, ""]);
 
-							runs(function() {
+							runs(function(done) {
 								faviconSearchForDeclared("http://www.kitty.com/index.html", function(favicon_path) {
 									path = favicon_path;
 									error = false;
 
-									done = true;
+									done();
 								}, function() {
 									error = true;
 
-									done = true;
+									done();
 								});
 
 								server.respond();
-							});
+							}, 500);
 
-							waitsFor(function() {
-								return done;
-							}, "the favicon path to be found", 500);
-
-							runs(function() {
-								expect(done).toBe(true);
+							runs(function(done) {
 								expect(error).toBe(false);
 								expect(path).toMatch("http://www.kitty.com/meow/favicon.ico");
+								done();
 							});
 						});
 					});
@@ -301,29 +265,25 @@ describe("A favicon", function() {
 			});
 
 			it("with failures", function() {
-				runs(function() {
+				runs(function(done) {
 					faviconSearchForDeclared("/index.html", function(favicon_path) {
 						path = favicon_path;
 						error = false;
 
-						done = true;
+						done();
 					}, function() {
 						error = true;
 
-						done = true;
+						done();
 					});
 
 					server.respond();
-				});
+				}, 500);
 
-				waitsFor(function() {
-					return done;
-				}, "the favicon path to be found", 500);
-
-				runs(function() {
-					expect(done).toBe(true);
+				runs(function(done) {
 					expect(error).toBe(true);
 					expect(path).toMatch("");
+					done();
 				});
 			})
 		});

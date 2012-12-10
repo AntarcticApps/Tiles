@@ -3,7 +3,8 @@
 <head>
 	<title>Relay</title>
 
-	<script src="relay.min.js"></script>
+	<script src="lib/relay.min.js"></script>
+	<script src="lib/sinon-1.5.2.js"></script>
 
 	<script src="display.js"></script>
 
@@ -16,13 +17,9 @@
 	<script type="text/javascript" src="../TILES_VERSION_ID_/shared/js/colors.js"></script>
 	<script type="text/javascript" src="../TILES_VERSION_ID_/shared/js/sites.js"></script>
 
-	<script src="specs/utilities.js"></script>
-
-	<script>
-		window.onload = function() {
-			relay();
-		}
-	</script>
+	<script src="spec/colors.js"></script>
+	<script src="spec/migrations.js"></script>
+	<script src="spec/sites.js"></script>
 </head>
 <body>
 
