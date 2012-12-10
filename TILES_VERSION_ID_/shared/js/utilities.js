@@ -29,6 +29,10 @@ function getDomain(url) {
 }
 
 function getHostname(url) {
+	if (url.substring(0, 7) == "file://") {
+		return "localhost";
+	}
+
 	var hostname = domainRegex(url)[4];
 
 	if (hostname.substring(0, 4) == "www.") {
