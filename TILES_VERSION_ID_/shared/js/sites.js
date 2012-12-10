@@ -388,6 +388,10 @@ function makeAbbreviation(string) {
 }
 
 function writeUserStylesheet(callback) {
+	if (!callback) {
+		callback = function() { };
+	}
+
 	getFileSystem(function(fs) {
 		getSitesCount(function(sitesCount) {
 			if (sitesCount > 0) {
@@ -397,7 +401,8 @@ function writeUserStylesheet(callback) {
 					} else {
 						writeToFile(fs, "user.css", "body { background: rgb(" + color['red'] + ", " + color['green'] + ", " + color['blue'] + ") !important; }");
 					}
-					callback();
+					
+					return callback();
 				});
 			} else {
 				writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0) !important; }");
