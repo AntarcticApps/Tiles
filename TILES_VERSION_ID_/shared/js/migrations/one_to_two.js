@@ -58,7 +58,7 @@ function migrate_1_to_2(callback) {
 	// Get all the data currently in the database
 	getSites(function(sites) {
 		storage.clear(function() {
-			setStorageVersion(2, function() {
+			setStorageVersion({ major: 2, minor: 0, patch: 0 }, function() {
 				if (sites != null) {
 					addSites(sites, callback);
 				} else {

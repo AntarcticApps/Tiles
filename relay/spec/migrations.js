@@ -15,7 +15,7 @@ describe("A migration", function() {
 			it("should have the correct database version", function() {
 				runs(function(done) {
 					getStorageVersion(function(version) {
-						expect(version).toBe(2);
+						expect(version).toEqual({ major: 2, minor: 0, patch: 0 });
 						done();
 					});
 				});
@@ -73,7 +73,7 @@ describe("A migration", function() {
 			it("should have the correct database version", function() {
 				runs(function(done) {
 					getStorageVersion(function(version) {
-						expect(version).toBe(2);
+						expect(version).toEqual({ major: 2, minor: 0, patch: 0 });
 						done();
 					});
 				});
@@ -138,7 +138,7 @@ describe("A migration", function() {
 			it("should have the correct database version", function() {
 				runs(function(done) {
 					getStorageVersion(function(version) {
-						expect(version).toBe(2);
+						expect(version).toEqual({ major: 2, minor: 0, patch: 0 });
 						done();
 					});
 				});
@@ -227,7 +227,7 @@ describe("A migration", function() {
 			it("should have the correct database version", function() {
 				runs(function(done) {
 					getStorageVersion(function(version) {
-						expect(version).toBe(2);
+						expect(version).toEqual({ major: 2, minor: 0, patch: 0 });
 						done();
 					});
 				});
