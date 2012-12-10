@@ -1,42 +1,4 @@
 const TEST_DOMAIN = chrome.extension.getURL("/relay/favicon_test/index.html");
-var backup;
-
-beforeEach(function(done) {
-	if (DEFAULT_STORAGE == TEST_STORAGE) {
-		// Storage units are the same
-		storage.get(null, function(items) {
-			backup = items;
-
-			storage.clear(function() {
-				storage.get(null, function(items) {
-					done();
-				});
-			});
-		});
-		
-	} else {
-		// Storage units are not the same
-		storage = TEST_STORAGE;
-
-		storage.clear(function() {
-			done();
-		});
-	}
-});
-
-afterEach(function(done) {
-	if (DEFAULT_STORAGE == TEST_STORAGE) {
-		// Storage units are the same
-		storage.clear(function() {
-			storage.set(backup, function() {
-				done();
-			});
-		});
-	} else {
-		// Storage units are not the same
-		storage = DEFAULT_STORAGE;
-	}
-});
 
 describe("A site", function() {
 	describe("object", function() {
