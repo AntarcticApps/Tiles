@@ -118,9 +118,7 @@ function getSitesCount(callback) {
 function getSortedSiteIDs(callback) {
 	storage.get('ids', function(items) {
 		if (!items || !items.ids) {
-			storage.set({ 'ids': [] }, function() {
-				return callback([]);
-			});
+			return callback([]);
 		} else {
 			return callback(items.ids);
 		}
