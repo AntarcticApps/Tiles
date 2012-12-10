@@ -51,12 +51,8 @@ chrome.contextMenus.removeAll(function() {
 });
 
 chrome.storage.onChanged.addListener(function(changes, areaName) {
-	if (areaName == "sync") {
-		if (changes.backgroundColor) {
-			writeUserStylesheet();
-		}
-
-		console.log("Storage changed", changes);
+	if (changes.backgroundColor) {
+		writeUserStylesheet();
 	}
 });
 
