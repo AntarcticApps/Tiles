@@ -50,12 +50,6 @@ chrome.contextMenus.removeAll(function() {
 	});
 });
 
-chrome.storage.onChanged.addListener(function(changes, areaName) {
-	if (changes.backgroundColor) {
-		writeUserStylesheet();
-	}
-});
-
 function goToOptionsPage(newTab) {
 	var optionsURL = chrome.extension.getURL("/TILES_VERSION_ID_/options/options.html");
 
@@ -269,25 +263,6 @@ function changeIcon(color, callback, tabID) {
 	details.tabId = tabID;
 
 	chrome.browserAction.setIcon(details, callback);
-}
-
-
-function writeUserStylesheet() {
-	getFileSystem(function(fs) {
-		getSitesCount(function(sitesCount) {
-			if (sitesCount > 0) {
-				getBackgroundColor(function(color) {
-					if (!color) {
-						writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0) !important; }");
-					} else {
-						writeToFile(fs, "user.css", "body { background: rgb(" + color['red'] + ", " + color['green'] + ", " + color['blue'] + ") !important; }");
-					}
-				});
-			} else {
-				writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0) !important; }");
-			}
-		});
-	});
 }
 
 init();

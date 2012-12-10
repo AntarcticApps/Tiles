@@ -354,15 +354,19 @@ function isValidColor(color) {
 function setBackgroundColor(color, callback) {
 	if (!color) {
 		storage.remove('backgroundColor', function() {
-			emitMessage(BACKGROUND_COLOR_UPDATED_MESSAGE);
+			writeUserStylesheet(function() {
+				emitMessage(BACKGROUND_COLOR_UPDATED_MESSAGE);
 
-			return callback(null);
+				return callback(null);
+			});
 		});
 	} else {	
 		storage.set({ 'backgroundColor': color }, function() {
-			emitMessage(BACKGROUND_COLOR_UPDATED_MESSAGE);
+			writeUserStylesheet(function() {
+				emitMessage(BACKGROUND_COLOR_UPDATED_MESSAGE);
 
-			return callback(color);
+				return callback(color);
+			});
 		});
 	}
 }
@@ -381,4 +385,23 @@ function getBackgroundColor(callback) {
 function makeAbbreviation(string) {
 	string = string.trim();
 	return string.substring(0, 1).toUpperCase() + string.substring(1, 2).toLowerCase();
+}
+
+function writeUserStylesheet(callback) {
+	getFileSystem(function(fs) {
+		getSitesCount(function(sitesCount) {
+			if (sitesCount > 0) {
+				getBackgroundColor(function(color) {
+					if (!color) {
+						writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0) !important; }");
+					} else {
+						writeToFile(fs, "user.css", "body { background: rgb(" + color['red'] + ", " + color['green'] + ", " + color['blue'] + ") !important; }");
+					}
+					callback();
+				});
+			} else {
+				writeToFile(fs, "user.css", "body { background: rgb(0, 0, 0) !important; }");
+			}
+		});
+	});
 }
