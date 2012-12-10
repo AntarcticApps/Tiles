@@ -59,9 +59,15 @@ function writeToFile(fs, file, text) {
 			fileWriter.onerror = function(e) {
 				console.error("Write failed: " + e.toString());
 			};
+
+			fileWriter.onwriteend = function(e) {
+				fileWriter.onwriteend = null;
+				var blob = new Blob([text], { type: 'text/plain' });
+				fileWriter.write(blob);
+			}
 			
-			var blob = new Blob([text], { type: 'text/plain' });
-			fileWriter.write(blob);
+			fileWriter.seek(fileWriter.length);
+			fileWriter.truncate(0);
 		}, errorHandler);
 	}, errorHandler);
 }
