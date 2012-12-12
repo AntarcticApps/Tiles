@@ -1,36 +1,36 @@
 describe("A URL", function() {
 	describe("that starts with http", function() {
 		it("should be able to extract the domain", function() {
-			expect(getDomain('http://www.google.com')).toMatch('www.google.com');
-			expect(getDomain('http://www.google.com/')).toMatch('www.google.com');
-			expect(getDomain('http://www.google.com/kitty')).toMatch('www.google.com');
+			expect(getDomain('http://www.google.com')).toEqual('http://www.google.com');
+			expect(getDomain('http://www.google.com/')).toEqual('http://www.google.com');
+			expect(getDomain('http://www.google.com/kitty')).toEqual('http://www.google.com');
 		});
 
 		it("should be able to extract the hostname", function() {
-			expect(getHostname('http://www.google.com')).toMatch('google.com');
-			expect(getHostname('http://www.google.com/')).toMatch('google.com');
-			expect(getHostname('http://www.google.com/kitty')).toMatch('google.com');
+			expect(getHostname('http://www.google.com')).toEqual('google.com');
+			expect(getHostname('http://www.google.com/')).toEqual('google.com');
+			expect(getHostname('http://www.google.com/kitty')).toEqual('google.com');
 		});
 	});
 
 	describe("that starts with https", function() {
 		it("should be able to extract the domain", function() {
-			expect(getDomain('https://www.google.com')).toMatch('www.google.com');
-			expect(getDomain('https://www.google.com/')).toMatch('www.google.com');
-			expect(getDomain('https://www.google.com/kitty')).toMatch('www.google.com');
+			expect(getDomain('https://www.google.com')).toEqual('https://www.google.com');
+			expect(getDomain('https://www.google.com/')).toEqual('https://www.google.com');
+			expect(getDomain('https://www.google.com/kitty')).toEqual('https://www.google.com');
 		});
 
 		it("should be able to extract the hostname", function() {
-			expect(getHostname('https://www.google.com')).toMatch('google.com');
-			expect(getHostname('https://www.google.com/')).toMatch('google.com');
-			expect(getHostname('https://www.google.com/kitty')).toMatch('google.com');
+			expect(getHostname('https://www.google.com')).toEqual('google.com');
+			expect(getHostname('https://www.google.com/')).toEqual('google.com');
+			expect(getHostname('https://www.google.com/kitty')).toEqual('google.com');
 		});
 	});
 
 	describe("that starts with file://", function() {
 		it("should be able to extract the hostname", function() {
-			expect(getHostname('file://username/file.html')).toMatch('localhost');
-			expect(getHostname('file://more/files/to/read/here/now.txt')).toMatch('localhost');
+			expect(getHostname('file://username/file.html')).toEqual('localhost');
+			expect(getHostname('file://more/files/to/read/here/now.txt')).toEqual('localhost');
 		});
 	});
 
