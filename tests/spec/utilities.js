@@ -1,5 +1,5 @@
 describe("A URL", function() {
-	describe("with http", function() {
+	describe("that starts with http", function() {
 		it("should be able to extract the domain", function() {
 			expect(getDomain('http://www.google.com')).toMatch('www.google.com');
 			expect(getDomain('http://www.google.com/')).toMatch('www.google.com');
@@ -13,16 +13,24 @@ describe("A URL", function() {
 		});
 	});
 
-	describe("with https", function() {
+	describe("that starts with https", function() {
 		it("should be able to extract the domain", function() {
 			expect(getDomain('https://www.google.com')).toMatch('www.google.com');
 			expect(getDomain('https://www.google.com/')).toMatch('www.google.com');
 			expect(getDomain('https://www.google.com/kitty')).toMatch('www.google.com');
 		});
+
 		it("should be able to extract the hostname", function() {
 			expect(getDomain('https://www.google.com')).toMatch('google.com');
 			expect(getDomain('https://www.google.com/')).toMatch('google.com');
 			expect(getDomain('https://www.google.com/kitty')).toMatch('google.com');
+		});
+	});
+
+	describe("that starts with file://", function() {
+		it("should be able to extract the hostname", function() {
+			expect(getHostname('file://username/file.html')).toMatch('localhost');
+			expect(getHostname('file://more/files/to/read/here/now.txt')).toMatch('localhost');
 		});
 	});
 
