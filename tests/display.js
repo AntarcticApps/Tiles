@@ -1,12 +1,10 @@
 var displayListener = new Listener();
 
-document.addEventListener("DOMContentLoaded", function(){
+window.onload = function() {
 	document.write('<canvas width="512" height="512" style="display: none"></canvas>');
-
-	var backup;
-
+	
 	relay();
-}, false);
+};
 
 displayListener.onEnter = function(part) {
 	if (part instanceof Describe || part instanceof It) {
@@ -40,15 +38,15 @@ displayListener.onExit = function(part) {
 		var alreadyFailed = document.getElementById(prefix + "-" + relevantParent.id).dataset['failed'];
 		if (part.success && !alreadyFailed) {
 			document.getElementById(prefix + "-" + relevantParent.id).style.color = "green";
-		} else if (!alreadyFailed) {
+		} else {
 			document.getElementById(prefix + "-" + relevantParent.id).style.color = "red";
 			document.getElementById(prefix + "-" + relevantParent.id).dataset['failed'] = true;
 			
+			document.write("<strong>Expected " + JSON.stringify(part.value) + " to " + part.type + " " + JSON.stringify(part.other) + "</strong><br>");
+
 			for (var i = 0; i < part.callStack.length; i++) {
 				document.write(part.callStack[i]);
-				if (i < part.callStack.length - 2) {
-					document.write("<br>");
-				}
+				document.write("<br>");
 			}
 		}
 	}
