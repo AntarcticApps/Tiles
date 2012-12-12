@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require "eregex"
+require "regex"
 require "fileutils"
 
 VERSION_DIRECTORY_IDENTIFIER = "TILES_VERSION_ID_"
