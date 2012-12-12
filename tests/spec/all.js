@@ -28,6 +28,7 @@ afterEach(function(done) {
 		storage.get(null, function(items) {
 			storage.clear(function() {
 				storage.set(backup, function() {
+					writeUserStylesheet();
 					done();
 				});
 			});
