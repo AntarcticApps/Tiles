@@ -328,7 +328,7 @@ describe("A site", function() {
 			});
 
 			runs(function(done) {
-				expect(abbreviation).toMatch("Te");
+				expect(abbreviation).toEqual("Te");
 				done();
 			});
 		});
