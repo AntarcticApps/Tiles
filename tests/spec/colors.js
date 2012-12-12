@@ -40,7 +40,7 @@ describe("A favicon", function() {
 
 				runs(function(done) {
 					expect(error).toBe(false);
-					expect(path).toMatch("/favicon.ico");
+					expect(path).toEqual("/favicon.ico");
 					done();
 				});
 			});
@@ -65,7 +65,7 @@ describe("A favicon", function() {
 
 				runs(function(done) {
 					expect(error).toBe(false);
-					expect(path).toMatch("/favicon.ico");
+					expect(path).toEqual("/favicon.ico");
 					done();
 				});
 			});
@@ -88,7 +88,7 @@ describe("A favicon", function() {
 
 				runs(function(done) {
 					expect(error).toBe(true);
-					expect(path).toMatch("");
+					expect(path).toEqual("");
 					done();
 				});
 			});
@@ -115,7 +115,7 @@ describe("A favicon", function() {
 
 				runs(function(done) {
 					expect(error).toBe(false);
-					expect(path).toMatch("/kitty/favicon.ico");
+					expect(path).toEqual("/kitty/favicon.ico");
 					done();
 				});
 			});
@@ -138,7 +138,7 @@ describe("A favicon", function() {
 
 				runs(function(done) {
 					expect(error).toBe(true);
-					expect(path).toMatch("");
+					expect(path).toEqual("");
 					done();
 				});
 			});
@@ -168,7 +168,7 @@ describe("A favicon", function() {
 
 					runs(function(done) {
 						expect(error).toBe(false);
-						expect(path).toMatch("http://www.kitty.com/meow/favicon.ico");
+						expect(path).toEqual("http://www.kitty.com/meow/favicon.ico");
 						done();
 					});
 				});
@@ -198,7 +198,7 @@ describe("A favicon", function() {
 
 							runs(function(done) {
 								expect(error).toBe(false);
-								expect(path).toMatch("http://kitty.com/meow/favicon.ico");
+								expect(path).toEqual("http://kitty.com/meow/favicon.ico");
 								done();
 							});
 						});
@@ -226,7 +226,7 @@ describe("A favicon", function() {
 
 							runs(function(done) {
 								expect(error).toBe(false);
-								expect(path).toMatch("http://kitty.com/meow/favicon.ico");
+								expect(path).toEqual("http://kitty.com/meow/favicon.ico");
 								done();
 							});
 						});
@@ -256,7 +256,7 @@ describe("A favicon", function() {
 
 							runs(function(done) {
 								expect(error).toBe(false);
-								expect(path).toMatch("http://www.kitty.com/meow/favicon.ico");
+								expect(path).toEqual("http://www.kitty.com/meow/favicon.ico");
 								done();
 							});
 						});
@@ -282,7 +282,7 @@ describe("A favicon", function() {
 
 				runs(function(done) {
 					expect(error).toBe(true);
-					expect(path).toMatch("");
+					expect(path).toEqual("");
 					done();
 				});
 			})
