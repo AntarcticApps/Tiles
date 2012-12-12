@@ -7,9 +7,9 @@ describe("A URL", function() {
 		});
 
 		it("should be able to extract the hostname", function() {
-			expect(getDomain('http://www.google.com')).toMatch('google.com');
-			expect(getDomain('http://www.google.com/')).toMatch('google.com');
-			expect(getDomain('http://www.google.com/kitty')).toMatch('google.com');
+			expect(getHostname('http://www.google.com')).toMatch('google.com');
+			expect(getHostname('http://www.google.com/')).toMatch('google.com');
+			expect(getHostname('http://www.google.com/kitty')).toMatch('google.com');
 		});
 	});
 
@@ -21,9 +21,9 @@ describe("A URL", function() {
 		});
 
 		it("should be able to extract the hostname", function() {
-			expect(getDomain('https://www.google.com')).toMatch('google.com');
-			expect(getDomain('https://www.google.com/')).toMatch('google.com');
-			expect(getDomain('https://www.google.com/kitty')).toMatch('google.com');
+			expect(getHostname('https://www.google.com')).toMatch('google.com');
+			expect(getHostname('https://www.google.com/')).toMatch('google.com');
+			expect(getHostname('https://www.google.com/kitty')).toMatch('google.com');
 		});
 	});
 
