@@ -7,7 +7,7 @@ describe("Storage", function() {
 				items = i;
 				done();
 			});
-		}, 500);
+		});
 
 		runs(function(done) {
 			expect(items).toEqual({});
@@ -31,14 +31,14 @@ describe("Storage", function() {
 				setStorageVersion(1261, function() {
 					done();
 				});
-			}, 500);
+			});
 
 			runs(function(done) {
 				getStorageVersion(function(v) {
 					version = v;
 					done();
 				});
-			}, 500);
+			});
 
 			runs(function(done) {
 				expect(version).toEqual(1261);
@@ -54,7 +54,7 @@ describe("Storage", function() {
 					version = v;
 					done();
 				});
-			}, 500);
+			});
 
 			runs(function(done) {
 				expect(version).toEqual({

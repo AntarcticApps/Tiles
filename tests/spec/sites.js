@@ -1,4 +1,4 @@
-const TEST_DOMAIN = chrome.extension.getURL("/relay/favicon_test/index.html");
+const TEST_DOMAIN = chrome.extension.getURL("/tests/favicon_test/index.html");
 
 describe("A site", function() {
 	describe("object", function() {
@@ -67,7 +67,7 @@ describe("A site", function() {
 						site = s;
 						done();
 					});
-				}, 5000);
+				});
 
 				runs(function(done) {
 					expect(site).toEqual({
@@ -149,7 +149,7 @@ describe("A site", function() {
 							sites = s;
 						});
 					});
-				}, 1000);
+				});
 			});
 
 			it("should not exist in storage", function() {
@@ -180,7 +180,7 @@ describe("A site", function() {
 						ids = i;
 						done();
 					});
-				}, 500);
+				});
 
 				runs(function(done) {
 					expect(ids).toEqual([0]);
@@ -201,7 +201,7 @@ describe("A site", function() {
 						});
 					});
 				});
-			}, 500);
+			});
 
 			runs(function(done) {
 				expect(site).toEqual({
@@ -231,7 +231,7 @@ describe("A site", function() {
 						});
 					});
 				});
-			}, 500);
+			});
 
 			runs(function(done) {
 				expect(site).toEqual({
@@ -261,7 +261,7 @@ describe("A site", function() {
 						});
 					});
 				});
-			}, 500);
+			});
 
 			runs(function(done) {
 				expect(site).toEqual({
@@ -295,7 +295,7 @@ describe("A site", function() {
 						});
 					});
 				});
-			}, 500);
+			});
 
 			runs(function(done) {
 				expect(site).toEqual({
@@ -325,7 +325,7 @@ describe("A site", function() {
 						});
 					});
 				});
-			}, 500);
+			});
 
 			runs(function(done) {
 				expect(abbreviation).toMatch("Te");
@@ -345,7 +345,7 @@ describe("Site storage", function() {
 					id = i;
 					done();
 				});
-			}, 500);
+			});
 
 			runs(function(done) {
 				expect(id).toBe(0);
@@ -361,10 +361,11 @@ describe("Site storage", function() {
 					addSites([site], function() {
 						getNextID(function(i) {
 							id = i;
+							done();
 						});
 					});
 				});
-			}, 500);
+			});
 
 			runs(function(done) {
 				expect(id).toBe(1);
@@ -387,10 +388,11 @@ describe("Site storage", function() {
 					addSites(sites, function() {
 						getNextID(function(i) {
 							id = i;
+							done();
 						});
 					});
 				});
-			}, 500);
+			});
 
 			runs(function(done) {
 				expect(id).toBe(2);
@@ -419,7 +421,7 @@ describe("Site storage", function() {
 						sites = s;
 						done();
 					});
-				}, 500);
+				});
 
 				runs(function(done) {
 					expect(sites.length).toBe(1);
@@ -446,7 +448,7 @@ describe("Site storage", function() {
 						sitesCount = s;
 						done();
 					});
-				}, 500);
+				});
 
 				runs(function(done) {
 					expect(sitesCount).toBe(1);
@@ -465,7 +467,7 @@ describe("Site storage", function() {
 					ids = i;
 					done();
 				});
-			}, 500);
+			});
 
 			runs(function(done) {
 				expect(ids).toEqual([]);
@@ -486,7 +488,7 @@ describe("Site storage", function() {
 							});
 						});
 					});
-				}, 500);
+				});
 
 				runs(function(done) {
 					expect(ids).toEqual([0]);
@@ -515,7 +517,7 @@ describe("Site storage", function() {
 							});
 						});
 					});
-				}, 500);
+				});
 
 				runs(function(done) {
 					expect(ids).toEqual([0,1]);
@@ -547,7 +549,7 @@ describe("Site storage", function() {
 						});
 					});
 				});
-			}, 500);
+			});
 
 			it("should not be empty", function() {
 				runs(function(done) {
@@ -584,7 +586,7 @@ describe("Site storage", function() {
 					done();
 				});
 			});
-		}, 500);
+		});
 
 		it("should contain the correct number of sites", function() {
 			runs(function(done) {
@@ -642,7 +644,7 @@ describe("Site storage", function() {
 					});
 				});
 			});
-		}, 500);
+		});
 
 		it("should contain the correct number of sites", function() {
 			runs(function(done) {
@@ -683,7 +685,7 @@ describe("Site storage", function() {
 						});
 					});
 				});
-			}, 2000);
+			});
 
 			runs(function(done) {
 				getAllSites(function(s) {

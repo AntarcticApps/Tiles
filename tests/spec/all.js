@@ -7,9 +7,7 @@ beforeEach(function(done) {
 			backup = items;
 
 			storage.clear(function() {
-				storage.get(null, function(items) {
-					done();
-				});
+				done();
 			});
 		});
 		
@@ -28,15 +26,9 @@ afterEach(function(done) {
 		// Storage units are the same
 		
 		storage.get(null, function(items) {
-			console.log("before", items);
-
-				storage.clear(function() {
-					storage.set(backup, function() {
-
-					storage.get(null, function(items) {
-						console.log("after", items);
-						done();
-					});
+			storage.clear(function() {
+				storage.set(backup, function() {
+					done();
 				});
 			});
 		});

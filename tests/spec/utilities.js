@@ -193,7 +193,7 @@ describe("An asynchronous loop", function() {
 						answer.push(iteration);
 
 						callback();
-					}, 1000);
+					});
 				}, done);
 			});
 
@@ -238,7 +238,7 @@ describe("An HTTP request", function() {
 			});
 
 			server.respond();
-		}, 500);
+		});
 
 		it("should be successful", function() {
 			expect(success).toBe(true);
@@ -265,7 +265,7 @@ describe("An HTTP request", function() {
 			});
 
 			server.respond();
-		}, 500);
+		});
 
 		it("should not be successful", function() {
 			expect(success).toBe(false);
@@ -292,7 +292,7 @@ describe("An HTTP request", function() {
 			});
 
 			server.respond();
-		}, 500);
+		});
 
 		it("should not be successful", function() {
 			expect(success).toBe(false);

@@ -36,7 +36,7 @@ describe("A favicon", function() {
 					});
 
 					server.respond();
-				}, 500);
+				});
 
 				runs(function(done) {
 					expect(error).toBe(false);
@@ -61,7 +61,7 @@ describe("A favicon", function() {
 					});
 
 					server.respond();
-				}, 500);
+				});
 
 				runs(function(done) {
 					expect(error).toBe(false);
@@ -84,7 +84,7 @@ describe("A favicon", function() {
 					});
 
 					server.respond();
-				}, 500);
+				});
 
 				runs(function(done) {
 					expect(error).toBe(true);
@@ -111,7 +111,7 @@ describe("A favicon", function() {
 					});
 
 					server.respond();
-				}, 500);
+				});
 
 				runs(function(done) {
 					expect(error).toBe(false);
@@ -134,7 +134,7 @@ describe("A favicon", function() {
 					});
 
 					server.respond();
-				}, 500);
+				});
 
 				runs(function(done) {
 					expect(error).toBe(true);
@@ -164,7 +164,7 @@ describe("A favicon", function() {
 						});
 
 						server.respond();
-					}, 500);
+					});
 
 					runs(function(done) {
 						expect(error).toBe(false);
@@ -194,7 +194,7 @@ describe("A favicon", function() {
 								});
 
 								server.respond();
-							}, 500);
+							});
 
 							runs(function(done) {
 								expect(error).toBe(false);
@@ -222,7 +222,7 @@ describe("A favicon", function() {
 								});
 
 								server.respond();
-							}, 500);
+							});
 
 							runs(function(done) {
 								expect(error).toBe(false);
@@ -252,7 +252,7 @@ describe("A favicon", function() {
 								});
 
 								server.respond();
-							}, 500);
+							});
 
 							runs(function(done) {
 								expect(error).toBe(false);
@@ -278,7 +278,7 @@ describe("A favicon", function() {
 					});
 
 					server.respond();
-				}, 500);
+				});
 
 				runs(function(done) {
 					expect(error).toBe(true);
