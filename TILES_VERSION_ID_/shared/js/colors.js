@@ -278,6 +278,10 @@ function pixelsAreSimilar(a, b) {
 }
 
 function colorArrayToObject(arr) {
+	if (!arr) {
+		return arr;
+	}
+	
 	if (arr.length == 4) {
 		return {
 			red: arr[0],
