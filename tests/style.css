@@ -6,7 +6,6 @@
 body {
 	font-family: courier, monospace;
 	font-size: 14px;
-	overflow-y: scroll;
 }
 
 #relay_results {
@@ -20,7 +19,6 @@ body {
 
 #relay_results ol {
 	list-style: none;
-	overflow-x: scroll;
 }
 
 #relay_results > ol > li {
