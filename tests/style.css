@@ -1,0 +1,64 @@
+* {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	font-family: courier, monospace;
+	font-size: 14px;
+	overflow-y: scroll;
+}
+
+#relay_results {
+	margin: 20px;
+}
+
+#relay_results > p {
+	font-weight: bold;
+	margin: 10px 0;
+}
+
+#relay_results ol {
+	list-style: none;
+	overflow-x: scroll;
+}
+
+#relay_results > ol > li {
+	background: #EEE;
+	border: 1px solid #CCC;
+	padding: 10px;
+	margin-bottom: 10px;
+
+	font-weight: bold;
+}
+
+#relay_results > ol > li ol {
+	border: 0;
+	padding: 0 20px;
+
+	font-weight: normal;
+}
+
+#relay_results > ol > li:last-child {
+	margin-bottom: 0;
+}
+
+#relay_results ol.callstack:before {
+	content: "Callstack:";
+}
+
+#relay_results ol.callstack {
+	padding-left: 0;
+}
+
+#relay_results .succeeded {
+	color: green;
+}
+
+#relay_results .failed {
+	color: red;
+}
+
+#relay_results .reason {
+	font-weight: bold;
+}

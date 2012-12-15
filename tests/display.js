@@ -1,59 +1,83 @@
-var displayListener = new Listener();
+"use strict";
 
 window.onload = function() {
-	document.write('<canvas width="512" height="512" style="display: none"></canvas>');
-	
-	relay();
+	relay().start();
 };
 
-displayListener.onEnter = function(part) {
-	if (part instanceof Describe || part instanceof It) {
-		var prefix = "";
-		if (part instanceof Describe) {
-			prefix = "describe";
-		} else if (part instanceof It) {
-			prefix = "it";
+var displayListener = new RelayListener();
+
+displayListener.onRelayStart = function() {
+	var parentElement = document.getElementById("relay_results");
+	
+	var doneMessage = document.createElement("p");
+	doneMessage.innerHTML = "Relay started.";
+	parentElement.appendChild(doneMessage);
+
+	var rootList = document.createElement("ol");
+	parentElement.appendChild(rootList);
+}
+
+displayListener.onRelayEnd = function() {
+	var parentElement = document.getElementById("relay_results");
+	
+	var doneMessage = document.createElement("p");
+	doneMessage.innerHTML = "Relay ended.";
+	parentElement.appendChild(doneMessage);
+}
+
+displayListener.onEnter = function(relayObject) {
+	if (relayObject.constructor == Describe || relayObject.constructor == It) {
+		var relevantParent = relayObject.findFirstParent(function(ancestor) {
+			return (ancestor.constructor == Describe) || (ancestor.constructor == It);
+		});
+
+		var parentElement = document.getElementById(relevantParent.id);		
+		if (!parentElement) {
+			parentElement = document.getElementById("relay_results");
 		}
 
-		document.write("<li id=" + prefix + "-" + part.id + ">" + part.toString() + "</li>");
-		document.write("<ul>");
+		var parentList = parentElement.getElementsByTagName("ol")[0];
+
+		var listItem = document.createElement("li");
+		listItem.setAttribute("id", relayObject.id);
+		listItem.setAttribute("class", relayObject.typeString());
+		listItem.innerHTML = relayObject.name;
+		parentList.appendChild(listItem);
+		
+		var innerList = document.createElement("ol")
+		listItem.appendChild(innerList);
 	}
 }
 
-displayListener.onExit = function(part) {
-	if (part instanceof Expect) {
-		var prefix = "";
-		var relevantParent = part.parent;
+displayListener.onExit = function(relayObject) {
+	if (relayObject.constructor == Expect) {
+		var relevantParent = relayObject.findFirstParent(function(ancestor) {
+			return (ancestor.constructor == Describe) || (ancestor.constructor == It);
+		});
 
-		while (!(relevantParent instanceof Describe) && !(relevantParent instanceof It)) {
-			relevantParent = relevantParent.parent;
+		var parentElement = document.getElementById(relevantParent.id);
+		var alreadyFailed = parentElement.getAttribute("class") == "failed";
+
+		if (relayObject.success && !alreadyFailed) {
+			parentElement.setAttribute("class", "succeeded");
 		}
 
-		if (relevantParent instanceof Describe) {
-			prefix = "describe";
-		} else if (relevantParent instanceof It) {
-			prefix = "it";
+		if (!relayObject.success && !alreadyFailed) {
+			parentElement.setAttribute("class", "failed");
 		}
 
-		var alreadyFailed = document.getElementById(prefix + "-" + relevantParent.id).dataset['failed'];
-		if (part.success && !alreadyFailed) {
-			document.getElementById(prefix + "-" + relevantParent.id).style.color = "green";
-		} else {
-			document.getElementById(prefix + "-" + relevantParent.id).style.color = "red";
-			document.getElementById(prefix + "-" + relevantParent.id).dataset['failed'] = true;
-			
-			document.write("<strong>Expected " + JSON.stringify(part.value) + " to " + part.type + " " + JSON.stringify(part.other) + "</strong><br>");
+		if (!relayObject.success) {
+			var parentList = parentElement.getElementsByTagName("ol")[0];
 
-			for (var i = 0; i < part.callStack.length; i++) {
-				document.write(part.callStack[i]);
-				document.write("<br>");
+			var failureReason = document.createElement("p");
+			failureReason.setAttribute("class", "reason");
+			failureReason.innerHTML = relayObject.resultString();
+			if (relayObject.caller) {
+				failureReason.innerHTML += " on " + relayObject.caller;
 			}
+			parentList.appendChild(failureReason);
 		}
-	}
-
-	if (part instanceof Describe || part instanceof It) {
-		document.write("</ul>");
 	}
 }
 
-addListener(displayListener);
+addRelayListener(displayListener);
