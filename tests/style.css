@@ -60,3 +60,12 @@ body {
 #relay_results .reason {
 	font-weight: bold;
 }
+
+#relay_results .duration:before {
+	content: " ";
+}
+
+#relay_results .duration {
+	color: #666;
+	font-weight: normal;
+}
