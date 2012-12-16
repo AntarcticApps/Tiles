@@ -6,6 +6,7 @@
 body {
 	font-family: courier, monospace;
 	font-size: 14px;
+	line-height: 14px;
 }
 
 #relay_results {
@@ -61,11 +62,20 @@ body {
 	font-weight: bold;
 }
 
-#relay_results .duration:before {
-	content: " ";
+#relay_results .duration {
+	display: inline-block;
+	background: #DDD;
+	color: #555;
+	border-radius: 2px;
+	font-weight: normal;
+	margin: 0 4px;
+	padding: 0 4px;
+	height: 11px;
+	line-height: 11px;
+	font-size: 11px;
+	opacity: 0.8;
 }
 
-#relay_results .duration {
-	color: #666;
-	font-weight: normal;
+#relay_results .duration.pending {
+	opacity: 1.0;
 }

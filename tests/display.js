@@ -49,11 +49,11 @@ displayListener.onEnter = function(relayObject) {
 		timesEntered[relayObject.id] = new Date();
 
 		var timeSpan = document.createElement("span");
-		timeSpan.setAttribute("class", "duration");
+		timeSpan.setAttribute("class", "duration pending");
 		listItem.appendChild(timeSpan);
 
 		intervals[relayObject.id] = window.setInterval(function() {
-			timeSpan.innerHTML = timeDifference(timesEntered[relayObject.id], new Date());
+			timeSpan.innerHTML = "+" + timeDifference(timesEntered[relayObject.id], new Date());
 		}, 100);
 
 		var innerList = document.createElement("ol");
@@ -93,6 +93,7 @@ displayListener.onExit = function(relayObject) {
 		var element = document.getElementById(relayObject.id);
 
 		clearInterval(intervals[relayObject.id]);
+		element.getElementsByClassName("duration")[0].setAttribute("class", "duration");
 		element.getElementsByClassName("duration")[0].innerHTML = timeDifference(timesEntered[relayObject.id], new Date());
 	}
 };
