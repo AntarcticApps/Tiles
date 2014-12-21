@@ -1,0 +1,55 @@
+{
+  "name": "__MSG_extension_name__",
+  "version": "3.0.0",
+  "manifest_version": 2,
+  "description": "__MSG_extension_description__",
+  "default_locale": "en",
+  "minimum_chrome_version": "23.0.0.0",
+
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+
+  "permissions": [
+    "tabs",
+    "storage",
+    "contextMenus",
+    "<all_urls>",
+    "unlimitedStorage",
+    "notifications"
+  ],
+
+  "icons": {
+    "16": "static/images/icon-bitty.png",
+    "48": "static/images/icon-small.png",
+    "128": "static/images/icon-large.png"
+  },
+
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+
+  "browser_action": {
+    "default_icon": "static/images/icon-bitty-gray.png",
+    "default_title": "Tiles"
+  },
+
+  "background": {
+    "page": "background.html"
+  },
+
+  "web_accessible_resources": [
+    "TILES_VERSION_ID_/tab_page/tiles.html",
+    "TILES_VERSION_ID_/tab_page/css/style.css",
+    "TILES_VERSION_ID_/tab_page/js/main.js",
+    "TILES_VERSION_ID_/shared/js/colors.js",
+    "TILES_VERSION_ID_/shared/js/files.js",
+    "TILES_VERSION_ID_/shared/js/messaging.js",
+    "TILES_VERSION_ID_/shared/js/storage.js",
+    "TILES_VERSION_ID_/shared/js/googleAnalytics.js",
+    "TILES_VERSION_ID_/shared/js/sites.js",
+    "TILES_VERSION_ID_/shared/js/utilities.js",
+    "TILES_VERSION_ID_/options/options.html",
+    "TILES_VERSION_ID_/options/css/style.css",
+    "TILES_VERSION_ID_/options/js/main.js",
+    "TILES_VERSION_ID_/persistent/user.css"
+  ]
+}
