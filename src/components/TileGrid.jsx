@@ -1,5 +1,6 @@
 var React = require('react/addons');
 var Tile = require('./Tile.jsx');
+var { DragDropMixin } = require('react-dnd');
 require('react-mixin-manager')(React);
 require('react-events')(React);
 
@@ -10,7 +11,7 @@ var ROW_OUTER_HEIGHT = 220 + MARGIN;
 var COL_OUTER_WIDTH = 220 + MARGIN;
 
 var TileGrid = React.createClass({
-    mixins: ['events'],
+    mixins: ['events', DragDropMixin],
 
     events: {
         'window:resize': 'layout'
@@ -30,13 +31,54 @@ var TileGrid = React.createClass({
         return {
             mounted: false,
             animatingTileIndex: -1,
-            animatingTileComputedTransforms: {}
+            animatingTileComputedTransforms: {},
+            transforms: {}
         };
+    },
+
+    configureDragDrop(registerType) {
+        registerType('tile', {
+            dropTarget: {
+                over(item, e) {
+                    var left = Math.round((e.pageX - item.startPageX));
+                    var top = Math.round((e.pageY - item.startPageY));
+
+                    if (this.props.snapToGrid) {
+                        left = Math.round(left / 32) * 32;
+                        top = Math.round(top / 32) * 32;
+                    }
+
+                    this.moveTile(item.identifier, left, top);
+                },
+
+                acceptDrop(item) {
+                    this.dropTile(item.identifier);
+                }
+            }
+        });
+    },
+
+    moveTile: function moveTile(id, left, top) {
+        var transforms = {};
+        transforms[id] = {
+            x: left,
+            y: top
+        };
+        this.setState({
+            transforms: transforms
+        });
+    },
+
+    dropTile: function dropTile(id) {
+        this.setState({
+            transforms: {}
+        });
     },
 
     render: function render() {
         return (
             <div
+                {...this.dropTargetFor('tile')}
                 style={{
                     width: '100%',
                     height: '100%',
@@ -78,7 +120,7 @@ var TileGrid = React.createClass({
                 return (
                     <Tile
                         key={i}
-                        ref={'tile-' + i}
+                        identifier={i}
                         backgroundColor={t.backgroundColor}
                         title={t.title}
                         url={t.url}
@@ -90,6 +132,9 @@ var TileGrid = React.createClass({
                         animationCenterY={this.getContainerHeight() / 2}
                         animationWidth={this.state.outerWidth}
                         animationHeight={this.state.outerHeight}
+                        translateX={this.state.transforms[i] ? this.state.transforms[i].x : 0}
+                        translateY={this.state.transforms[i] ? this.state.transforms[i].y : 0}
+                        dragging={this.state.transforms[i]}
                     />
                 );
             }.bind(this));
