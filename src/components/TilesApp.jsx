@@ -11,6 +11,21 @@ var exampleTileData = [
         backgroundColor: 'red',
         title: 'Gm',
         url: 'https://gmail.com'
+    },
+    {
+        backgroundColor: 'blue',
+        title: 'Fb',
+        url: 'https://facebook.com'
+    },
+    {
+        backgroundColor: 'blue',
+        title: 'Tw',
+        url: 'https://twitter.com'
+    },
+    {
+        backgroundColor: 'gray',
+        title: 'Ap',
+        url: 'https://apple.com'
     }
 ];
 

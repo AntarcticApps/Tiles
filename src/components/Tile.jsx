@@ -1,16 +1,12 @@
 var React = require('react/addons');
 var ReactTransitionEvents = require('react/lib/ReactTransitionEvents');
 
-var CHANGE_LOCATION_DELAY = 300;
-
 var Tile = React.createClass({
     propTypes: {
         backgroundColor: React.PropTypes.string,
         title: React.PropTypes.string,
         url: React.PropTypes.string,
-        shouldAnimate: React.PropTypes.bool,
-        animationTransforms: React.PropTypes.object,
-        onClick: React.PropTypes.func
+        animationTransforms: React.PropTypes.object
     },
 
     getDefaultProps: function getDefaultProps() {
@@ -18,15 +14,14 @@ var Tile = React.createClass({
             backgroundColor: 'white',
             title: null,
             url: null,
-            shouldAnimate: false,
-            animationTransforms: {},
-            onClick: function() {}
+            animationTransforms: {}
         };
     },
 
     getInitialState: function getInitialState() {
         return {
-            hover: false
+            hover: false,
+            animate: false
         };
     },
 
@@ -35,14 +30,15 @@ var Tile = React.createClass({
             <a
                 href={this.props.url}
                 style={{
-                    display: 'inline-block',
-                    position: 'relative',
-                    width: 200 + 'px',
-                    height: 200 + 'px',
+                    display: 'block',
+                    position: 'absolute',
+                    width: this.props.width + 'px',
+                    height: this.props.height + 'px',
+                    top: this.props.y + 'px',
+                    left: this.props.x + 'px',
                     padding: 10 + 'px',
-                    margin: 4 + 'px',
-                    fontSize: 100 + 'px',
-                    lineHeight: 200 + 'px',
+                    fontSize: (this.props.height / 2) + 'px',
+                    lineHeight: this.props.height + 'px',
                     textAlign: 'center',
                     textDecoration: 'none',
                     backgroundColor: this._getBackgroundColorStyle(),
@@ -52,13 +48,14 @@ var Tile = React.createClass({
                     cursor: 'default',
                     transform: this._getTransformStyle(),
                     transition: 'transform 0.25s ease-in, backgroundColor 0.25s ease-in',
-                    zIndex: this._getZIndexStyle()
+                    zIndex: this._getZIndexStyle(),
+                    boxSizing: 'border-box'
                 }}
                 onMouseEnter={this.onMouseEnter}
                 onMouseLeave={this.onMouseLeave}
                 onClick={this.onClick}
             >
-                {this.props.shouldAnimate ? null : this.props.title}
+                {this.state.animate ? null : this.props.title}
             </a>
         );
     },
@@ -78,9 +75,19 @@ var Tile = React.createClass({
     onClick: function onClick(e) {
         if (!e.shiftKey && !e.metaKey) {
             e.preventDefault();
-            this.props.onClick();
+            this.fillScreen();
             ReactTransitionEvents.addEndEventListener(this.getDOMNode(), this.onTransitionEnd);
         }
+    },
+
+    fillScreen: function fillScreen() {
+        this.setState({
+            animate: true,
+            translateX: this.props.animationCenterX - this.props.x - (this.props.width / 2),
+            translateY: this.props.animationCenterY - this.props.y - (this.props.height / 2),
+            scaleX: this.props.animationWidth / this.props.width,
+            scaleY: this.props.animationHeight / this.props.height
+        });
     },
 
     onTransitionEnd: function onTransitionEnd() {
@@ -96,19 +103,18 @@ var Tile = React.createClass({
     },
 
     _getTransformStyle: function _getTransformStyle() {
-        if (this.props.shouldAnimate) {
-            var transforms = this.props.animationTransforms;
-            var translateX = transforms.translateX;
-            var translateY = transforms.translateY;
-            var scaleX = transforms.scaleX;
-            var scaleY = transforms.scaleY;
+        if (this.state.animate) {
+            var translateX = this.state.translateX;
+            var translateY = this.state.translateY;
+            var scaleX = this.state.scaleX;
+            var scaleY = this.state.scaleY;
 
             return 'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + scaleX + ', ' + scaleY + ')';
         }
     },
 
     _getBackgroundColorStyle: function _getTransformStyle() {
-        if (this.props.shouldAnimate) {
+        if (this.state.animate) {
             return '#ffffff';
         } else {
             return this.props.backgroundColor;
@@ -116,7 +122,7 @@ var Tile = React.createClass({
     },
 
     _getZIndexStyle: function _getZIndexStyle() {
-        if (this.props.shouldAnimate) {
+        if (this.state.animate) {
             return 2;
         } else {
             return 1;

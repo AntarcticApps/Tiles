@@ -35,8 +35,6 @@ var TileGrid = React.createClass({
     },
 
     render: function render() {
-        var totalWidth = this.state.cols * COL_OUTER_WIDTH;
-
         return (
             <div
                 style={{
@@ -47,103 +45,93 @@ var TileGrid = React.createClass({
                 <div
                     ref="inner"
                     style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
                         opacity: this.state.mounted ? '1.0': '0.0',
                         transitionProperty: 'opacity',
                         transitionDuration: '0.2s',
-                        transform: 'scale(' + this.state.scale + ')',
-                        marginLeft: -totalWidth / 2 + 'px',
-                        minHeight: ROW_OUTER_HEIGHT * this.state.rows + 'px',
-                        marginTop: (-ROW_OUTER_HEIGHT * this.state.rows) / 2 + 'px',
-                        width: totalWidth + 'px'
+                        width: this.getContainerWidth(),
+                        height: this.getContainerHeight(),
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)'
                     }}
                 >
-                    {this.props.tileData.map(function renderTile(t, i) {
-                        return (
-                            <Tile
-                                key={i}
-                                ref={'tile-' + i}
-                                backgroundColor={t.backgroundColor}
-                                title={t.title}
-                                url={t.url}
-                                shouldAnimate={i === this.state.animatingTileIndex}
-                                animationTransforms={this.state.animatingTileComputedTransforms}
-                                onClick={this.fillScreen.bind(this, i)}
-                            />
-                        );
-                    }.bind(this))}
+                    {this.renderTiles()}
                 </div>
             </div>
         );
     },
 
-    componentDidMount: function componentDidMount() {
-        this.setState({
-            mounted: true
-        });
+    renderTiles: function renderTiles() {
+        if (this.state.mounted) {
+            var colWidth = this.getTileLength();
+            var rowHeight = colWidth;
+            var tileWidth = colWidth - MARGIN;
+            var tileHeight = rowHeight - MARGIN;
 
+            return this.props.tileData.map(function renderTile(t, i) {
+                var tileRow = Math.floor(i / this.state.cols);
+                var tileCol = i % this.state.cols;
+                var tileX = tileCol * colWidth + MARGIN;
+                var tileY = tileRow * rowHeight + MARGIN;
+
+                return (
+                    <Tile
+                        key={i}
+                        ref={'tile-' + i}
+                        backgroundColor={t.backgroundColor}
+                        title={t.title}
+                        url={t.url}
+                        width={tileWidth}
+                        height={tileHeight}
+                        x={tileX}
+                        y={tileY}
+                        animationCenterX={this.getContainerWidth() / 2}
+                        animationCenterY={this.getContainerHeight() / 2}
+                        animationWidth={this.state.outerWidth}
+                        animationHeight={this.state.outerHeight}
+                    />
+                );
+            }.bind(this));
+        }
+    },
+
+    getContainerWidth: function getContainerWidth() {
+        return this.getTileLength() * this.state.cols + MARGIN;
+    },
+
+    getContainerHeight: function getContainerHeight() {
+        return this.getTileLength() * this.state.rows + MARGIN;
+    },
+
+    getTileLength: function getTileLength() {
+        var colWidth = ((this.state.outerWidth - MARGIN) / this.state.cols);
+        var rowHeight = ((this.state.outerHeight - MARGIN) / this.state.rows);
+        return Math.min(colWidth, rowHeight);
+    },
+
+    componentDidMount: function componentDidMount() {
         this.layout();
     },
 
     layout: function layout() {
-        if (this.isMounted()) {
-            var node = this.getDOMNode();
-            var maxHeight = node.offsetHeight - MARGIN;
-            var maxWidth = node.offsetWidth - MARGIN;
-            var rows = Math.max(Math.ceil(Math.sqrt(this.props.tileData.length * maxHeight / maxWidth)), 1);
-            var cols = Math.ceil(this.props.tileData.length / rows);
+        var node = this.getDOMNode();
+        var offsetHeight = node.offsetHeight;
+        var offsetWidth = node.offsetWidth;
+        var rows = Math.max(Math.ceil(Math.sqrt(this.props.tileData.length * offsetHeight / offsetWidth)), 1);
+        var cols = Math.ceil(this.props.tileData.length / rows);
 
-            if ((rows - 1) * cols >= this.props.tileData.length && this.props.tileData.length < rows * cols) {
-                rows--;
-            }
-
-            var unscaledWidth = cols * COL_OUTER_WIDTH;
-            var scale = maxWidth / (unscaledWidth + 20);
-
-            if (ROW_OUTER_HEIGHT * rows * scale > maxHeight) {
-                scale = maxHeight / (ROW_OUTER_HEIGHT * rows);
-            }
-
-            this.setState({
-                scale: scale,
-                rows: rows,
-                cols: cols
-            });
+        if ((rows - 1) * cols >= this.props.tileData.length && this.props.tileData.length < rows * cols) {
+            rows--;
         }
-    },
 
-    fillScreen: function fillScreen(index) {
-        if (this.isMounted()) {
-            var node = this.getDOMNode();
-            var tileComponent = this.refs['tile-' + index];
-            if (tileComponent) {
-                var tileNode = tileComponent.getDOMNode();
-                var maxWidth = node.offsetWidth;
-                var maxHeight = node.offsetHeight;
-                var tileData = this.props.tileData;
-
-                var scaleX = maxWidth / this.state.scale / COL_INNER_WIDTH;
-                var scaleY = maxHeight / this.state.scale / ROW_INNER_HEIGHT;
-                var sitesMidX = this.state.cols * COL_OUTER_WIDTH / 2;
-                var sitesMidY = this.state.rows * ROW_OUTER_HEIGHT / 2;
-                var centerX = tileNode.offsetLeft + COL_INNER_WIDTH / 2;
-                var centerY = tileNode.offsetTop + ROW_INNER_HEIGHT / 2;
-                var translateX = sitesMidX - centerX;
-                var translateY = sitesMidY - centerY;
-
-                this.setState({
-                    animatingTileIndex: index,
-                    animatingTileComputedTransforms: {
-                        translateX: translateX,
-                        translateY: translateY,
-                        scaleX: scaleX,
-                        scaleY: scaleY
-                    }
-                });
-            }
-        }
+        this.setState({
+            mounted: true,
+            rows: rows,
+            cols: cols,
+            outerHeight: offsetHeight,
+            outerWidth: offsetWidth
+        });
     }
 });
 
