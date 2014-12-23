@@ -30,8 +30,9 @@ var rehydrate = function rehydrate(callback) {
         storage.load(function loadCallback(data) {
             if (data) {
                 context.rehydrate(data);
-                callback();
             }
+
+            callback();
         });
     });
 }

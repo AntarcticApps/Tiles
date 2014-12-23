@@ -87,7 +87,9 @@ var Tile = React.createClass({
                     color: '#ffffff',
                     cursor: 'default',
                     transform: this._getTransformStyle(),
+                    WebkitTransform: this._getTransformStyle(),
                     transition: this._getTransitionStyle(),
+                    WebkitTransition: this._getTransitionStyle(),
                     zIndex: this._getZIndexStyle(),
                     boxSizing: 'border-box',
                     borderRadius: '1%',
@@ -149,11 +151,10 @@ var Tile = React.createClass({
     _getTransitionStyle: function _getTransitionStyle() {
         if (!this.props.dragging) {
             return [
-                'transform 0.25s ease-out',
+                '-webkit-transform 0.25s ease-out',
                 'background-color 0.25s ease-in',
                 'top 0.25s ease-in-out',
-                'left 0.25s ease-in-out',
-                'box-shadow 0.2s linear'
+                'left 0.25s ease-in-out'
             ].join(', ');
         }
     },

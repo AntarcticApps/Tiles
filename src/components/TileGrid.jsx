@@ -109,7 +109,8 @@ var TileGrid = React.createClass({
                         position: 'absolute',
                         top: '50%',
                         left: '50%',
-                        transform: 'translate(-50%, -50%)'
+                        transform: 'translate(-50%, -50%)',
+                        WebkitTransform: 'translate(-50%, -50%)'
                     }}
                 >
                     {this.renderTiles()}
