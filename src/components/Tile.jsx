@@ -80,18 +80,20 @@ var Tile = React.createClass({
                     left: (this.props.translateX ? this.props.translateX : this.props.x) + 'px',
                     padding: 10 + 'px',
                     fontSize: (this.props.height / 2) + 'px',
-                    lineHeight: this.props.height + 'px',
+                    lineHeight: (this.props.height - 20) + 'px',
                     textAlign: 'center',
                     textDecoration: 'none',
                     backgroundColor: this._getBackgroundColorStyle(),
-                    boxShadow: this._getBoxShadowStyle(),
                     color: '#ffffff',
                     textShadow: '0 2px 0 rgba(0, 0, 0, 0.2)',
                     cursor: 'default',
                     transform: this._getTransformStyle(),
                     transition: this._getTransitionStyle(),
                     zIndex: this._getZIndexStyle(),
-                    boxSizing: 'border-box'
+                    boxSizing: 'border-box',
+                    borderRadius: '1%',
+                    fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                    fontWeight: 400
                 }}
                 onMouseEnter={this.onMouseEnter}
                 onMouseLeave={this.onMouseLeave}
@@ -145,21 +147,14 @@ var Tile = React.createClass({
         });
     },
 
-    _getBoxShadowStyle: function _getBoxShadowStyle() {
-        if (this.state.hover) {
-            return '0 0 0 1px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(255, 255, 255, 0.4)';
-        } else {
-            return '0 0 0 1px rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.2)';
-        }
-    },
-
     _getTransitionStyle: function _getTransitionStyle() {
         if (!this.props.dragging) {
             return [
                 'transform 0.25s ease-out',
                 'backgroundColor 0.25s ease-in',
                 'top 0.25s ease-in-out',
-                'left 0.25s ease-in-out'
+                'left 0.25s ease-in-out',
+                'box-shadow 0.2s linear'
             ].join(', ');
         }
     },

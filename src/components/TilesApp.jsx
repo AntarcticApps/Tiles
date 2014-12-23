@@ -6,10 +6,10 @@ var TilesApp = React.createClass({
         return (
             <div
                 style={{
-                    backgroundColor: '#005493',
+                    backgroundColor: '#ffffff',
                     width: '100%',
                     height: '100%',
-                    fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif',
+                    fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
                 }}
             >
                 <TileGrid
