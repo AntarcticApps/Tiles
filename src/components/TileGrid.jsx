@@ -1,6 +1,10 @@
 var React = require('react/addons');
 var Tile = require('./Tile.jsx');
 var { DragDropMixin } = require('react-dnd');
+var _ = require('lodash');
+var TileStore = require('../stores/TileStore');
+var StoreMixin = require('fluxible-app').StoreMixin;
+var changeTileIndexAction = require('../actions/changeTileIndex');
 require('react-mixin-manager')(React);
 require('react-events')(React);
 
@@ -11,28 +15,21 @@ var ROW_OUTER_HEIGHT = 220 + MARGIN;
 var COL_OUTER_WIDTH = 220 + MARGIN;
 
 var TileGrid = React.createClass({
-    mixins: ['events', DragDropMixin],
+    mixins: ['events', DragDropMixin, StoreMixin],
+
+    statics: {
+        storeListeners: [TileStore]
+    },
 
     events: {
         'window:resize': 'layout'
     },
 
-    propTypes: {
-        tileData: React.PropTypes.array
-    },
-
-    getDefaultProps: function getDefaultProps() {
-        return {
-            tileData: []
-        };
-    },
-
     getInitialState: function getInitialState() {
         return {
             mounted: false,
-            animatingTileIndex: -1,
-            animatingTileComputedTransforms: {},
-            transforms: {}
+            transforms: {},
+            tileData: this.getStore(TileStore).getTiles()
         };
     },
 
@@ -40,13 +37,8 @@ var TileGrid = React.createClass({
         registerType('tile', {
             dropTarget: {
                 over(item, e) {
-                    var left = Math.round((e.pageX - item.startPageX));
-                    var top = Math.round((e.pageY - item.startPageY));
-
-                    if (this.props.snapToGrid) {
-                        left = Math.round(left / 32) * 32;
-                        top = Math.round(top / 32) * 32;
-                    }
+                    var left = Math.round((e.pageX - item.startPageX + item.startX));
+                    var top = Math.round((e.pageY - item.startPageY + item.startY));
 
                     this.moveTile(item.identifier, left, top);
                 },
@@ -58,15 +50,37 @@ var TileGrid = React.createClass({
         });
     },
 
+    onChange: function onChange() {
+        this.setState({
+            tileData: this.getStore(TileStore).getTiles()
+        });
+    },
+
     moveTile: function moveTile(id, left, top) {
         var transforms = {};
         transforms[id] = {
             x: left,
             y: top
         };
+
         this.setState({
             transforms: transforms
         });
+
+        var index = this.getTileIndexForCoordinates({
+            x: left,
+            y: top
+        });
+
+        if (index !== undefined && index !== null) {
+            this.props.context.executeAction(
+                changeTileIndexAction,
+                {
+                    id: id,
+                    newIndex: index
+                }
+            );
+        }
     },
 
     dropTile: function dropTile(id) {
@@ -111,33 +125,71 @@ var TileGrid = React.createClass({
             var tileWidth = colWidth - MARGIN;
             var tileHeight = rowHeight - MARGIN;
 
-            return this.props.tileData.map(function renderTile(t, i) {
-                var tileRow = Math.floor(i / this.state.cols);
-                var tileCol = i % this.state.cols;
-                var tileX = tileCol * colWidth + MARGIN;
-                var tileY = tileRow * rowHeight + MARGIN;
+            var tileDataSortedByIdentifier = _.sortBy(
+                this.state.tileData,
+                function sortTileDataByIdentifier(t) {
+                    return t.id;
+                }
+            );
+
+            return tileDataSortedByIdentifier.map(function renderTile(t) {
+                var i = t.sortIndex;
+                var key = t.id;
+                var { x, y } = this.getCoordinatesForTileIndex(i);
 
                 return (
                     <Tile
-                        key={i}
-                        identifier={i}
+                        key={key}
+                        identifier={key}
                         backgroundColor={t.backgroundColor}
                         title={t.title}
                         url={t.url}
                         width={tileWidth}
                         height={tileHeight}
-                        x={tileX}
-                        y={tileY}
+                        x={x}
+                        y={y}
                         animationCenterX={this.getContainerWidth() / 2}
                         animationCenterY={this.getContainerHeight() / 2}
                         animationWidth={this.state.outerWidth}
                         animationHeight={this.state.outerHeight}
-                        translateX={this.state.transforms[i] ? this.state.transforms[i].x : 0}
-                        translateY={this.state.transforms[i] ? this.state.transforms[i].y : 0}
-                        dragging={this.state.transforms[i]}
+                        translateX={this.state.transforms[key] ? this.state.transforms[key].x : 0}
+                        translateY={this.state.transforms[key] ? this.state.transforms[key].y : 0}
+                        dragging={!!this.state.transforms[key]}
                     />
                 );
             }.bind(this));
+        }
+    },
+
+    getCoordinatesForTileIndex: function getCoordinatesForTileIndex(i) {
+        var colWidth = this.getTileLength();
+        var rowHeight = colWidth;
+        var tileRow = Math.floor(i / this.state.cols);
+        var tileCol = i % this.state.cols;
+        var x = tileCol * colWidth + MARGIN;
+        var y = tileRow * rowHeight + MARGIN;
+
+        return {
+            x: x,
+            y: y
+        };
+    },
+
+    getTileIndexForCoordinates: function getTileIndexForCoordinates(coordinates) {
+        var { x, y } = coordinates;
+        var colWidth = this.getTileLength();
+        var rowHeight = colWidth;
+
+        var col = Math.floor(x / this.getTileLength());
+        var row = Math.floor(y / this.getTileLength());
+
+        if (
+            col >= 0 &&
+            col < this.state.cols &&
+            row >= 0 &&
+            row < this.state.rows
+        ) {
+            return row * this.state.cols + col;
         }
     },
 
@@ -163,10 +215,11 @@ var TileGrid = React.createClass({
         var node = this.getDOMNode();
         var offsetHeight = node.offsetHeight;
         var offsetWidth = node.offsetWidth;
-        var rows = Math.max(Math.ceil(Math.sqrt(this.props.tileData.length * offsetHeight / offsetWidth)), 1);
-        var cols = Math.ceil(this.props.tileData.length / rows);
+        var tileCount = Object.keys(this.state.tileData).length;
+        var rows = Math.max(Math.ceil(Math.sqrt(tileCount * offsetHeight / offsetWidth)), 1);
+        var cols = Math.ceil(tileCount / rows);
 
-        if ((rows - 1) * cols >= this.props.tileData.length && this.props.tileData.length < rows * cols) {
+        if ((rows - 1) * cols >= tileCount && tileCount < rows * cols) {
             rows--;
         }
 

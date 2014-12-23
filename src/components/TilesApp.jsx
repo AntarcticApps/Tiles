@@ -1,34 +1,6 @@
 var React = require('react/addons');
 var TileGrid = require('./TileGrid.jsx');
 
-var exampleTileData = [
-    {
-        backgroundColor: '#CBA852',
-        title: 'Fm',
-        url: 'https://fastmail.fm'
-    },
-    {
-        backgroundColor: 'red',
-        title: 'Gm',
-        url: 'https://gmail.com'
-    },
-    {
-        backgroundColor: 'blue',
-        title: 'Fb',
-        url: 'https://facebook.com'
-    },
-    {
-        backgroundColor: 'blue',
-        title: 'Tw',
-        url: 'https://twitter.com'
-    },
-    {
-        backgroundColor: 'gray',
-        title: 'Ap',
-        url: 'https://apple.com'
-    }
-];
-
 var TilesApp = React.createClass({
     render: function render() {
         return (
@@ -41,7 +13,7 @@ var TilesApp = React.createClass({
                 }}
             >
                 <TileGrid
-                    tileData={exampleTileData}
+                    context={this.props.context}
                 />
             </div>
         );

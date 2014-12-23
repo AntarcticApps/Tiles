@@ -1,8 +1,12 @@
 var storage = {
     getIds: function(callback) {
-        chrome.storage.local.get('ids', function (items) {
-            return callback(items && items.ids);
-        });
+        if (typeof chrome !== 'undefined' && chrome.storage) {
+            chrome.storage.local.get('ids', function (items) {
+                return callback(items && items.ids);
+            });
+        } else {
+            callback();
+        }
     }
 };
 

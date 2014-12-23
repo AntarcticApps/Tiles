@@ -24,6 +24,8 @@ var Tile = React.createClass({
                         effectAllowed: DropEffects.MOVE,
                         item: {
                             identifier: this.props.identifier,
+                            startX: this.props.x,
+                            startY: this.props.y,
                             startPageX: e.pageX,
                             startPageY: e.pageY
                         }
@@ -74,8 +76,8 @@ var Tile = React.createClass({
                     position: 'absolute',
                     width: this.props.width + 'px',
                     height: this.props.height + 'px',
-                    top: this.props.y + 'px',
-                    left: this.props.x + 'px',
+                    top: (this.props.translateY ? this.props.translateY : this.props.y) + 'px',
+                    left: (this.props.translateX ? this.props.translateX : this.props.x) + 'px',
                     padding: 10 + 'px',
                     fontSize: (this.props.height / 2) + 'px',
                     lineHeight: this.props.height + 'px',
@@ -152,8 +154,13 @@ var Tile = React.createClass({
     },
 
     _getTransitionStyle: function _getTransitionStyle() {
-        if (this.state.animatingFillScreen || this.state.animatingDrop) {
-            return 'transform 0.25s ease-out, backgroundColor 0.25s ease-in';
+        if (!this.props.dragging) {
+            return [
+                'transform 0.25s ease-out',
+                'backgroundColor 0.25s ease-in',
+                'top 0.25s ease-in-out',
+                'left 0.25s ease-in-out'
+            ].join(', ');
         }
     },
 
@@ -165,8 +172,6 @@ var Tile = React.createClass({
             var scaleY = this.state.scaleY;
 
             return 'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + scaleX + ', ' + scaleY + ')';
-        } else if (this.props.translateX && this.props.translateY) {
-            return 'translate(' + this.props.translateX + 'px, ' + this.props.translateY + 'px)';
         }
     },
 
@@ -179,7 +184,7 @@ var Tile = React.createClass({
     },
 
     _getZIndexStyle: function _getZIndexStyle() {
-        if (this.state.animatingFillScreen || this.state.dragging || this.state.animatingDrop) {
+        if (this.state.animatingFillScreen || this.props.dragging || this.state.animatingDrop) {
             return 2;
         } else {
             return 1;

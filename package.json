@@ -12,7 +12,8 @@
     "react-events": "~0.7.9",
     "react-mixin-manager": "~0.9.4",
     "webpack": "~1.4.13",
-    "react-dnd": "~0.6.2"
+    "react-dnd": "~0.6.2",
+    "lodash": "~2.4.1"
   },
   "devDependencies": {},
   "scripts": {
