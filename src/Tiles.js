@@ -2,6 +2,7 @@ var React = require('react/addons');
 var FluxibleApp = require('fluxible-app');
 var AppComponent = React.createFactory(require('./components/TilesApp.jsx'));
 var TileStore = require('./stores/TileStore');
+var storage = require('./chrome-integration/storage.js');
 
 var app = new FluxibleApp({
     appComponent: AppComponent
@@ -9,17 +10,50 @@ var app = new FluxibleApp({
 
 app.registerStore(TileStore);
 
-var context = app.createContext();
+app.plug({
+    name: 'LocalStoragePlugin',
+    plugContext: function (options) {
+        var storeHandler = options.storeHandler;
+
+        return {
+            plugStoreContext: function plugStoreContext(storeContext) {
+                storeContext.dehydrateToLocalStorage = function dehydrateToLocalStorage() {
+                    storeHandler();
+                };
+            }
+        };
+    }
+});
+
+var rehydrate = function rehydrate(callback) {
+    storage.load(function loadHandlerCallback(data) {
+        storage.load(function loadCallback(data) {
+            if (data) {
+                context.rehydrate(data);
+                callback();
+            }
+        });
+    });
+}
+
+var context = app.createContext({
+    storeHandler: function storeHandler() {
+        storage.store(context.dehydrate(context));
+    }
+});
+
 var loadPageAction = require('./actions/loadPage');
 
-context.executeAction(loadPageAction, {}, function (err) {
-    if (err) {
-        throw err;
-    }
+rehydrate(function rehydrateCallback() {
+    context.executeAction(loadPageAction, {}, function (err) {
+        if (err) {
+            throw err;
+        }
 
-    var element = AppComponent({
-        context: context.getComponentContext()
+        var element = AppComponent({
+            context: context.getComponentContext()
+        });
+
+        React.render(element, document.body);
     });
-
-    React.render(element, document.body);
 });

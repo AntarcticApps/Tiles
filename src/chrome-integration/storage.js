@@ -1,11 +1,30 @@
 var storage = {
-    getIds: function(callback) {
+    load: function load(callback) {
         if (typeof chrome !== 'undefined' && chrome.storage) {
-            chrome.storage.local.get('ids', function (items) {
-                return callback(items && items.ids);
+            chrome.storage.local.get('data', function (items) {
+                return callback(items && items.data);
             });
         } else {
             callback();
+        }
+    },
+
+    store: function store(data, callback) {
+        if (typeof chrome !== 'undefined' && chrome.storage) {
+            chrome.storage.local.set(
+                {
+                    'data': data
+                },
+                function (items) {
+                    if (callback) {
+                        return callback(true);
+                    }
+                }
+            );
+        } else {
+            if (callback) {
+                callback(false);
+            }
         }
     }
 };
