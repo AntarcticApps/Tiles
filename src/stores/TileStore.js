@@ -6,22 +6,7 @@ var TileStore = createStore({
     storeName: 'TileStore',
 
     initialize: function initialize() {
-        this.tileData = {
-            tw: {
-                backgroundColor: '#55ACEE',
-                title: 'Tw',
-                url: 'https://twitter.com',
-                sortIndex: 0,
-                id: 'tw'
-            },
-            y: {
-                backgroundColor: '#4101AF',
-                title: 'Y!',
-                url: 'https://yahoo.com',
-                sortIndex: 1,
-                id: 'y'
-            }
-        };
+        this.tileData = {};
     },
 
     handlers: {
