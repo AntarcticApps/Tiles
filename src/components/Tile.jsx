@@ -85,7 +85,6 @@ var Tile = React.createClass({
                     textDecoration: 'none',
                     backgroundColor: this._getBackgroundColorStyle(),
                     color: '#ffffff',
-                    textShadow: '0 2px 0 rgba(0, 0, 0, 0.2)',
                     cursor: 'default',
                     transform: this._getTransformStyle(),
                     transition: this._getTransitionStyle(),
