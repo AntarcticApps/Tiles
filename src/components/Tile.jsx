@@ -150,7 +150,7 @@ var Tile = React.createClass({
         if (!this.props.dragging) {
             return [
                 'transform 0.25s ease-out',
-                'backgroundColor 0.25s ease-in',
+                'background-color 0.25s ease-in',
                 'top 0.25s ease-in-out',
                 'left 0.25s ease-in-out',
                 'box-shadow 0.2s linear'
