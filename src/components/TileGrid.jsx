@@ -8,7 +8,7 @@ var changeTileIndexAction = require('../actions/changeTileIndex');
 require('react-mixin-manager')(React);
 require('react-events')(React);
 
-var MARGIN = 8;
+var MARGIN_WINDOW_WIDTH_COEFFICIENT = 0.015;
 
 var TileGrid = React.createClass({
     mixins: ['events', DragDropMixin, StoreMixin],
@@ -121,8 +121,8 @@ var TileGrid = React.createClass({
         if (this.state.mounted) {
             var colWidth = this.getTileLength();
             var rowHeight = colWidth;
-            var tileWidth = colWidth - MARGIN;
-            var tileHeight = rowHeight - MARGIN;
+            var tileWidth = colWidth - this.getMargin();
+            var tileHeight = rowHeight - this.getMargin();
 
             var tileDataSortedByIdentifier = _.sortBy(
                 this.state.tileData,
@@ -160,13 +160,17 @@ var TileGrid = React.createClass({
         }
     },
 
+    getMargin: function getMargin() {
+        return Math.round(window.innerWidth * MARGIN_WINDOW_WIDTH_COEFFICIENT);
+    },
+
     getCoordinatesForTileIndex: function getCoordinatesForTileIndex(i) {
         var colWidth = this.getTileLength();
         var rowHeight = colWidth;
         var tileRow = Math.floor(i / this.state.cols);
         var tileCol = i % this.state.cols;
-        var x = tileCol * colWidth + MARGIN;
-        var y = tileRow * rowHeight + MARGIN;
+        var x = tileCol * colWidth + this.getMargin();
+        var y = tileRow * rowHeight + this.getMargin();
 
         return {
             x: x,
@@ -193,16 +197,16 @@ var TileGrid = React.createClass({
     },
 
     getContainerWidth: function getContainerWidth() {
-        return this.getTileLength() * this.state.cols + MARGIN;
+        return this.getTileLength() * this.state.cols + this.getMargin();
     },
 
     getContainerHeight: function getContainerHeight() {
-        return this.getTileLength() * this.state.rows + MARGIN;
+        return this.getTileLength() * this.state.rows + this.getMargin();
     },
 
     getTileLength: function getTileLength() {
-        var colWidth = ((this.state.outerWidth - MARGIN) / this.state.cols);
-        var rowHeight = ((this.state.outerHeight - MARGIN) / this.state.rows);
+        var colWidth = ((this.state.outerWidth - this.getMargin()) / this.state.cols);
+        var rowHeight = ((this.state.outerHeight - this.getMargin()) / this.state.rows);
         return Math.min(colWidth, rowHeight);
     },
 
