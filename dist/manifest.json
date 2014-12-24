@@ -28,29 +28,7 @@
     "newtab": "index.html"
   },
 
-  "browser_action": {
-    "default_icon": "static/images/icon-bitty-gray.png",
-    "default_title": "Tiles"
-  },
-
   "background": {
     "page": "background.html"
-  },
-
-  "web_accessible_resources": [
-    "TILES_VERSION_ID_/tab_page/tiles.html",
-    "TILES_VERSION_ID_/tab_page/css/style.css",
-    "TILES_VERSION_ID_/tab_page/js/main.js",
-    "TILES_VERSION_ID_/shared/js/colors.js",
-    "TILES_VERSION_ID_/shared/js/files.js",
-    "TILES_VERSION_ID_/shared/js/messaging.js",
-    "TILES_VERSION_ID_/shared/js/storage.js",
-    "TILES_VERSION_ID_/shared/js/googleAnalytics.js",
-    "TILES_VERSION_ID_/shared/js/sites.js",
-    "TILES_VERSION_ID_/shared/js/utilities.js",
-    "TILES_VERSION_ID_/options/options.html",
-    "TILES_VERSION_ID_/options/css/style.css",
-    "TILES_VERSION_ID_/options/js/main.js",
-    "TILES_VERSION_ID_/persistent/user.css"
-  ]
+  }
 }
