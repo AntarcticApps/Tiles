@@ -208,7 +208,7 @@ var TileGrid = React.createClass({
         this.layout();
     },
 
-    layout: _.debounce(
+    layout: _.throttle(
         function layout() {
             var node = this.getDOMNode();
             var offsetHeight = node.offsetHeight;
@@ -229,7 +229,7 @@ var TileGrid = React.createClass({
                 outerWidth: offsetWidth
             });
         },
-        150
+        500
     )
 });
 
