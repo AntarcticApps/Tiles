@@ -2,6 +2,7 @@ var createStore = require('fluxible-app/utils/createStore');
 var React = require('react/addons');
 var update = React.addons.update;
 var getWebsiteColor = require('../utils/getWebsiteColor');
+var storage = require('../chrome-integration/storage');
 
 var TileStore = createStore({
     storeName: 'TileStore',
@@ -46,6 +47,8 @@ var TileStore = createStore({
             this.bookmarks = newTileDataObject;
             this.emitChange();
             this.getContext().dehydrateToLocalStorage(this.getContext());
+
+            storage.moveBookmark(payload.id, payload.newIndex);
         }, 100),
 
         'SET_BOOKMARKS': function setBookmarks(payload) {

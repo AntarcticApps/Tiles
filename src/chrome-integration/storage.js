@@ -73,6 +73,17 @@ var storage = {
                 callback(false);
             }
         }
+    },
+
+    moveBookmark: function moveBookmark(id, newIndex) {
+        if (typeof chrome !== 'undefined' && chrome.storage) {
+            chrome.bookmarks.move(
+                id,
+                {
+                    index: newIndex === 0  ? newIndex : newIndex + 1
+                }
+            );
+        }
     }
 };
 
