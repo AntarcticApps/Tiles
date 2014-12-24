@@ -38,6 +38,9 @@ var TilesApp = React.createClass({
                     backgroundColor: this.state.backgroundColor,
                     width: '100%',
                     height: '100%',
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    overflow: 'hidden',
                     fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
                 }}
             >
