@@ -4,12 +4,15 @@ var update = React.addons.update;
 var getWebsiteColor = require('../utils/getWebsiteColor');
 var storage = require('../chrome-integration/storage');
 
+var COLOR_MIN_TIME_DURATION = 1000 * 60;
+
 var TileStore = createStore({
     storeName: 'TileStore',
 
     initialize: function initialize() {
         this.bookmarks = {};
         this.tileData = {};
+        this.lastTimeSetColor = null;
     },
 
     handlers: {
@@ -46,11 +49,20 @@ var TileStore = createStore({
             );
 
             storage.moveBookmark(payload.id, payload.newIndex < oldIndex ? payload.newIndex : payload.newIndex + 1);
-        }, 100),
+        }, 30),
 
         'SET_BOOKMARKS': function setBookmarks(payload) {
             this.bookmarks = payload.bookmarks;
-            this.setColorsWithUrls();
+
+            var time = new Date();
+            if (
+                !this.lastTimeSetColor ||
+                time - this.lastTimeSetColor >= COLOR_MIN_TIME_DURATION
+            ) {
+                this.setColorsWithUrls();
+            }
+
+            this.emitChange();
         },
 
         'RESET_TILE_DATA': function resetTileData() {
@@ -62,6 +74,7 @@ var TileStore = createStore({
     },
 
     setColorsWithUrls: function setColorsWithUrls() {
+        this.lastTimeSetColor = new Date();
         _.forEach(this.bookmarks, function (b) {
             getWebsiteColor(b.url, function (color) {
                 if (color) {
