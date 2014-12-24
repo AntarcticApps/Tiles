@@ -54,20 +54,28 @@ var TileStore = createStore({
 
         'SET_BOOKMARKS': function setBookmarks(payload) {
             this.bookmarks = payload.bookmarks;
+            this.setColorsWithUrls();
+        },
 
-            _.forEach(this.bookmarks, function (b) {
-                if (!this.tileData[b.id] || !this.tileData[b.id].backgroundColor) {
-                    getWebsiteColor(b.url, function (color) {
-                        if (color) {
-                            this.tileData[b.id] = this.tileData[b.id] || {};
-                            this.tileData[b.id].backgroundColor = color;
-                            this.emitChange();
-                            this.getContext().dehydrateToLocalStorage(this.getContext());
-                        }
-                    }.bind(this));
+        'RESET_TILE_DATA': function resetTileData() {
+            this.tileData = {};
+            this.setColorsWithUrls();
+            this.emitChange();
+            this.getContext().dehydrateToLocalStorage(this.getContext());
+        }
+    },
+
+    setColorsWithUrls: function setColorsWithUrls() {
+        _.forEach(this.bookmarks, function (b) {
+            getWebsiteColor(b.url, function (color) {
+                if (color) {
+                    this.tileData[b.id] = this.tileData[b.id] || {};
+                    this.tileData[b.id].backgroundColor = color;
+                    this.emitChange();
+                    this.getContext().dehydrateToLocalStorage(this.getContext());
                 }
             }.bind(this));
-        }
+        }.bind(this));
     },
 
     getTiles: function getTiles() {

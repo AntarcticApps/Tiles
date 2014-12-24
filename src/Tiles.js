@@ -47,8 +47,6 @@ var context = app.createContext({
 
 var loadPageAction = require('./actions/loadPage');
 
-storage.subscribeToContextualMenuEvents();
-
 rehydrate(function rehydrateCallback() {
     context.executeAction(loadPageAction, {}, function (err) {
         if (err) {

@@ -3,6 +3,7 @@ var TileGrid = require('./TileGrid.jsx');
 var changeBackgroundColorAction = require('../actions/changeBackgroundColor');
 var ApplicationStore = require('../stores/ApplicationStore');
 var StoreMixin = require('fluxible-app').StoreMixin;
+var resetTileData = require('../actions/resetTileData');
 
 var MARGIN = 8;
 var BUTTON_HEIGHT = 30;
@@ -26,6 +27,10 @@ var TilesApp = React.createClass({
         });
     },
 
+    componentDidMount: function componentDidMount() {
+        this.subscribeToContextualMenuEvents();
+    },
+
     render: function render() {
         return (
             <div
@@ -36,12 +41,6 @@ var TilesApp = React.createClass({
                     fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
                 }}
             >
-                <canvas
-                    style={{
-                        display: 'none'
-                    }}
-                />
-
                 <input
                     id="color-picker"
                     type="color"
@@ -69,6 +68,31 @@ var TilesApp = React.createClass({
                 backgroundColor: color
             }
         );
+    },
+
+    subscribeToContextualMenuEvents: function subscribeToContextualMenuEvents() {
+        if (typeof chrome !== 'undefined' && chrome.storage) {
+            chrome.contextMenus.removeAll(function() {
+                chrome.contextMenus.create({
+                    title: chrome.i18n.getMessage('change_background_color'),
+                    documentUrlPatterns: [chrome.extension.getURL("/") + "*"],
+                    contexts: ['page', 'link'],
+                    onclick: function onChangeBackgroundColorMenuClick() {
+                        var d = document.getElementById('color-picker');
+                        d.click();
+                    }
+                });
+
+                chrome.contextMenus.create({
+                    title: chrome.i18n.getMessage('refresh_colors'),
+                    documentUrlPatterns: [chrome.extension.getURL("/") + "*"],
+                    contexts: ['page', 'link'],
+                    onclick: function onRefreshColorsMenuClick() {
+                        this.props.context.executeAction(resetTileData);
+                    }.bind(this)
+                });
+            }.bind(this));
+        }
     }
 });
 

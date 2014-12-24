@@ -84,23 +84,6 @@ var storage = {
                 }
             );
         }
-    },
-
-    subscribeToContextualMenuEvents: function subscribeToContextualMenuEvents() {
-        if (typeof chrome !== 'undefined' && chrome.storage) {
-            chrome.contextMenus.removeAll(function() {
-                console.log(chrome.i18n.getMessage('change_background_color'));
-                chrome.contextMenus.create({
-                    title: chrome.i18n.getMessage('change_background_color'),
-                    documentUrlPatterns: [chrome.extension.getURL("/") + "*"],
-                    contexts: ['page', 'link'],
-                    onclick: function onContextMenuClick() {
-                        var d = document.getElementById('color-picker');
-                        d.click();
-                    }
-                });
-            });
-        }
     }
 };
 

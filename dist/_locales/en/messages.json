@@ -85,5 +85,8 @@
 	},
 	"change_background_color": {
 		"message": "Change Background Color"
+	},
+	"refresh_colors": {
+		"message": "Refresh Colors"
 	}
 }

@@ -210,29 +210,26 @@ var TileGrid = React.createClass({
         this.layout();
     },
 
-    layout: _.throttle(
-        function layout() {
-            var node = this.getDOMNode();
-            var offsetHeight = node.offsetHeight;
-            var offsetWidth = node.offsetWidth;
-            var tileCount = Object.keys(this.state.tileData).length;
-            var rows = Math.max(Math.ceil(Math.sqrt(tileCount * offsetHeight / offsetWidth)), 1);
-            var cols = Math.ceil(tileCount / rows);
+    layout: function layout() {
+        var node = this.getDOMNode();
+        var offsetHeight = node.offsetHeight;
+        var offsetWidth = node.offsetWidth;
+        var tileCount = Object.keys(this.state.tileData).length;
+        var rows = Math.max(Math.ceil(Math.sqrt(tileCount * offsetHeight / offsetWidth)), 1);
+        var cols = Math.ceil(tileCount / rows);
 
-            if ((rows - 1) * cols >= tileCount && tileCount < rows * cols) {
-                rows--;
-            }
+        if ((rows - 1) * cols >= tileCount && tileCount < rows * cols) {
+            rows--;
+        }
 
-            this.setState({
-                mounted: true,
-                rows: rows,
-                cols: cols,
-                outerHeight: offsetHeight,
-                outerWidth: offsetWidth
-            });
-        },
-        500
-    )
+        this.setState({
+            mounted: true,
+            rows: rows,
+            cols: cols,
+            outerHeight: offsetHeight,
+            outerWidth: offsetWidth
+        });
+    },
 });
 
 module.exports = TileGrid;
