@@ -9,7 +9,7 @@ var loadPage = function loadPage(actionContext, payload, done) {
         done();
     });
 
-    storage.subscribeToBookmarkEvents(function bookmarkEventCallback(id, reorderInfo) {
+    storage.subscribeToBookmarkEvents(function bookmarkEventCallback() {
         storage.getBookmarks(function bookmarksCallback(bookmarks) {
             actionContext.dispatch('SET_BOOKMARKS', {
                 bookmarks: bookmarks
