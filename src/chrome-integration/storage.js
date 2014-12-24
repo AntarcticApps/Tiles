@@ -80,7 +80,7 @@ var storage = {
             chrome.bookmarks.move(
                 id,
                 {
-                    index: newIndex === 0  ? newIndex : newIndex + 1
+                    index: newIndex
                 }
             );
         }

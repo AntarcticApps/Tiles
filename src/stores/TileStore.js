@@ -18,10 +18,11 @@ var TileStore = createStore({
                 return t.sortIndex;
             });
 
+            var oldIndex = this.bookmarks[payload.id].sortIndex;
+
             for (var i = 0; i < tileArray.length; i++) {
                 var tile = tileArray[i];
                 if (payload.newIndex <= tile.sortIndex) {
-                    var oldIndex = this.bookmarks[payload.id].sortIndex;
                     var oldTile = tileArray.splice(oldIndex, 1)[0];
                     tileArray.splice(payload.newIndex, 0, oldTile);
                     break;
@@ -48,7 +49,7 @@ var TileStore = createStore({
             this.emitChange();
             this.getContext().dehydrateToLocalStorage(this.getContext());
 
-            storage.moveBookmark(payload.id, payload.newIndex);
+            storage.moveBookmark(payload.id, payload.newIndex < oldIndex ? payload.newIndex : payload.newIndex + 1);
         }, 100),
 
         'SET_BOOKMARKS': function setBookmarks(payload) {
