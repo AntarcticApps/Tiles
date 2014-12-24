@@ -84,6 +84,15 @@ var storage = {
                 }
             );
         }
+    },
+
+    subscribeToBookmarkEvents: function subscribeToBookmarkEvents(callback) {
+        if (typeof chrome !== 'undefined' && chrome.storage) {
+            chrome.bookmarks.onMoved.addListener(callback);
+            chrome.bookmarks.onCreated.addListener(callback);
+            chrome.bookmarks.onRemoved.addListener(callback);
+            chrome.bookmarks.onChanged.addListener(callback);
+        }
     }
 };
 
