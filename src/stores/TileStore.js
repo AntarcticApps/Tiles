@@ -45,10 +45,6 @@ var TileStore = createStore({
                 {}
             );
 
-            this.bookmarks = newTileDataObject;
-            this.emitChange();
-            this.getContext().dehydrateToLocalStorage(this.getContext());
-
             storage.moveBookmark(payload.id, payload.newIndex < oldIndex ? payload.newIndex : payload.newIndex + 1);
         }, 100),
 
