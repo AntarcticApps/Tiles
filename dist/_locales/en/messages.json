@@ -82,5 +82,8 @@
 				"example": "<img src='../../icons/icon-bitty-gray.png'>"
 			}
 		}
+	},
+	"change_background_color": {
+		"message": "Change Background Color"
 	}
 }

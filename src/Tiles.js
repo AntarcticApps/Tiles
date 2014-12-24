@@ -2,6 +2,7 @@ var React = require('react/addons');
 var FluxibleApp = require('fluxible-app');
 var AppComponent = React.createFactory(require('./components/TilesApp.jsx'));
 var TileStore = require('./stores/TileStore');
+var ApplicationStore = require('./stores/ApplicationStore');
 var storage = require('./chrome-integration/storage.js');
 
 var app = new FluxibleApp({
@@ -9,6 +10,7 @@ var app = new FluxibleApp({
 });
 
 app.registerStore(TileStore);
+app.registerStore(ApplicationStore);
 
 app.plug({
     name: 'LocalStoragePlugin',
@@ -44,6 +46,8 @@ var context = app.createContext({
 });
 
 var loadPageAction = require('./actions/loadPage');
+
+storage.subscribeToContextualMenuEvents();
 
 rehydrate(function rehydrateCallback() {
     context.executeAction(loadPageAction, {}, function (err) {
