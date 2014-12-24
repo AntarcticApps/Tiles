@@ -184,7 +184,7 @@ function getFaviconColor(url, callback) {
     image.onload = function() {
         console.log("Using favicon url " + image.src + " for " + url);
 
-        var canvas = document.getElementsByTagName("canvas")[0];
+        var canvas = document.createElement("canvas");
 
         var context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.getAttribute('width'), canvas.getAttribute('height'));
@@ -204,6 +204,8 @@ function getFaviconColor(url, callback) {
         } else {
             callback(majorityCandidates[1]);
         }
+
+        canvas.remove();
     }
 
     url = urlRemoveFile(url);
