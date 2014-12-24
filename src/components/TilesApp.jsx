@@ -12,6 +12,11 @@ var TilesApp = React.createClass({
                     fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
                 }}
             >
+                <canvas
+                    style={{
+                        display: 'none'
+                    }}
+                />
                 <TileGrid
                     context={this.props.context}
                 />

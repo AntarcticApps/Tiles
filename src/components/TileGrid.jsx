@@ -9,10 +9,6 @@ require('react-mixin-manager')(React);
 require('react-events')(React);
 
 var MARGIN = 8;
-var ROW_INNER_HEIGHT = 220;
-var COL_INNER_WIDTH = 220;
-var ROW_OUTER_HEIGHT = 220 + MARGIN;
-var COL_OUTER_WIDTH = 220 + MARGIN;
 
 var TileGrid = React.createClass({
     mixins: ['events', DragDropMixin, StoreMixin],

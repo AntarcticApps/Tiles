@@ -6,7 +6,7 @@ var Tile = React.createClass({
     mixins: [DragDropMixin],
 
     propTypes: {
-        backgroundColor: React.PropTypes.string,
+        backgroundColor: React.PropTypes.array,
         title: React.PropTypes.string,
         url: React.PropTypes.string,
         animationTransforms: React.PropTypes.object
@@ -43,7 +43,7 @@ var Tile = React.createClass({
 
     getDefaultProps: function getDefaultProps() {
         return {
-            backgroundColor: 'white',
+            backgroundColor: [0, 0, 0, 255],
             title: null,
             url: null,
             animationTransforms: {}
@@ -79,7 +79,7 @@ var Tile = React.createClass({
                     top: (this.props.translateY ? this.props.translateY : this.props.y) + 'px',
                     left: (this.props.translateX ? this.props.translateX : this.props.x) + 'px',
                     padding: 10 + 'px',
-                    fontSize: (this.props.height / 2) + 'px',
+                    fontSize: (this.props.height / 6) + 'px',
                     lineHeight: (this.props.height - 20) + 'px',
                     textAlign: 'center',
                     textDecoration: 'none',
@@ -92,9 +92,12 @@ var Tile = React.createClass({
                     WebkitTransition: this._getTransitionStyle(),
                     zIndex: this._getZIndexStyle(),
                     boxSizing: 'border-box',
-                    borderRadius: '1%',
                     fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
-                    fontWeight: 400
+                    fontWeight: 200,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    opacity: this._getOpacityStyle()
                 }}
                 onMouseEnter={this.onMouseEnter}
                 onMouseLeave={this.onMouseLeave}
@@ -154,7 +157,8 @@ var Tile = React.createClass({
                 '-webkit-transform 0.25s ease-out',
                 'background-color 0.25s ease-in',
                 'top 0.25s ease-in-out',
-                'left 0.25s ease-in-out'
+                'left 0.25s ease-in-out',
+                'opacity 0.1s linear'
             ].join(', ');
         }
     },
@@ -167,6 +171,8 @@ var Tile = React.createClass({
             var scaleY = this.state.scaleY;
 
             return 'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + scaleX + ', ' + scaleY + ')';
+        } else if (this.state.dragging) {
+            return 'scale(1.1)';
         }
     },
 
@@ -174,7 +180,8 @@ var Tile = React.createClass({
         if (this.state.animatingFillScreen) {
             return '#ffffff';
         } else {
-            return this.props.backgroundColor;
+            var c = this.props.backgroundColor;
+            return 'rgba(' + c.join(', ') + ')';
         }
     },
 
@@ -183,6 +190,14 @@ var Tile = React.createClass({
             return 2;
         } else {
             return 1;
+        }
+    },
+
+    _getOpacityStyle: function _getOpacityStyle() {
+        if (this.props.dragging) {
+            return 0.9;
+        } else {
+            return 1.0;
         }
     }
 });
