@@ -72,15 +72,16 @@ var Tile = React.createClass({
             <a
                 href={this.props.url}
                 style={{
-                    display: 'block',
+                    display: 'table',
                     position: 'absolute',
                     width: this.props.width + 'px',
                     height: this.props.height + 'px',
+                    maxHeight: this.props.height + 'px',
                     top: (this.props.translateY ? this.props.translateY : this.props.y) + 'px',
                     left: (this.props.translateX ? this.props.translateX : this.props.x) + 'px',
                     padding: 10 + 'px',
                     fontSize: (this.props.height / 6) + 'px',
-                    lineHeight: (this.props.height - 20) + 'px',
+                    lineHeight: 1.2,
                     textAlign: 'center',
                     textDecoration: 'none',
                     backgroundColor: this._getBackgroundColorStyle(),
@@ -95,8 +96,6 @@ var Tile = React.createClass({
                     fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
                     fontWeight: 200,
                     overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
                     opacity: this._getOpacityStyle()
                 }}
                 onMouseEnter={this.onMouseEnter}
@@ -104,7 +103,22 @@ var Tile = React.createClass({
                 onClick={this.onClick}
                 {...this.dragSourceFor('tile')}
             >
-                {this.state.animatingFillScreen ? null : this.props.title}
+                <span
+                    style={{
+                        display: 'table-cell',
+                        verticalAlign: 'middle'
+                    }}
+                >
+                    <span
+                        style={{
+                            display: 'block',
+                            maxHeight: (this.props.height - 20) + 'px',
+                            overflow: 'hidden'
+                        }}
+                    >
+                        {this.state.animatingFillScreen ? null : this.props.title}
+                    </span>
+                </span>
             </a>
         );
     },
