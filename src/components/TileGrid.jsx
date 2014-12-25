@@ -214,6 +214,12 @@ var TileGrid = React.createClass({
         this.layout();
     },
 
+    componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+        if (Object.keys(this.state.tileData).length !== Object.keys(prevState.tileData).length) {
+            this.layout();
+        }
+    },
+
     layout: function layout() {
         var node = this.getDOMNode();
         var offsetHeight = node.offsetHeight;
