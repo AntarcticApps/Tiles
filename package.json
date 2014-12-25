@@ -1,6 +1,6 @@
 {
   "name": "Tiles",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Tiles is an alternative new tab page that displays all of your favorite websites in a colorful, minimalistic grid of tiles, where each tile has a two-character symbol and a background color that is automatically set from the website's icon.",
   "directories": {
     "test": "tests"
