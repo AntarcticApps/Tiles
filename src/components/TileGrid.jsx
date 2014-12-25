@@ -200,8 +200,8 @@ var TileGrid = React.createClass({
         var y = tileRow * rowHeight + this.getMargin();
 
         return {
-            x: x,
-            y: y
+            x: Math.round(x),
+            y: Math.round(y)
         };
     },
 
@@ -234,7 +234,7 @@ var TileGrid = React.createClass({
     getTileLength: function getTileLength() {
         var colWidth = ((this.state.outerWidth - this.getMargin()) / this.state.cols);
         var rowHeight = ((this.state.outerHeight - this.getMargin()) / this.state.rows);
-        return Math.min(colWidth, rowHeight);
+        return Math.round(Math.min(colWidth, rowHeight));
     },
 
     componentDidMount: function componentDidMount() {
