@@ -79,7 +79,7 @@ var Tile = React.createClass({
                     maxHeight: this.props.height + 'px',
                     top: (this.props.translateY ? this.props.translateY : this.props.y) + 'px',
                     left: (this.props.translateX ? this.props.translateX : this.props.x) + 'px',
-                    padding: 10 + 'px',
+                    padding: this.getPadding() + 'px',
                     fontSize: (this.props.height / 6) + 'px',
                     lineHeight: 1.2,
                     textAlign: 'center',
@@ -112,8 +112,10 @@ var Tile = React.createClass({
                     <span
                         style={{
                             display: 'block',
-                            maxHeight: (this.props.height - 20) + 'px',
-                            overflow: 'hidden'
+                            maxWidth: (this.props.width - (this.getPadding() * 2)) + 'px',
+                            maxHeight: (this.props.height - (this.getPadding() * 2)) + 'px',
+                            overflow: 'hidden',
+                            wordBreak: 'break-word'
                         }}
                     >
                         {this.state.animatingFillScreen ? null : this.props.title}
@@ -140,6 +142,10 @@ var Tile = React.createClass({
             e.preventDefault();
             this.fillScreen();
         }
+    },
+
+    getPadding: function() {
+        return Math.round(this.props.width / 10);
     },
 
     fillScreen: function fillScreen() {
