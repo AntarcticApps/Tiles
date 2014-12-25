@@ -75,7 +75,7 @@ var TilesApp = React.createClass({
     },
 
     subscribeToContextualMenuEvents: function subscribeToContextualMenuEvents() {
-        if (typeof chrome !== 'undefined' && chrome.storage) {
+        if (typeof chrome !== 'undefined' && chrome.contextMenus) {
             chrome.contextMenus.removeAll(function() {
                 chrome.contextMenus.create({
                     title: chrome.i18n.getMessage('change_background_color'),
