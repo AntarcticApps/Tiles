@@ -1,3 +1,5 @@
+var path = require('path');
+var fs = require('fs');
 var webpack = require('webpack');
 var DedupePlugin = new webpack.optimize.DedupePlugin();
 var UglifyPlugin = new webpack.optimize.UglifyJsPlugin({
@@ -8,10 +10,10 @@ var UglifyPlugin = new webpack.optimize.UglifyJsPlugin({
 
 module.exports = {
     entry: {
-        tiles: './src/Tiles.js'
+        src: './src/Tiles'
     },
     output: {
-        filename: './dist/bundle.js'
+        filename: 'bundle.js'
     },
     module: {
         loaders: [
@@ -19,7 +21,7 @@ module.exports = {
                 test: /\.jsx$/,
                 loader: 'jsx-loader?harmony'
             }
-        ]
+        ],
     },
     plugins: [
         DedupePlugin,

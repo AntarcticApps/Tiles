@@ -23,32 +23,6 @@ function getHostname(url) {
     return hostname;
 }
 
-function loop(iteration, end, operation, finishCallback) {
-    if (iteration < end) {
-        operation(iteration, function() {
-            loop(iteration + 1, end, operation, finishCallback);
-        });
-    } else {
-        return finishCallback();
-    }
-}
-
-function async_loop(start, end, operation, finishCallback) {
-    if (end < start) {
-        finishCallback();
-    }
-
-    var operationsToComplete = (end - start);
-    for (var i = start; i < end; i++) {
-        operation(i, function() {
-            operationsToComplete--;
-            if (operationsToComplete == 0) {
-                return finishCallback();
-            }
-        });
-    }
-}
-
 function makeHTTPRequest(url, successCallback, errorCallback) {
     var http = new XMLHttpRequest();
 

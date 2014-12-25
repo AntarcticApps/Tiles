@@ -15,7 +15,12 @@
     "react-dnd": "~0.6.2",
     "lodash": "~2.4.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "gulp": "~3.8.10",
+    "del": "~1.1.0",
+    "gulp-filter": "~2.0.0",
+    "gulp-webpack": "~1.1.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
