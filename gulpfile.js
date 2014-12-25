@@ -11,7 +11,7 @@ var webpackConfigPath = './webpack.config.js';
 gulp.task('default', ['clean', 'webpack', 'copy']);
 
 gulp.task('copy', function defaultTask() {
-   var filter = gulpFilter(['**/*.json', '**/*.png', '**/*.html']);
+    var filter = gulpFilter(['**/*.json', '**/*.png', '**/*.html']);
 
     gulp.src(staticPath + '/**/*')
     .pipe(filter)
@@ -22,8 +22,8 @@ gulp.task('copy', function defaultTask() {
 
 gulp.task('webpack', function webpackTask() {
     gulp.src(srcPath + '/Tiles')
-      .pipe(gulpWebpack(require(webpackConfigPath) ))
-      .pipe(gulp.dest(outputPath));
+    .pipe(gulpWebpack(require(webpackConfigPath) ))
+    .pipe(gulp.dest(outputPath));
 });
 
 gulp.task('clean', function cleanTask(cb) {
