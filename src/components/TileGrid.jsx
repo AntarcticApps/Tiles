@@ -96,25 +96,52 @@ var TileGrid = React.createClass({
                     position: 'relative'
                 }}
             >
-                <div
-                    ref="inner"
-                    style={{
-                        opacity: this.state.mounted ? '1.0': '0.0',
-                        transitionProperty: 'opacity',
-                        transitionDuration: '0.2s',
-                        width: this.getContainerWidth(),
-                        height: this.getContainerHeight(),
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        WebkitTransform: 'translate(-50%, -50%)'
-                    }}
-                >
-                    {this.renderTiles()}
-                </div>
+                {this.hasTiles() ?
+                    <div
+                        style={{
+                            opacity: this.state.mounted ? '1.0': '0.0',
+                            transitionProperty: 'opacity',
+                            transitionDuration: '0.2s',
+                            width: this.getContainerWidth(),
+                            height: this.getContainerHeight(),
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            WebkitTransform: 'translate(-50%, -50%)'
+                        }}
+                    >
+                        {this.renderTiles()}
+                    </div>
+                    :
+                    <p
+                        style={{
+                            color: '#444',
+                            fontSize: '28px',
+                            lineHeight: 1.4,
+                            fontWeight: 300,
+                            textAlign: 'center',
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            WebkitTransform: 'translate(-50%, -50%)',
+                            width: '100%',
+                            margin: 0,
+                            paddingLeft: (this.getMargin()) + 'px',
+                            paddingRight: (this.getMargin()) + 'px',
+                            boxSizing: 'border-box'
+                        }}
+                    >
+                        {this.props.i18n && this.props.i18n.getMessage('no_bookmarks_in_bookmarks_bar')}
+                    </p>
+                }
             </div>
         );
+    },
+
+    hasTiles: function hasTiles() {
+        return this.state.tileData && Object.keys(this.state.tileData).length > 0;
     },
 
     renderTiles: function renderTiles() {

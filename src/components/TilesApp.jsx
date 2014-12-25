@@ -56,6 +56,7 @@ var TilesApp = React.createClass({
 
                 <TileGrid
                     context={this.props.context}
+                    i18n={typeof chrome !== 'undefined' && chrome.i18n}
                 />
             </div>
         );

@@ -4,84 +4,14 @@
 		"description": "Name of the extension."
 	},
 	"extension_description": {
-		"message": "A tiled new tab page.",
+		"message": "A new tab page that displays your bookmarks bar as a dynamic, colorful grid of tiles.",
 		"description": "Description of the extension."
 	},
-	"popup_add_tile": {
-		"message": "Add Tile",
-		"description": "Tile save text in add tile popup."
+	"no_bookmarks_in_bookmarks_bar": {
+		"message": "No bookmarks found in the bookmarks bar."
 	},
-	"popup_add_tile_saving": {
-		"message": "Saving&hellip;",
-		"description": "Tile saving text in add tile popup."
-	},
-	"popup_rename_tile": {
-		"message": "Rename",
-		"description": "Tile rename text in delete tile popup."
-	},
-	"popup_remove_tile": {
-		"message": "Remove",
-		"description": "Tile delete text in delete tile popup."
-	},
-	"popup_invalid_url": {
-		"message": "This page cannot be added as a tile.",
-		"description": "Invalid URL error text for error tile popup."
-	},
-	"options_title": {
-		"message": "Tiles Options",
-		"description": "Title for the options page."
-	},
-	"options_nav_tab_tiles": {
-		"message": "Tiles",
-		"description": "Navigation tab text for the tiles options page."
-	},
-	"options_nav_tab_background": {
-		"message": "Background",
-		"description": "Navigation tab text for the background options page."
-	},
-	"options_nav_tab_about": {
-		"message": "About",
-		"description": "Navigation tab text for the about page."
-	},
-	"options_no_tiles_added_help": {
-		"message": "To add a tile to the new tab page, go to a site you want to add and click the $icon$ button in the Chrome toolbar.",
-		"description": "Message shown on main options page when no tiles exist.",
-		"placeholders": {
-			"icon": {
-				"content": "$1",
-				"example": "<img src='/TILES_VERSION_ID_/icons/icon-bitty-gray.png'>"
-			}
-		}
-	},
-	"options_reset_color": {
-		"message": "Reset Color",
-		"description": "Text for button that will remove a custom color."
-	},
-	"options_regen_all_tile_colors": {
-		"message": "Regenerate All Tile Colors",
-		"description": "Button description that will recalculate the tile colors using the website's favicon."
-	},
-	"options_regen_all_tile_colors_help": {
-		"message": "The color of each tile will be recalculated using the website\\'s favicon. This will not override the custom color, if one has been set.",
-		"description": "Help text shown below regenerate all tile colors button."
-	},
-	"options_background_color_help": {
-		"message": "Change the color of the background of the new tab page.",
-		"description": "Help text show below background color chooser."
-	},
-	"no_tiles_added": {
-		"message": "No Tiles Added",
-		"description": "No tiles added text for new tab page."
-	},
-	"tab_page_no_tiles_added_help": {
-		"message": "Add a tile to this page by clicking the $icon$ button in the Chrome toolbar when you are on a page you want to add.",
-		"description": "Help text for new tab page when no tiles added.",
-		"placeholders": {
-			"icon": {
-				"content": "$1",
-				"example": "<img src='../../icons/icon-bitty-gray.png'>"
-			}
-		}
+	"tiles_uses_bookmarks_bar": {
+		"message": "Tiles uses your bookmarks from the bookmarks bar."
 	},
 	"change_background_color": {
 		"message": "Change Background Color"
