@@ -1,0 +1,41 @@
+{
+  "name": "Tiles",
+  "version": "3.0.4",
+  "description": "Tiles is an alternative new tab page that displays all of your favorite websites in a colorful, minimalistic grid of tiles, where each tile has a two-character symbol and a background color that is automatically set from the website's icon.",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "fluxible-app": "~0.1.2",
+    "jsx-loader": "~0.12.2",
+    "react": "~0.12.2",
+    "react-events": "~0.7.9",
+    "react-mixin-manager": "~0.9.4",
+    "webpack": "~1.4.13",
+    "react-dnd": "~0.6.2",
+    "lodash": "~2.4.1"
+  },
+  "devDependencies": {
+    "gulp": "~3.8.10",
+    "del": "~1.1.0",
+    "gulp-filter": "~2.0.0",
+    "gulp-webpack": "~1.1.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/AntarcticApps/Tiles"
+  },
+  "keywords": [
+    "Tiles",
+    "Chrome",
+    "extension"
+  ],
+  "author": "Ryan Ashcraft, Tanner Smith",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AntarcticApps/Tiles/issues"
+  }
+}

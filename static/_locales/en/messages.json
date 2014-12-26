@@ -1,0 +1,22 @@
+{
+	"extension_name": {
+		"message": "Tiles 3",
+		"description": "Name of the extension."
+	},
+	"extension_description": {
+		"message": "A new tab page that displays your bookmarks bar as a dynamic, colorful grid of tiles.",
+		"description": "Description of the extension."
+	},
+	"no_bookmarks_in_bookmarks_bar": {
+		"message": "No bookmarks found in the bookmarks bar."
+	},
+	"tiles_uses_bookmarks_bar": {
+		"message": "Tiles uses your bookmarks from the bookmarks bar."
+	},
+	"change_background_color": {
+		"message": "Change Background Color"
+	},
+	"refresh_colors": {
+		"message": "Refresh Colors"
+	}
+}

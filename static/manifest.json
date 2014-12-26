@@ -1,0 +1,28 @@
+{
+  "name": "__MSG_extension_name__",
+  "version": "3.0.4",
+  "manifest_version": 2,
+  "description": "__MSG_extension_description__",
+  "default_locale": "en",
+  "minimum_chrome_version": "39.0.0.0",
+
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "<all_urls>",
+    "unlimitedStorage",
+    "bookmarks"
+  ],
+
+  "icons": {
+    "16": "images/icon-bitty.png",
+    "48": "images/icon-small.png",
+    "128": "images/icon-large.png"
+  },
+
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  }
+}
