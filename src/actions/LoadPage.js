@@ -1,7 +1,7 @@
-var storage = require('../chrome-integration/storage.js');
+var bookmarks = require('../chrome-integration/bookmarks.js');
 
 var loadPage = function loadPage(actionContext, payload, done) {
-    storage.getBookmarks(function bookmarksCallback(bookmarks) {
+    bookmarks.getBookmarks(function bookmarksCallback(bookmarks) {
         actionContext.dispatch('SET_BOOKMARKS', {
             bookmarks: bookmarks
         });
@@ -9,8 +9,8 @@ var loadPage = function loadPage(actionContext, payload, done) {
         done();
     });
 
-    storage.subscribeToBookmarkEvents(function bookmarkEventCallback() {
-        storage.getBookmarks(function bookmarksCallback(bookmarks) {
+    bookmarks.subscribeToBookmarkEvents(function bookmarkEventCallback() {
+        bookmarks.getBookmarks(function bookmarksCallback(bookmarks) {
             actionContext.dispatch('SET_BOOKMARKS', {
                 bookmarks: bookmarks
             });
