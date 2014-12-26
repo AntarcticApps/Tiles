@@ -1,20 +1,27 @@
-Overview
---------
-Tiles is an alternative new tab page that displays all of your favorite websites in a colorful, minimalistic grid of tiles, where each tile has a two-character symbol and a background color that is automatically set from the website's icon.
+Tiles
+=====
+A new tab page that displays your bookmarks bar as a dynamic, colorful grid of tiles.
 
-There is virtually no limit to the amount of tiles you can add. It's really easy to add tiles with a button in the Chrome toolbar. No matter how many tiles you add, you never have to scroll to find the site you want – the tiles grow and shrink as necessary.
+Running Locally
+---------------
 
-Tiles strives to improve both the aesthetic and functionality of the new tab page. Each tile is easily identifiable with its color and two-character symbol, making it really easy to launch your favorite websites even with a large number of tiles. At the same time, all of the tiles are consistent and clean, making your new tab page look beautiful no matter what.
-
-Screenshots
------------
-You can view screenshots of the extension in the [promos](/promos) directory.
-
-Tests
--------------
-To run the tests, you must go to `chrome-extension://[EXTENSION ID]/tests/tests.html` where `[EXTENSION ID]` is the ID from the Chrome Extensions with developer mode on. 
+1. Install dependencies: `npm i`
+2. Generate a build using [gulp](http://gulpjs.com/): `gulp`
+3. Follow the steps from Chrome Developer documentation for [how to load an unpacked extension](https://developer.chrome.com/extensions/getstarted#unpacked). Select the `dist` directory generated from step 2.
 
 Development Path
 ----------------
+
 ### Semantic Versioning
  - http://semver.org/
+
+License
+-------
+The MIT License (MIT)
+Copyright (c) 2012-2014 Antarctic Apps
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
