@@ -6,8 +6,10 @@ Running Locally
 ---------------
 
 1. Install dependencies: `npm i`
-2. Generate a build using [gulp](http://gulpjs.com/): `gulp`
+2. Generate a non-minified build using [gulp](http://gulpjs.com/): `gulp dev`
 3. Follow the steps from Chrome Developer documentation for [how to load an unpacked extension](https://developer.chrome.com/extensions/getstarted#unpacked). Select the `dist` directory generated from step 2.
+
+To generate a minified build, simply run `gulp`.
 
 Development Path
 ----------------
