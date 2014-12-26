@@ -1,5 +1,3 @@
-var path = require('path');
-var fs = require('fs');
 var webpack = require('webpack');
 var DedupePlugin = new webpack.optimize.DedupePlugin();
 var UglifyPlugin = new webpack.optimize.UglifyJsPlugin({

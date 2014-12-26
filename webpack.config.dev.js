@@ -6,7 +6,7 @@ module.exports = {
         tiles: './src/Tiles.js'
     },
     output: {
-        filename: './dist/bundle.js'
+        filename: './bundle.js'
     },
     module: {
         loaders: [

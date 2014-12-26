@@ -7,6 +7,9 @@ var staticPath = './static';
 var outputPath = './dist';
 var srcPath = './src';
 var webpackConfigPath = './webpack.config.js';
+var webpackDevConfigPath = './webpack.config.dev.js';
+
+gulp.task('dev', ['webpack-dev', 'copy']);
 
 gulp.task('default', ['webpack', 'copy']);
 
@@ -22,7 +25,13 @@ gulp.task('copy', ['clean'], function defaultTask() {
 
 gulp.task('webpack', ['clean'], function webpackTask() {
     gulp.src(srcPath + '/Tiles')
-    .pipe(gulpWebpack(require(webpackConfigPath) ))
+    .pipe(gulpWebpack(require(webpackConfigPath)))
+    .pipe(gulp.dest(outputPath));
+});
+
+gulp.task('webpack-dev', ['clean'], function webpackTask() {
+    gulp.src(srcPath + '/Tiles')
+    .pipe(gulpWebpack(require(webpackDevConfigPath)))
     .pipe(gulp.dest(outputPath));
 });
 
